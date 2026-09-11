@@ -82,7 +82,7 @@ function Connexion() {
 
         <div className="auth-card">
 
-            <div className="auth-logo">
+            <div className="auth-logo notranslate" translate="no">
                 NextOri
             </div>
 

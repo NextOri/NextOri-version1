@@ -20,6 +20,38 @@ export default async function handler(req, res) {
       });
     }
 
+    // Validation syntaxe email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const cleanEmail = email.trim().toLowerCase();
+    if (!emailRegex.test(cleanEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Format d'adresse email invalide.",
+      });
+    }
+
+    // Blocage des domaines jetables / fictifs
+    const domain = cleanEmail.split("@")[1];
+    const disposableDomains = [
+      "yopmail.com", "mailinator.com", "tempmail.com", "guerrillamail.com",
+      "10minutemail.com", "trashmail.com", "fake.com", "test.com", "example.com",
+      "sharklasers.com", "throwawaymail.com", "dispostable.com"
+    ];
+    if (disposableDomains.includes(domain)) {
+      return res.status(400).json({
+        success: false,
+        message: "Les adresses emails temporaires ou fictives ne sont pas autorisées.",
+      });
+    }
+
+    // Validation mot de passe
+    if (mot_de_passe.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Le mot de passe doit comporter au moins 6 caractères.",
+      });
+    }
+
     // Check if email already exists
     const { data: existing } = await supabase
       .from("utilisateur")

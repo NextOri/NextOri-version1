@@ -340,7 +340,7 @@ const demanderNotification = async () => {
                 Tableau de bord
             </p>
 
-            <h1>
+            <h1 className="notranslate" translate="no">
                 Next<span>Ori</span>
             </h1>
         </div>

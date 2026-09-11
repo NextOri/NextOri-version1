@@ -60,6 +60,27 @@ function Inscription() {
 
         e.preventDefault();
 
+        // Validation email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        if (!formData.email || !emailRegex.test(formData.email.trim())) {
+            setMessage("Veuillez saisir une adresse email valide.");
+            return;
+        }
+
+        // Domaines temporaires / jetables non autorisés
+        const domaine = formData.email.trim().split("@")[1]?.toLowerCase();
+        const domainesInterdits = ["yopmail.com", "mailinator.com", "tempmail.com", "guerrillamail.com", "10minutemail.com", "trashmail.com", "fake.com", "test.com", "example.com"];
+        if (domainesInterdits.includes(domaine)) {
+            setMessage("Les adresses emails temporaires ou fictives ne sont pas autorisées.");
+            return;
+        }
+
+        // Validation mot de passe (au moins 6 caractères)
+        if (!formData.mot_de_passe || formData.mot_de_passe.length < 6) {
+            setMessage("Le mot de passe doit contenir au moins 6 caractères.");
+            return;
+        }
+
         // Vérification de la série
         // pour tous les niveaux sauf Collège.
         if (
@@ -106,12 +127,12 @@ function Inscription() {
 
             <div className="auth-card">
 
-                <div className="auth-logo">
+                <div className="auth-logo notranslate" translate="no">
                     NextOri
                 </div>
 
                 <h1>
-                    Bienvenue sur NextOri 👋
+                    Bienvenue sur <span className="notranslate" translate="no">NextOri</span> 👋
                 </h1>
 
                 <p className="auth-description">
