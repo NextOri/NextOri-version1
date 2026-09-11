@@ -1,7 +1,7 @@
-import { supabase } from "./_lib/supabase.js";
-import { handleCors } from "./_lib/cors.js";
-import { getUserFromRequest } from "./_lib/auth.js";
-import { getRecommendedMetiers } from "./_lib/orientationEngine.js";
+import { supabase } from "../_lib/supabase.js";
+import { handleCors } from "../_lib/cors.js";
+import { getUserFromRequest } from "../_lib/auth.js";
+import { getRecommendedMetiers } from "../_lib/orientationEngine.js";
 
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;

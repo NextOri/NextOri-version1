@@ -1,6 +1,6 @@
-import { supabase } from "./_lib/supabase.js";
-import { handleCors } from "./_lib/cors.js";
-import { getUserFromRequest } from "./_lib/auth.js";
+import { supabase } from "../_lib/supabase.js";
+import { handleCors } from "../_lib/cors.js";
+import { getUserFromRequest } from "../_lib/auth.js";
 
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;

@@ -1,5 +1,24 @@
 import jwt from "jsonwebtoken";
-import { parse, serialize } from "cookie";
+
+function parseCookie(cookieStr) {
+  if (!cookieStr) return {};
+  const cookies = {};
+  for (const item of cookieStr.split(";")) {
+    const [key, ...val] = item.trim().split("=");
+    if (key) cookies[key] = decodeURIComponent(val.join("="));
+  }
+  return cookies;
+}
+
+function serializeCookie(name, val, options = {}) {
+  let str = `${name}=${encodeURIComponent(val)}`;
+  if (options.maxAge !== undefined) str += `; Max-Age=${options.maxAge}`;
+  if (options.path) str += `; Path=${options.path}`;
+  if (options.httpOnly) str += `; HttpOnly`;
+  if (options.secure) str += `; Secure`;
+  if (options.sameSite) str += `; SameSite=${options.sameSite}`;
+  return str;
+}
 
 const JWT_SECRET = process.env.JWT_SECRET || "nextori_super_secret_jwt_key_2026";
 const COOKIE_NAME = "nextori_session";
@@ -19,7 +38,7 @@ export function verifyToken(token) {
 export function getUserFromRequest(req) {
   // 1. Check Cookie
   if (req.headers && req.headers.cookie) {
-    const cookies = parse(req.headers.cookie);
+    const cookies = parseCookie(req.headers.cookie);
     if (cookies[COOKIE_NAME]) {
       const decoded = verifyToken(cookies[COOKIE_NAME]);
       if (decoded && decoded.id_user) {
@@ -53,7 +72,7 @@ export function getUserFromRequest(req) {
 }
 
 export function setAuthCookie(res, token) {
-  const cookieHeader = serialize(COOKIE_NAME, token, {
+  const cookieHeader = serializeCookie(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -64,7 +83,7 @@ export function setAuthCookie(res, token) {
 }
 
 export function clearAuthCookie(res) {
-  const cookieHeader = serialize(COOKIE_NAME, "", {
+  const cookieHeader = serializeCookie(COOKIE_NAME, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

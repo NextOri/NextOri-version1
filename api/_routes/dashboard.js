@@ -1,6 +1,6 @@
-import { supabase } from "./_lib/supabase.js";
-import { handleCors } from "./_lib/cors.js";
-import { getUserFromRequest } from "./_lib/auth.js";
+import { supabase } from "../_lib/supabase.js";
+import { handleCors } from "../_lib/cors.js";
+import { getUserFromRequest } from "../_lib/auth.js";
 
 function calculerNiveau(points) {
   const paliers = [
