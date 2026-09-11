@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -111,7 +111,7 @@ function Universites() {
             try {
 
                 const reponse = await fetch(
-                    `${API_ROUTES_URL}/universites.php?id_filiere=${filiere.id_filiere}`
+                    `${API_ROUTES_URL}/universites?id_filiere=${filiere.id_filiere}`
                 );
 
 

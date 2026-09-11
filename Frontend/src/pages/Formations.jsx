@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 
 import {
@@ -83,7 +83,7 @@ function Formations() {
 
 
                 const reponse = await fetch(
-                    `${API_ROUTES_URL}/filieres.php?id_metier=${metier.id_metier}`
+                    `${API_ROUTES_URL}/filieres?id_metier=${metier.id_metier}`
                 );
 
 

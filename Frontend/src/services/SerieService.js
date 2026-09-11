@@ -6,7 +6,7 @@ export async function recupererSeries() {
     try {
 
         const response = await fetch(
-            `${API_ROUTES_URL}/series.php`,
+            `${API_ROUTES_URL}/series`,
             {
                 method: "GET",
                 headers: {

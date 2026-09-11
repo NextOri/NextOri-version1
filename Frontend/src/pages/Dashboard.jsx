@@ -52,7 +52,7 @@ const [typeNotification, setTypeNotification] = useState("");
     useEffect(() => {
 
     fetch(
-     `${API_ROUTES_URL}/resultats.php`,
+     `/api/resultats`,
     {
         credentials: "include"
     }
@@ -80,7 +80,7 @@ const [typeNotification, setTypeNotification] = useState("");
       useEffect(() => {
 
     fetch(
-    `${API_ROUTES_URL}/dashboard.php`,
+    `/api/dashboard`,
     {
         credentials: "include"
     }
@@ -104,7 +104,11 @@ const [typeNotification, setTypeNotification] = useState("");
             return;
         }
 
-        if (data.success) {
+        // Le backend retourne directement { utilisateur, niveau, statistiques, parcours }
+        // sans wrapper data.success/data.data
+        if (data.utilisateur && data.parcours) {
+            setDashboardDataState(data);
+        } else if (data.success && data.data) {
             setDashboardDataState(data.data);
         }
 
@@ -133,6 +137,13 @@ const [typeNotification, setTypeNotification] = useState("");
     return <p>Chargement du tableau de bord...</p>;
 
  }
+
+   if(!dashboardDataState || !dashboardDataState.parcours){
+
+    return <p>Impossible de charger le tableau de bord. <a href="/connexion">Se reconnecter</a></p>;
+
+ }
+
    const parcours = [
 
     {
@@ -237,7 +248,7 @@ const demanderNotification = async () => {
     try {
 
         const response = await fetch(
-            `${API_ROUTES_URL}/notifier-fonctionnalite.php`,
+            `/api/notifier-fonctionnalite`,
             {
                 method: "POST",
                 credentials: "include",

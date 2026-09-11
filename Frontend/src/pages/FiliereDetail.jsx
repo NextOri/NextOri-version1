@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import FooterNavigation from "../components/FooterNavigation";
@@ -27,7 +27,7 @@ function FiliereDetail() {
     useEffect(() => {
 
         fetch(
-            `${API_ROUTES_URL}/filiere_details.php?id_filiere=${id_filiere}`
+            `${API_ROUTES_URL}/filiere_details?id_filiere=${id_filiere}`
         )
 
         .then(response => response.json())

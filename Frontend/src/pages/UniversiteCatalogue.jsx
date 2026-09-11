@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ import {
 
 
 const API_URL =
-  `${API_ROUTES_URL}/universite-catalogue.php`;
+  `${API_ROUTES_URL}/universite-catalogue`;
 
 
 export default function UniversiteCatalogue() {

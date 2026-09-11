@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -51,7 +51,7 @@ function ResultatHistorique() {
                 setErreur("");
 
                 const response = await fetch(
-                    `${API_ROUTES_URL}/historique-test-detail.php?id_test=${id_test}`,
+                    `${API_ROUTES_URL}/historique-test-detail?id_test=${id_test}`,
                     {
                         credentials: "include"
                     }

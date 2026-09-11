@@ -5,7 +5,7 @@ export const envoyerAvis = async (note, commentaire, afficher) => {
     try {
 
         const response = await fetch(
-            `${API_ROUTES_URL}/avis.php`,
+            `${API_ROUTES_URL}/avis`,
             {
                 credentials: "include",
 

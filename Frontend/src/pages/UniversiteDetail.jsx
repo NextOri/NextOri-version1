@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -40,7 +40,7 @@ function UniversiteDetail() {
     useEffect(() => {
 
         fetch(
-            `${API_ROUTES_URL}/universite-detail.php?id_universite=${id_universite}`
+            `${API_ROUTES_URL}/universite-detail?id_universite=${id_universite}`
         )
             .then((reponse) => reponse.json())
 

@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import React, { useState, useEffect } from "react";
 import "../styles/Filieres.css";
 import FooterNavigation from "../components/FooterNavigation";
@@ -39,7 +39,7 @@ const [chargement, setChargement] = useState(true);
 
     useEffect(() => {
 
-        fetch(`${API_ROUTES_URL}/filiere.php`)
+        fetch(`${API_ROUTES_URL}/filiere`)
 
             .then((response) => response.json())
 

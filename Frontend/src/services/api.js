@@ -3,7 +3,7 @@
 export async function getQuestions(){
 
     const response = await fetch(
-        `${API_PUBLIC_URL}/questions.php`
+        `${API_PUBLIC_URL}/questions`
     );
 
     if(!response.ok){
@@ -23,7 +23,7 @@ export async function getQuestions(){
 export async function getPropositions(id_question){
 
     const response = await fetch(
-        `${API_PUBLIC_URL}/propositions.php?id_question=${id_question}`
+        `${API_PUBLIC_URL}/propositions?id_question=${id_question}`
     );
 
     if(!response.ok){
@@ -47,7 +47,7 @@ export async function getPropositions(id_question){
 export async function getOrientationResult(){
 
     const response = await fetch(
-        `${API_ROUTES_URL}/orientation.php`
+        `${API_ROUTES_URL}/orientation`
     );
 
     if(!response.ok){
@@ -63,7 +63,7 @@ export async function getOrientationResult(){
 export async function envoyerReponses(reponses){
 
     const response = await fetch(
-        `${API_ROUTES_URL}/orientation.php`,
+        `${API_ROUTES_URL}/orientation`,
         {
             method:"POST",
             credentials: "include",

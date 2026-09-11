@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import React, { useState, useEffect } from "react";
 import "../styles/Metiers.css";
 import FooterNavigation from "../components/FooterNavigation";
@@ -42,7 +42,7 @@ function Metiers() {
     // 2) Récupération des métiers depuis le backend
     useEffect(() => {
 
-    fetch(`${API_ROUTES_URL}/metiers.php`)
+    fetch(`${API_ROUTES_URL}/metiers`)
 
         .then((response) => response.json())
 

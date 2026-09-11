@@ -5,7 +5,7 @@ export const enregistrerAction = async (action) => {
     try {
 
         const response = await fetch(
-            `${API_ROUTES_URL}/historique.php`,
+            `${API_ROUTES_URL}/historique`,
             {
                 credentials: "include",
 

@@ -3,7 +3,7 @@
 export async function login(email, mot_de_passe) {
 
     const response = await fetch(
-        `${API_ROUTES_URL}/login.php`,
+        `${API_ROUTES_URL}/login`,
         {
             method: "POST",
             credentials: "include",
@@ -26,7 +26,7 @@ export async function login(email, mot_de_passe) {
 export async function register(utilisateur) {
 
     const response = await fetch(
-        `${API_ROUTES_URL}/register.php`,
+        `${API_ROUTES_URL}/register`,
         {
             method: "POST",
             credentials: "include",
@@ -46,7 +46,7 @@ export async function register(utilisateur) {
 export async function getProfile(id_user) {
 
     const response = await fetch(
-        `${API_ROUTES_URL}/profile.php?id_user=${id_user}`,
+        `${API_ROUTES_URL}/profile?id_user=${id_user}`,
         {
             method: "GET",
             headers: {
@@ -63,7 +63,7 @@ export async function getProfile(id_user) {
 export async function logout() {
 
     const response = await fetch(
-        `${API_ROUTES_URL}/logout.php`,
+        `${API_ROUTES_URL}/logout`,
         {
             method: "POST",
             credentials: "include"

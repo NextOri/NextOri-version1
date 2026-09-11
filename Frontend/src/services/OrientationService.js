@@ -1,4 +1,4 @@
-import api from "../api/axios";
+﻿import api from "../api/axios";
 
 export async function lancerOrientation(donnees) {
 
@@ -6,7 +6,7 @@ export async function lancerOrientation(donnees) {
 
         const response = await api.post(
 
-            "/routes/orientation.php",
+            "/api/orientation",
 
             donnees
 

@@ -1,4 +1,4 @@
-import { API_ROUTES_URL } from "../config/api";
+﻿import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ function Profil() {
         try {
 
             const response = await fetch(
-                `${API_ROUTES_URL}/historique-tests.php`,
+                `${API_ROUTES_URL}/historique-tests`,
                 {
                     credentials: "include"
                 }
