@@ -61,15 +61,19 @@ export default async function handler(req, res) {
     );
 
     // Envoi du nouvel email
-    await envoyerEmailVerification({
+    const resultatEmail = await envoyerEmailVerification({
       email: decoded.email,
       nom: decoded.nom,
       code: nouveauCode,
     });
 
+    const msg = resultatEmail.simulation
+      ? `[Mode test - Aucun serveur email configuré dans Vercel]. Nouveau code de test : ${nouveauCode}`
+      : "Un nouveau code de vérification a été envoyé à votre adresse email.";
+
     return res.status(200).json({
       success: true,
-      message: "Un nouveau code de vérification a été envoyé à votre adresse email.",
+      message: msg,
       verificationToken: nouveauToken,
     });
   } catch (err) {

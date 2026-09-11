@@ -111,8 +111,9 @@
 /* Écran de vérification OTP */
 .auth-otp-badge {
     display: inline-block;
-    background: #FEF3C7;
-    color: #B45309;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    border: 1px solid #F4B400;
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 13px;
@@ -128,9 +129,9 @@
     text-align: center;
     letter-spacing: 12px;
     color: #0D1B2A;
-    border: 2px solid #E2E8F0;
+    border: 2px solid #F2F4F7;
     border-radius: 12px;
-    background: #F8FAFC;
+    background: #F2F4F7;
     margin: 18px 0 20px 0;
     outline: none;
     transition: all 0.2s ease;
@@ -140,7 +141,7 @@
 .auth-otp-input:focus {
     border-color: #F4B400;
     background: #FFFFFF;
-    box-shadow: 0 0 0 4px rgba(244, 180, 0, 0.15);
+    box-shadow: 0 0 0 4px rgba(244, 180, 0, 0.18);
 }
 
 .auth-resend-row {
@@ -150,12 +151,13 @@
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    color: #0D1B2A;
 }
 
 .auth-back-link {
     display: block;
     margin-top: 20px;
-    color: #64748B;
+    color: #1E3A8A;
     font-size: 13px;
     text-decoration: underline;
     background: none;

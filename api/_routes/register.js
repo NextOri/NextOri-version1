@@ -91,18 +91,22 @@ export default async function handler(req, res) {
     );
 
     // Envoi de l'email avec le logo officiel NextOri
-    await envoyerEmailVerification({
+    const resultatEmail = await envoyerEmailVerification({
       email: cleanEmail,
       nom: nom.trim(),
       code,
     });
+
+    const msg = resultatEmail.simulation
+      ? `[Mode test - Aucun serveur email configuré dans Vercel]. Votre code de test est : ${code}`
+      : `Un code de vérification a été envoyé à ${cleanEmail}. Veuillez vérifier votre boîte de réception.`;
 
     return res.status(200).json({
       success: true,
       pendingVerification: true,
       email: cleanEmail,
       verificationToken,
-      message: `Un code de vérification a été envoyé à ${cleanEmail}. Veuillez vérifier votre boîte de réception.`,
+      message: msg,
     });
   } catch (err) {
     console.error("Register error:", err);
