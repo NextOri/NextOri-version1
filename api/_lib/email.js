@@ -110,8 +110,8 @@ async function envoyerViaSMTP({ email, nom, code, html }) {
   const host = process.env.SMTP_HOST || "smtp.gmail.com";
   const port = parseInt(process.env.SMTP_PORT || "465", 10);
   const secure = port === 465;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const user = process.env.SMTP_USER ? process.env.SMTP_USER.trim() : "";
+  const pass = process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, "").trim() : "";
   const from = process.env.SMTP_FROM || `"NextOri" <${user}>`;
 
   const transporter = nodemailer.createTransport({
