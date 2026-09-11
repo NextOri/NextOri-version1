@@ -364,7 +364,7 @@ const demanderNotification = async () => {
         <h2>{dashboardDataState.niveau.nom}</h2>
 
         <span>
-       Niveau {dashboardDataState.niveau.numero}
+       Niveau
         </span>
 
     </div>
@@ -374,14 +374,14 @@ const demanderNotification = async () => {
         <div
     className="progress-fill"
     style={{
-        width: `${dashboardDataState.niveau.progression}%`
+        width: `${dashboardDataState.niveau.pourcentage}%`
     }}
       ></div>
     </div>
 
     <p className="progress-text">
 
-        Progression : {dashboardDataState.niveau.progression}%
+        Progression : {dashboardDataState.niveau.pourcentage}%
 
     </p>
 
