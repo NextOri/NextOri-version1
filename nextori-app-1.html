@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NextOri — Concours Sénégal &amp; Success Score</title>
+<style>
+:root { --navy: #0B1F4D; --navy-light: #16305f; --navy-lighter: #1c3a7a; --gold: #F4C542; --gold-dark: #dba91f; --gray-50: #f7f8fb; --gray-100: #eef1f6; --gray-200: #e3e7ee; --gray-400: #9aa4b2; --gray-500: #6b7688; --gray-700: #384153; --gray-800: #1c2433; --green: #16a34a; --red: #e0433f; --blue: #2563eb; --radius: 18px; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--gray-50); color: var(--gray-800); }
+img { max-width: 100%; }
+button { font-family: inherit; }
+/* ===== Header / Hero ===== */ .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 55%, var(--navy-lighter) 100%); padding: 28px 20px 26px; border-radius: 0 0 26px 26px; }
+@media (min-width:768px){ .hero{ padding:38px 40px 32px; border-radius:0 0 32px 32px; } }
+.hero-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.hero-brand { display:flex; align-items:center; gap:10px; }
+.hero-logo { width:36px; height:36px; border-radius:10px; background:var(--gold); display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--navy); font-size:15px; }
+.hero-brand-name { color:#fff; font-weight:800; font-size:15px; }
+.hero-brand-sub { color:#9db1e6; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+.notif-toggle { display:flex; align-items:center; gap:6px; background:var(--gold); color:var(--navy); border:none; border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:800; cursor:pointer; transition: transform 0.15s ease, background 0.15s ease; }
+.notif-toggle:hover { background:var(--gold-dark); transform:translateY(-1px); }
+.notif-toggle.on { background:#16a34a; color:#fff; }
+.hero-title { color:#fff; font-size:24px; font-weight:800; margin:0 0 6px; }
+@media (min-width:768px){ .hero-title{ font-size:32px; } }
+.hero-sub { color:#c7d2fe; font-size:13.5px; margin:0 0 20px; max-width:560px; line-height:1.5; }
+.search-wrap { position:relative; max-width:640px; }
+.search-box { display:flex; align-items:center; gap:10px; background:#fff; border-radius:999px; padding:13px 18px; box-shadow:0 8px 24px rgba(0,0,0,0.18); }
+.search-box input { flex:1; border:none; outline:none; font-size:14px; color:var(--gray-700); }
+.search-box input::placeholder { color:var(--gray-400); }
+.search-clear { border:none; background:var(--gray-100); width:24px; height:24px; border-radius:999px; cursor:pointer; display:none; align-items:center; justify-content:center; font-size:12px; color:var(--gray-500); }
+.search-suggestions { position:absolute; top:calc(100% + 8px); left:0; right:0; background:#fff; border-radius:16px; box-shadow:0 12px 32px rgba(11,31,77,0.18); padding:8px; z-index:40; display:none; max-height:340px; overflow-y:auto; }
+.search-suggestions.show { display:block; }
+.sugg-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; cursor:pointer; }
+.sugg-item:hover { background:var(--gray-50); }
+.sugg-logo { width:34px; height:34px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:15px; color:#fff; font-weight:800; }
+.sugg-name { font-size:13px; font-weight:700; color:var(--gray-800); }
+.sugg-sub { font-size:11px; color:var(--gray-500); }
+.sugg-empty { padding:16px; text-align:center; font-size:12.5px; color:var(--gray-500); }
+.hero-actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.btn-hero-primary { background:var(--gold); color:var(--navy); border:none; border-radius:999px; padding:10px 18px; font-size:13px; font-weight:800; cursor:pointer; }
+.btn-hero-outline { background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.25); border-radius:999px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer; }
+/* ===== Categories ===== */ .section { padding:22px 20px; max-width:1240px; margin:0 auto; }
+@media (min-width:768px){ .section{ padding:26px 40px; } }
+.section-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+.section-title { font-size:17px; font-weight:800; color:var(--gray-800); margin:0; display:flex; align-items:center; gap:8px; }
+.section-sub { font-size:12.5px; color:var(--gray-500); margin:2px 0 0; }
+.section-link { font-size:12.5px; font-weight:700; color:var(--navy); background:none; border:none; cursor:pointer; }
+.cat-scroll { display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
+.cat-scroll::-webkit-scrollbar{ display:none; }
+.cat-chip { flex-shrink:0; display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid var(--gray-200); border-radius:999px; padding:10px 16px; font-size:12.5px; font-weight:700; color:var(--gray-700); cursor:pointer; transition:all 0.15s ease; white-space:nowrap; }
+.cat-chip:hover { border-color:var(--gold); }
+.cat-chip.active { background:var(--navy); border-color:var(--navy); color:#fff; }
+.cat-chip .count { background:var(--gray-100); color:var(--gray-500); font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:999px; }
+.cat-chip.active .count { background:rgba(255,255,255,0.18); color:#fff; }
+/* ===== Filters bar ===== */ .filters-bar { display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+.filter-toggle-btn { display:flex; align-items:center; gap:8px; background:var(--navy); color:#fff; border:none; border-radius:12px; padding:11px 16px; font-size:13px; font-weight:700; cursor:pointer; }
+.filter-count-badge { background:var(--gold); color:var(--navy); font-size:10.5px; font-weight:800; border-radius:999px; padding:2px 7px; }
+.filters-panel { display:none; background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:20px; margin-bottom:18px; box-shadow:0 4px 16px rgba(11,31,77,0.05); animation: panelIn 0.25s ease; }
+.filters-panel.open { display:block; }
+@keyframes panelIn { from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:translateY(0); } }
+.filters-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:14px; margin-bottom:14px; }
+.filter-group label { display:block; font-size:11.5px; font-weight:700; color:var(--gray-700); margin-bottom:6px; }
+.filter-group select, .filter-group input { width:100%; border:1px solid var(--gray-200); border-radius:10px; padding:9px 12px; font-size:12.5px; color:var(--gray-800); outline:none; font-family:inherit; }
+.filter-group select:focus, .filter-group input:focus { border-color:var(--gold); }
+.filters-toggles { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:14px; padding-top:12px; border-top:1px solid var(--gray-100); }
+.chip-toggle { display:flex; align-items:center; gap:6px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:999px; padding:7px 13px; font-size:11.5px; font-weight:700; color:var(--gray-700); cursor:pointer; }
+.chip-toggle input { accent-color: var(--gold); }
+.filters-actions { display:flex; justify-content:flex-end; gap:10px; }
+.btn-reset { background:none; border:1px solid var(--gray-200); color:var(--gray-500); border-radius:10px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; }
+.btn-apply { background:var(--gold); border:none; color:var(--navy); border-radius:10px; padding:9px 20px; font-size:12.5px; font-weight:800; cursor:pointer; }
+/* ===== Contest cards ===== */ .row-scroll { display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; }
+.row-scroll::-webkit-scrollbar{ display:none; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:16px; }
+.contest-card { flex-shrink:0; width:270px; background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); overflow:hidden; box-shadow:0 1px 3px rgba(11,31,77,0.05); cursor:pointer; transition:transform 0.18s ease, box-shadow 0.18s ease; display:flex; flex-direction:column; }
+.card-grid .contest-card { width:auto; }
+.contest-card:hover { transform:translateY(-3px); box-shadow:0 10px 26px rgba(11,31,77,0.12); }
+.contest-top { padding:14px 16px 0; display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.contest-logo { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; flex-shrink:0; }
+.fav-btn { border:none; background:var(--gray-50); width:30px; height:30px; border-radius:999px; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition: all 0.15s ease; }
+.fav-btn.active { background:#fee2e2; }
+.contest-body { padding:10px 16px 14px; flex:1; display:flex; flex-direction:column; }
+.contest-name { font-size:14.5px; font-weight:800; color:var(--gray-800); margin-bottom:2px; }
+.contest-est { font-size:11.5px; color:var(--gray-500); margin-bottom:8px; }
+.status-badges { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.badge { font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px; }
+.badge-recent { background:#dcfce7; color:var(--green); }
+.badge-soon { background:#dbeafe; color:var(--blue); }
+.badge-closing { background:#fee2e2; color:var(--red); }
+.badge-closed { background:var(--gray-100); color:var(--gray-500); }
+.badge-free { background:#fffbeb; color:#b45309; }
+.badge-public { background:#ede9fe; color:#7c3aed; }
+.contest-meta { font-size:11px; color:var(--gray-500); margin-bottom:10px; display:flex; flex-direction:column; gap:4px; }
+.contest-meta span { display:flex; align-items:center; gap:5px; }
+.contest-bottom { margin-top:auto; display:flex; gap:8px; padding-top:10px; border-top:1px solid var(--gray-100); }
+.btn-mini { flex:1; border:none; border-radius:9px; padding:8px; font-size:11.5px; font-weight:700; cursor:pointer; }
+.btn-mini-navy { background:var(--navy); color:#fff; }
+.btn-mini-outline { background:var(--gray-50); color:var(--navy); }
+/* ===== Detail view ===== */ #detailView { display:none; }
+#detailView.active { display:block; animation:fadeIn 0.3s ease; }
+#homeView.hidden { display:none; }
+@keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
+.detail-header { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-lighter) 100%); padding:20px; border-radius:0 0 26px 26px; }
+@media (min-width:768px){ .detail-header{ padding:28px 40px; } }
+.back-btn { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border:none; color:#fff; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; margin-bottom:18px; }
+.detail-top { display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; }
+.detail-logo { width:64px; height:64px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:22px; flex-shrink:0; }
+.detail-name { color:#fff; font-size:21px; font-weight:800; margin:0 0 4px; }
+@media (min-width:768px){ .detail-name{ font-size:26px; } }
+.detail-est { color:#c7d2fe; font-size:13px; margin-bottom:10px; }
+.detail-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.detail-actions { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+.btn-notify { display:flex; align-items:center; gap:7px; background:var(--gold); color:var(--navy); border:none; border-radius:999px; padding:11px 18px; font-size:13px; font-weight:800; cursor:pointer; }
+.btn-notify.on { background:#16a34a; color:#fff; }
+.btn-fav-lg { display:flex; align-items:center; gap:7px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:999px; padding:11px 18px; font-size:13px; font-weight:700; cursor:pointer; }
+.btn-fav-lg.active { background:#fee2e2; color:var(--red); border-color:#fee2e2; }
+.btn-share-lg { display:flex; align-items:center; gap:7px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:999px; padding:11px 18px; font-size:13px; font-weight:700; cursor:pointer; position:relative; }
+.share-menu { position:absolute; top:calc(100% + 8px); left:0; background:#fff; border-radius:14px; box-shadow:0 12px 32px rgba(11,31,77,0.2); padding:8px; display:none; z-index:30; min-width:190px; }
+.share-menu.show { display:block; }
+.share-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; font-size:12.5px; font-weight:700; color:var(--gray-700); cursor:pointer; }
+.share-item:hover { background:var(--gray-50); }
+/* Key info strip */ .key-strip { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:20px; }
+@media (min-width:640px){ .key-strip{ grid-template-columns:repeat(4,1fr); } }
+.key-item { background:rgba(255,255,255,0.08); border-radius:14px; padding:12px 14px; }
+.key-label { color:#9db1e6; font-size:10.5px; font-weight:700; text-transform:uppercase; margin-bottom:4px; }
+.key-value { color:#fff; font-size:13.5px; font-weight:800; }
+/* Detail tabs & content */ .detail-body { max-width:1000px; margin:0 auto; padding:24px 20px 60px; }
+@media (min-width:768px){ .detail-body{ padding:28px 40px 70px; } }
+.detail-tabs { display:flex; gap:4px; background:var(--gray-100); padding:4px; border-radius:12px; overflow-x:auto; margin-bottom:20px; scrollbar-width:none; }
+.detail-tabs::-webkit-scrollbar{ display:none; }
+.dtab-btn { flex-shrink:0; border:none; background:none; padding:9px 16px; border-radius:9px; font-size:12.5px; font-weight:700; color:var(--gray-500); cursor:pointer; white-space:nowrap; }
+.dtab-btn.active { background:#fff; color:var(--navy); box-shadow:0 1px 4px rgba(11,31,77,0.12); }
+.dtab-panel { display:none; animation:fadeIn 0.3s ease; }
+.dtab-panel.active { display:block; }
+.info-panel { background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:20px; margin-bottom:16px; }
+.info-title { font-size:15px; font-weight:800; color:var(--gray-800); margin:0 0 10px; display:flex; align-items:center; gap:8px; }
+.info-text { font-size:13.5px; color:var(--gray-700); line-height:1.6; margin:0 0 6px; }
+.info-list { margin:0; padding-left:18px; font-size:13.5px; color:var(--gray-700); line-height:1.9; }
+.info-table { width:100%; border-collapse:collapse; }
+.info-table td { padding:9px 0; font-size:13px; border-bottom:1px solid var(--gray-100); vertical-align:top; }
+.info-table td:first-child { color:var(--gray-500); font-weight:700; width:42%; }
+.info-table td:last-child { color:var(--gray-800); font-weight:600; }
+.info-table tr:last-child td { border-bottom:none; }
+.doc-tag { display:inline-flex; align-items:center; gap:6px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:8px 12px; font-size:12.5px; font-weight:600; color:var(--gray-700); margin:0 8px 8px 0; }
+.matiere-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--gray-100); font-size:13px; }
+.matiere-row:last-child { border-bottom:none; }
+.matiere-coef { background:var(--gray-100); color:var(--gray-700); font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; }
+.advice-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--gray-100); }
+.advice-item:last-child { border-bottom:none; }
+.advice-icon { flex-shrink:0; font-size:16px; }
+.advice-text { font-size:13px; color:var(--gray-700); line-height:1.5; }
+.resource-chip { display:flex; align-items:center; gap:10px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:12px; padding:10px 14px; margin-bottom:8px; font-size:12.5px; font-weight:600; color:var(--gray-700); }
+.faq-item { border-bottom:1px solid var(--gray-100); }
+.faq-item:last-child { border-bottom:none; }
+.faq-q { display:flex; align-items:center; justify-content:space-between; padding:14px 0; cursor:pointer; font-size:13.5px; font-weight:700; color:var(--gray-800); }
+.faq-a { display:none; padding:0 0 14px; font-size:13px; color:var(--gray-500); line-height:1.6; }
+.faq-item.open .faq-a { display:block; }
+.faq-item.open .faq-chevron { transform:rotate(180deg); }
+.faq-chevron { transition:transform 0.2s ease; font-size:12px; color:var(--gray-400); }
+.contact-row { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--gray-100); font-size:13px; color:var(--gray-700); }
+.contact-row:last-child { border-bottom:none; }
+.contact-icon { width:36px; height:36px; border-radius:10px; background:var(--gray-50); display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.contact-link { color:var(--navy); font-weight:700; text-decoration:none; }
+.official-link-btn { display:inline-flex; align-items:center; gap:8px; background:var(--navy); color:#fff; border:none; border-radius:12px; padding:12px 20px; font-size:13px; font-weight:800; cursor:pointer; text-decoration:none; }
+.empty-state { text-align:center; padding:30px 20px; color:var(--gray-400); font-size:13px; }
+/* Premium "Êtes-vous prêt ?" card */ .ready-card { background: linear-gradient(135deg, #fffdf5 0%, #fff9e6 100%); border: 1.5px solid #f9dd8b; border-radius: var(--radius); padding: 22px; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: 0 6px 20px rgba(244,197,66,0.15); animation: readyPulse 3s ease-in-out infinite; }
+@keyframes readyPulse { 0%,100%{ box-shadow:0 6px 20px rgba(244,197,66,0.15); } 50%{ box-shadow:0 8px 28px rgba(244,197,66,0.3); } }
+.ready-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 999px; background: rgba(244,197,66,0.18); }
+.ready-card-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; position:relative; }
+.ready-icon { width:46px; height:46px; border-radius:14px; background:var(--navy); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.ready-title { font-size:16px; font-weight:800; color:var(--navy); margin:0; }
+.ready-sub { font-size:12.5px; color:var(--gray-500); margin:1px 0 0; }
+.ready-text { font-size:13.5px; color:var(--gray-700); line-height:1.6; margin:0 0 16px; position:relative; }
+.btn-analyze-chances { display:inline-flex; align-items:center; gap:8px; background:var(--navy); color:#fff; border:none; border-radius:999px; padding:13px 22px; font-size:13.5px; font-weight:800; cursor:pointer; box-shadow:0 8px 20px rgba(11,31,77,0.25); transition:transform 0.15s ease, background 0.15s ease; position:relative; }
+.btn-analyze-chances:hover { background:var(--navy-lighter); transform:translateY(-2px); }
+.btn-analyze-chances .arrow { transition:transform 0.15s ease; }
+.btn-analyze-chances:hover .arrow { transform:translateX(3px); }
+/* Toast */ .toast { position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:var(--navy); color:#fff; padding:13px 22px; border-radius:999px; font-size:13px; font-weight:700; display:flex; align-items:center; gap:8px; box-shadow:0 10px 30px rgba(11,31,77,0.35); opacity:0; pointer-events:none; transition:opacity 0.3s ease, transform 0.3s ease; z-index:60; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+@media (max-width:640px){ .filters-grid { grid-template-columns:1fr 1fr; } .detail-actions { width:100%; } .detail-actions button { flex:1; justify-content:center; } }
+/* SUCCESS SCORE PAGE STYLES */ :root { --navy:#0B1F4D; --navy-light:#16305f; --navy-lighter:#1c3a7a; --gold:#F4C542; --gold-dark:#dba91f; --gray-50:#f7f8fb; --gray-100:#eef1f6; --gray-200:#e3e7ee; --gray-400:#9aa4b2; --gray-500:#6b7688; --gray-700:#384153; --gray-800:#1c2433; --green:#16a34a; --blue:#2563eb; --yellow:#eab308; --orange:#f97316; --red:#e0433f; --radius:20px; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--gray-50); color:var(--gray-800); }
+button { font-family:inherit; }
+/* ===== Form page ===== */ .page-wrap { max-width:900px; margin:0 auto; padding-bottom:60px; }
+.form-hero { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-lighter) 100%); padding:36px 20px 34px; text-align:center; border-radius:0 0 30px 30px; }
+@media (min-width:768px){ .form-hero{ padding:48px 40px 42px; } }
+.form-hero .badge-top { display:inline-flex; align-items:center; gap:6px; background:rgba(244,197,66,0.15); color:var(--gold); border:1px solid rgba(244,197,66,0.35); border-radius:999px; padding:6px 14px; font-size:11.5px; font-weight:800; margin-bottom:14px; }
+.form-hero h1 { color:#fff; font-size:26px; font-weight:800; margin:0 0 8px; }
+@media (min-width:768px){ .form-hero h1{ font-size:34px; } }
+.form-hero p { color:#c7d2fe; font-size:13.5px; max-width:520px; margin:0 auto; line-height:1.6; }
+.prefill-banner { max-width:640px; margin:-18px auto 0; background:#fff; border:1.5px solid var(--gold); border-radius:16px; padding:14px 18px; display:flex; align-items:center; gap:12px; box-shadow:0 8px 22px rgba(244,197,66,0.25); position:relative; z-index:2; animation: cardIn 0.4s ease; }
+.prefill-banner .pf-icon { font-size:20px; flex-shrink:0; }
+.prefill-banner .pf-text { font-size:12.5px; color:var(--gray-700); line-height:1.5; }
+.prefill-banner .pf-text strong { color:var(--navy); }
+/* Other compatible contests card */ .other-contest-row { display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--gray-100); }
+.other-contest-row:last-child { border-bottom:none; }
+.oc-logo { width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:12px; flex-shrink:0; }
+.oc-info { flex:1; min-width:0; }
+.oc-name { font-size:13.5px; font-weight:800; color:var(--gray-800); }
+.oc-sub { font-size:11.5px; color:var(--gray-500); }
+.oc-bar-wrap { width:100px; flex-shrink:0; }
+@media (max-width:480px){ .oc-bar-wrap{ width:64px; } }
+.oc-bar-track { background:var(--gray-100); border-radius:999px; height:8px; overflow:hidden; margin-bottom:4px; }
+.oc-bar-fill { height:100%; border-radius:999px; width:0%; transition:width 1.2s cubic-bezier(0.16,1,0.3,1); }
+.oc-bar-pct { font-size:11.5px; font-weight:800; text-align:right; }
+.form-section { background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:22px 20px; margin:18px 16px 0; box-shadow:0 2px 10px rgba(11,31,77,0.05); }
+@media (min-width:768px){ .form-section{ padding:26px 30px; margin:20px 0 0; } }
+.fsec-title { display:flex; align-items:center; gap:10px; font-size:16px; font-weight:800; color:var(--gray-800); margin:0 0 4px; }
+.fsec-num { width:28px; height:28px; border-radius:999px; background:var(--navy); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:12.5px; font-weight:900; flex-shrink:0; }
+.fsec-sub { font-size:12.5px; color:var(--gray-500); margin:0 0 18px; padding-left:38px; }
+.field-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:640px){ .field-grid{ grid-template-columns:1fr; } }
+.field-grid.cols-3 { grid-template-columns:repeat(3,1fr); }
+@media (max-width:768px){ .field-grid.cols-3{ grid-template-columns:1fr 1fr; } }
+@media (max-width:480px){ .field-grid.cols-3{ grid-template-columns:1fr; } }
+.field { margin-bottom:14px; }
+.field label { display:block; font-size:12px; font-weight:700; color:var(--gray-700); margin-bottom:6px; }
+.field input, .field select, .field textarea { width:100%; border:1.5px solid var(--gray-200); border-radius:11px; padding:11px 14px; font-size:13.5px; font-family:inherit; color:var(--gray-800); outline:none; transition:border-color 0.15s ease; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--gold); }
+.field textarea { resize:vertical; min-height:70px; }
+.chip-select { display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
+.chip-opt { border:1.5px solid var(--gray-200); background:#fff; border-radius:999px; padding:8px 15px; font-size:12px; font-weight:700; color:var(--gray-700); cursor:pointer; transition:all 0.15s ease; }
+.chip-opt:hover { border-color:var(--gold); }
+.chip-opt.selected { background:var(--navy); border-color:var(--navy); color:#fff; }
+.analyze-cta-wrap { padding:26px 16px 0; text-align:center; }
+.btn-analyze { width:100%; max-width:420px; background:var(--gold); color:var(--navy); border:none; border-radius:999px; padding:18px; font-size:16px; font-weight:800; cursor:pointer; box-shadow:0 10px 26px rgba(244,197,66,0.4); transition:transform 0.15s ease, box-shadow 0.15s ease; }
+.btn-analyze:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(244,197,66,0.5); }
+/* ===== Loading overlay ===== */ #loadingOverlay { position:fixed; inset:0; background:linear-gradient(160deg, var(--navy) 0%, var(--navy-lighter) 100%); display:none; align-items:center; justify-content:center; z-index:100; flex-direction:column; padding:20px; }
+#loadingOverlay.active { display:flex; }
+.loader-ring { width:120px; height:120px; border-radius:999px; position:relative; margin-bottom:30px; }
+.loader-ring svg { transform:rotate(-90deg); }
+.loader-ring circle { fill:none; stroke-width:8; }
+.loader-track { stroke:rgba(255,255,255,0.12); }
+.loader-fill { stroke:var(--gold); stroke-linecap:round; transition:stroke-dashoffset 0.15s linear; }
+.loader-pct { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:26px; font-weight:800; }
+.loader-message { color:#fff; font-size:16px; font-weight:700; text-align:center; min-height:26px; transition:opacity 0.25s ease; }
+.loader-sub { color:#9db1e6; font-size:12.5px; margin-top:8px; text-align:center; }
+/* ===== Results page ===== */ #resultsView { display:none; }
+#resultsView.active { display:block; animation:fadeIn 0.5s ease; }
+#formView.hidden { display:none; }
+@keyframes fadeIn { from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+.results-hero { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-lighter) 100%); padding:38px 20px 40px; text-align:center; border-radius:0 0 32px 32px; position:relative; overflow:hidden; }
+@media (min-width:768px){ .results-hero{ padding:50px 40px 50px; } }
+.results-hero::before, .results-hero::after { content:''; position:absolute; border-radius:999px; background:rgba(244,197,66,0.08); }
+.results-hero::before { width:260px; height:260px; top:-100px; right:-80px; }
+.results-hero::after { width:200px; height:200px; bottom:-90px; left:-60px; }
+.results-title { position:relative; color:#fff; font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:26px; }
+.results-title span { color:var(--gold); }
+.score-circle-wrap { position:relative; width:220px; height:220px; margin:0 auto 20px; }
+@media (min-width:640px){ .score-circle-wrap{ width:250px; height:250px; } }
+.score-circle-wrap svg { transform:rotate(-90deg); width:100%; height:100%; }
+.score-circle-wrap circle { fill:none; stroke-width:14; }
+.score-track { stroke:rgba(255,255,255,0.1); }
+.score-fill { stroke-linecap:round; transition:stroke-dashoffset 1.8s cubic-bezier(0.16,1,0.3,1), stroke 0.6s ease; }
+.score-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.score-number { color:#fff; font-size:52px; font-weight:900; line-height:1; }
+.score-outof { color:#9db1e6; font-size:14px; font-weight:700; margin-top:2px; }
+.score-stars { color:var(--gold); font-size:20px; letter-spacing:3px; margin-top:6px; position:relative; }
+.score-label { color:#fff; font-size:16px; font-weight:800; margin-top:4px; position:relative; }
+.score-name { color:#c7d2fe; font-size:13px; margin-top:6px; position:relative; }
+/* ===== Detail cards ===== */ .results-body { max-width:1000px; margin:0 auto; padding:28px 16px 60px; }
+@media (min-width:768px){ .results-body{ padding:32px 40px 70px; } }
+.cards-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:768px){ .cards-grid{ grid-template-columns:1fr; } }
+.r-card { background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:20px 22px; box-shadow:0 2px 10px rgba(11,31,77,0.05); animation: cardIn 0.5s ease backwards; }
+@keyframes cardIn { from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+.r-card.full { grid-column:1 / -1; }
+.r-card-title { display:flex; align-items:center; gap:9px; font-size:15.5px; font-weight:800; color:var(--gray-800); margin:0 0 14px; }
+.strength-item, .improve-item { display:flex; align-items:flex-start; gap:10px; padding:9px 0; border-bottom:1px solid var(--gray-100); font-size:13.5px; color:var(--gray-700); line-height:1.5; }
+.strength-item:last-child, .improve-item:last-child { border-bottom:none; }
+.strength-icon { color:var(--green); flex-shrink:0; font-size:15px; }
+.improve-icon { color:var(--orange); flex-shrink:0; font-size:15px; }
+/* Gauges */ .gauge-row { display:flex; flex-direction:column; gap:20px; }
+.gauge-item { display:flex; align-items:center; gap:16px; }
+.gauge-circle-wrap { position:relative; width:74px; height:74px; flex-shrink:0; }
+.gauge-circle-wrap svg { transform:rotate(-90deg); width:100%; height:100%; }
+.gauge-circle-wrap circle { fill:none; stroke-width:7; }
+.gauge-track { stroke:var(--gray-100); }
+.gauge-fill { stroke-linecap:round; transition:stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1); }
+.gauge-pct { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:var(--gray-800); }
+.gauge-label { font-size:13px; font-weight:700; color:var(--gray-800); }
+.gauge-sub { font-size:11.5px; color:var(--gray-500); }
+.why-text { font-size:13.5px; color:var(--gray-700); line-height:1.7; margin:0 0 12px; }
+.why-list { margin:0; padding-left:18px; font-size:13.5px; color:var(--gray-700); line-height:1.9; }
+.advice-row { display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--gray-100); font-size:13.5px; color:var(--gray-700); line-height:1.5; }
+.advice-row:last-child { border-bottom:none; }
+.advice-pin { flex-shrink:0; font-size:15px; }
+/* Buttons row */ .actions-final { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:26px; }
+@media (max-width:768px){ .actions-final{ grid-template-columns:1fr 1fr; } }
+.action-btn { display:flex; flex-direction:column; align-items:center; gap:6px; background:#fff; border:1.5px solid var(--gray-200); border-radius:16px; padding:16px 10px; font-size:12.5px; font-weight:700; color:var(--navy); cursor:pointer; transition:all 0.15s ease; }
+.action-btn:hover { border-color:var(--gold); background:#fffbeb; transform:translateY(-2px); }
+.action-btn.primary { background:var(--navy); border-color:var(--navy); color:#fff; }
+.action-btn.primary:hover { background:var(--navy-lighter); }
+.action-icon { font-size:22px; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ===== Reliability: verified badge + report ===== */
+.verified-tag { display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; color:#15803d; background:#dcfce7; border-radius:999px; padding:3px 9px; }
+.verified-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:14px; position:relative; }
+.verified-row .verified-tag { font-size:11.5px; padding:5px 12px; background:rgba(220,252,231,0.15); color:#86efac; }
+.btn-report { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fecaca; border-radius:999px; padding:7px 13px; font-size:11.5px; font-weight:700; cursor:pointer; }
+.btn-report:hover { background:rgba(224,67,63,0.2); }
+
+/* ===== Generic modal overlay ===== */
+.modal-overlay { position:fixed; inset:0; background:rgba(11,31,77,0.55); backdrop-filter:blur(2px); display:none; align-items:center; justify-content:center; z-index:120; padding:20px; }
+.modal-overlay.show { display:flex; animation:fadeIn 0.25s ease; }
+.modal-box { background:#fff; border-radius:22px; padding:26px; max-width:420px; width:100%; box-shadow:0 24px 60px rgba(11,31,77,0.35); animation:cardIn 0.3s ease; }
+.modal-title { display:flex; align-items:center; gap:10px; font-size:16px; font-weight:800; color:var(--gray-800); margin:0 0 6px; }
+.modal-sub { font-size:12.5px; color:var(--gray-500); margin:0 0 18px; line-height:1.5; }
+.modal-close { position:absolute; top:16px; right:16px; border:none; background:var(--gray-100); width:28px; height:28px; border-radius:999px; cursor:pointer; font-size:13px; color:var(--gray-500); }
+.modal-box { position:relative; }
+.notify-channel { display:flex; align-items:center; gap:10px; border:1.5px solid var(--gray-200); border-radius:12px; padding:12px 14px; margin-bottom:10px; cursor:pointer; transition:all 0.15s ease; }
+.notify-channel:hover { border-color:var(--gold); }
+.notify-channel.selected { border-color:var(--gold); background:#fffbeb; }
+.notify-channel input { accent-color:var(--gold); width:16px; height:16px; }
+.notify-channel-label { font-size:13px; font-weight:700; color:var(--gray-800); }
+.notify-channel-sub { font-size:11px; color:var(--gray-500); }
+.modal-phone-field { margin-top:4px; margin-bottom:16px; display:none; }
+.modal-phone-field.show { display:block; }
+.modal-phone-field input { width:100%; border:1.5px solid var(--gray-200); border-radius:11px; padding:11px 14px; font-size:13.5px; outline:none; }
+.modal-reminder-note { background:var(--gray-50); border-radius:12px; padding:12px 14px; font-size:12px; color:var(--gray-600,#57606f); line-height:1.6; margin-bottom:16px; }
+.modal-textarea { width:100%; min-height:100px; border:1.5px solid var(--gray-200); border-radius:12px; padding:12px 14px; font-size:13px; font-family:inherit; outline:none; resize:vertical; margin-bottom:16px; }
+.modal-textarea:focus, .modal-phone-field input:focus { border-color:var(--gold); }
+.modal-submit { width:100%; background:var(--navy); color:#fff; border:none; border-radius:999px; padding:13px; font-size:13.5px; font-weight:800; cursor:pointer; }
+.modal-submit:hover { background:var(--navy-lighter); }
+.modal-submit.gold { background:var(--gold); color:var(--navy); }
+.modal-submit.gold:hover { background:var(--gold-dark); }
+
+/* ===== Score sharing (viral loop) ===== */
+.score-share-row { display:flex; gap:10px; justify-content:center; margin-top:16px; position:relative; flex-wrap:wrap; }
+.score-share-btn { display:flex; align-items:center; gap:7px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25); color:#fff; border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; }
+.score-share-btn:hover { background:rgba(255,255,255,0.18); }
+
+/* ===== Referral card ===== */
+.referral-card { background:linear-gradient(135deg, var(--navy) 0%, var(--navy-lighter) 100%); border-radius:var(--radius); padding:24px; color:#fff; position:relative; overflow:hidden; }
+.referral-card::before { content:''; position:absolute; top:-60px; right:-40px; width:180px; height:180px; border-radius:999px; background:rgba(244,197,66,0.12); }
+.referral-top { display:flex; align-items:center; gap:12px; margin-bottom:10px; position:relative; }
+.referral-icon { width:46px; height:46px; border-radius:14px; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.referral-title { font-size:16px; font-weight:800; margin:0; }
+.referral-sub { font-size:12px; color:#c7d2fe; margin:1px 0 0; }
+.referral-text { font-size:13px; color:#dbe3fa; line-height:1.6; margin:0 0 16px; position:relative; }
+.referral-progress-track { background:rgba(255,255,255,0.15); border-radius:999px; height:10px; overflow:hidden; margin-bottom:8px; position:relative; }
+.referral-progress-fill { height:100%; background:var(--gold); border-radius:999px; width:0%; transition:width 0.8s cubic-bezier(0.16,1,0.3,1); }
+.referral-progress-label { font-size:11.5px; color:#c7d2fe; margin-bottom:16px; position:relative; }
+.referral-code-row { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.1); border:1px dashed rgba(255,255,255,0.35); border-radius:14px; padding:12px 16px; margin-bottom:16px; position:relative; }
+.referral-code { font-size:15px; font-weight:900; letter-spacing:2px; color:var(--gold); flex:1; }
+.referral-copy-btn { background:rgba(255,255,255,0.15); border:none; color:#fff; border-radius:8px; padding:7px 12px; font-size:11.5px; font-weight:700; cursor:pointer; }
+.referral-actions { display:flex; gap:10px; flex-wrap:wrap; position:relative; }
+.referral-share-btn { flex:1; min-width:120px; display:flex; align-items:center; justify-content:center; gap:7px; background:var(--gold); color:var(--navy); border:none; border-radius:999px; padding:11px; font-size:12.5px; font-weight:800; cursor:pointer; }
+.referral-share-btn:hover { background:var(--gold-dark); }
+/* ===== NextOri Badges (point 1) ===== */
+.badge-card{background:linear-gradient(135deg,#0D1B2A 0%,#1E3A8A 100%);border-radius:var(--radius);padding:28px 24px;text-align:center;color:#fff;position:relative;overflow:hidden;margin-top:16px;}
+.badge-card::before{content:'';position:absolute;top:-70px;left:-50px;width:200px;height:200px;border-radius:999px;background:rgba(244,180,0,0.12);}
+.badge-card::after{content:'';position:absolute;bottom:-60px;right:-40px;width:160px;height:160px;border-radius:999px;background:rgba(244,180,0,0.1);}
+.badge-nextori-logo{width:40px;height:40px;border-radius:12px;background:#F4B400;color:#0D1B2A;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;margin:0 auto 14px;position:relative;}
+.badge-icon-circle{width:96px;height:96px;border-radius:999px;background:rgba(244,180,0,0.15);border:3px solid #F4B400;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 16px;position:relative;animation:badgePulse 2.4s ease-in-out infinite;}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(244,180,0,0.35);}50%{box-shadow:0 0 0 14px rgba(244,180,0,0);}}
+.badge-title{font-size:19px;font-weight:800;margin:0 0 4px;position:relative;}
+.badge-sub{font-size:12.5px;color:#c7d2fe;margin:0 0 18px;position:relative;}
+.badge-share-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;}
+.badge-share-btn{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;}
+.badge-share-btn:hover{background:rgba(255,255,255,0.2);}
+/* ===== Ranking (point 2) ===== */
+.rank-card{background:#F2F4F7;border:1px solid var(--gray-200);border-radius:var(--radius);padding:22px;margin-top:16px;}
+.rank-title{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:800;color:#0D1B2A;margin:0 0 16px;}
+.rank-highlight{display:flex;align-items:center;gap:16px;background:#fff;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(13,27,42,0.06);}
+.rank-medal{font-size:38px;flex-shrink:0;}
+.rank-text-main{font-size:15px;color:var(--gray-700);line-height:1.5;}
+.rank-text-main strong{color:#1E3A8A;font-size:17px;}
+.rank-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.rank-stat-box{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 8px rgba(13,27,42,0.05);}
+.rank-stat-num{font-size:20px;font-weight:900;color:#1E3A8A;}
+.rank-stat-label{font-size:11px;color:var(--gray-500);font-weight:700;margin-top:2px;}
+.rank-evolution{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--green);margin-bottom:14px;}
+.rank-motivation{background:#fff7d6;border:1.5px solid #F4B400;border-radius:14px;padding:14px 16px;text-align:center;}
+.rank-motivation strong{color:#8a5c00;font-size:14px;font-weight:900;display:block;}
+/* ===== Level gauge (point 3) ===== */
+.level-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:22px;margin-top:16px;}
+.level-title{display:flex;align-items:center;gap:9px;font-size:15.5px;font-weight:800;color:#0D1B2A;margin:0 0 4px;}
+.level-current-label{font-size:13px;color:var(--gray-500);margin:0 0 18px;}
+.level-current-label strong{color:#1E3A8A;}
+.level-track{display:flex;gap:6px;margin-bottom:16px;}
+.level-segment{flex:1;height:12px;border-radius:999px;background:var(--gray-100);position:relative;overflow:hidden;}
+.level-segment.filled{background:var(--seg-color,#1E3A8A);}
+.level-segment.active-seg{animation:levelUp 0.6s ease;}
+@keyframes levelUp{0%{transform:scaleY(0.4);opacity:0.4;}60%{transform:scaleY(1.3);}100%{transform:scaleY(1);opacity:1;}}
+.level-legend{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.level-legend-item{text-align:center;font-size:10px;font-weight:700;color:var(--gray-400);}
+.level-legend-item.current{color:var(--gray-800);}
+.level-badge-row{display:flex;align-items:center;gap:12px;background:var(--gray-50);border-radius:14px;padding:14px 16px;margin-top:16px;}
+.level-emoji{font-size:30px;}
+.level-name{font-size:15px;font-weight:800;color:var(--gray-800);}
+.level-desc{font-size:11.5px;color:var(--gray-500);}
+/* ===== AI improvement plan (point 4) ===== */
+.plan-card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:24px;margin-top:16px;}
+.plan-title{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800;color:#0D1B2A;margin:0 0 18px;}
+.plan-scores-row{display:flex;align-items:center;justify-content:center;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+.plan-score-box{text-align:center;}
+.plan-score-num{font-size:32px;font-weight:900;}
+.plan-score-num.current{color:#1E3A8A;}
+.plan-score-num.target{color:#F4B400;}
+.plan-score-label{font-size:11px;color:var(--gray-500);font-weight:700;text-transform:uppercase;margin-top:2px;}
+.plan-arrow{font-size:22px;color:var(--gray-300,#cbd5e1);}
+.plan-progress-track{background:var(--gray-100);border-radius:999px;height:12px;overflow:hidden;margin-bottom:20px;position:relative;}
+.plan-progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#1E3A8A,#F4B400);width:0%;transition:width 1.4s cubic-bezier(0.16,1,0.3,1);}
+.plan-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+@media (max-width:640px){.plan-cols{grid-template-columns:1fr;}}
+.plan-col-title{font-size:12.5px;font-weight:800;color:var(--gray-700);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.plan-mini-item{font-size:12.5px;color:var(--gray-700);padding:6px 0;border-bottom:1px solid var(--gray-100);}
+.plan-mini-item:last-child{border-bottom:none;}
+.plan-actions-list{display:flex;flex-direction:column;gap:8px;}
+.plan-action-item{display:flex;align-items:flex-start;gap:10px;background:#f0fdf4;border-radius:12px;padding:11px 14px;font-size:13px;color:var(--gray-700);line-height:1.5;}
+.plan-action-check{color:var(--green);flex-shrink:0;font-weight:900;}
+/* ===== New action buttons row (bottom, point requested) ===== */
+.actions-secondary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
+@media (max-width:768px){.actions-secondary{grid-template-columns:1fr 1fr;}}
+.action-btn-2{display:flex;flex-direction:column;align-items:center;gap:6px;border:none;border-radius:16px;padding:16px 10px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all 0.15s ease;}
+.action-btn-2:hover{transform:translateY(-2px);}
+.action-btn-2.gold{background:#F4B400;color:#0D1B2A;}
+.action-btn-2.navy{background:#1E3A8A;color:#fff;}
+.action-btn-2.outline{background:#fff;border:1.5px solid var(--gray-200);color:#0D1B2A;}
+</style>
+</head>
+<body>
+<!-- ============================= HOME VIEW ============================= -->
+<div id="homeView">
+  <div class="hero">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <div class="hero-logo">N</div>
+        <div>
+          <div class="hero-brand-name">Concours Sénégal</div>
+          <div class="hero-brand-sub">by NextOri</div>
+        </div>
+      </div>
+      <button class="notif-toggle" id="notifToggle">🔔 Activer les notifications</button>
+    </div>
+    <h1 class="hero-title">Tous les concours du Sénégal, au même endroit</h1>
+    <p class="hero-sub">Écoles, universités, fonction publique, police, gendarmerie, douane, santé... Trouve l'information fiable dont tu as besoin en moins de 30 secondes.</p>
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa4b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" placeholder="ESP, ENA, Police, Gendarmerie, Douane, IPD..." />
+        <button class="search-clear" id="searchClear">✕</button>
+      </div>
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-hero-primary" id="btnAllContests">📋 Tous les concours</button>
+      <button class="btn-hero-outline" id="btnOpenFilters">🎚️ Filtres avancés</button>
+    </div>
+  </div>
+  <!-- Categories -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">📂 Catégories</h2><p class="section-sub">Parcours par type d'établissement ou de recrutement</p></div>
+    </div>
+    <div class="cat-scroll" id="categoryScroll">
+      <button class="cat-chip active" data-cat="tous">Tous <span class="count" id="countTous">0</span></button>
+      <button class="cat-chip" data-cat="universite-publique">🏛️ Universités publiques</button>
+      <button class="cat-chip" data-cat="grande-ecole">🎓 Grandes écoles publiques</button>
+      <button class="cat-chip" data-cat="universite-privee">🏫 Universités privées</button>
+      <button class="cat-chip" data-cat="defense-securite">🛡️ Défense & Sécurité</button>
+      <button class="cat-chip" data-cat="sante">🩺 Santé</button>
+      <button class="cat-chip" data-cat="enseignement">📖 Enseignement</button>
+    </div>
+  </div>
+  <!-- Filters -->
+  <div class="section" style="padding-top:0;">
+    <div class="filters-bar">
+      <button class="filter-toggle-btn" id="filterToggleBtn">
+        🎚️ Filtres <span class="filter-count-badge" id="filterCountBadge">0</span>
+      </button>
+      <span style="font-size:12.5px; color:var(--gray-500); font-weight:600;" id="resultsCountLabel"></span>
+    </div>
+    <div class="filters-panel" id="filtersPanel">
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label>Région</label>
+          <select id="fRegion"><option value="">Toutes les régions</option><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Ziguinchor</option><option>Kaolack</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Ville</label>
+          <select id="fVille"><option value="">Toutes les villes</option><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Ziguinchor</option><option>Bambey</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Domaine</label>
+          <select id="fDomaine"><option value="">Tous les domaines</option><option>Ingénierie</option><option>Santé</option><option>Droit</option><option>Administration</option><option>Sécurité</option><option>Éducation</option><option>Gestion</option><option>Journalisme</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Niveau demandé</label>
+          <select id="fNiveau"><option value="">Tous niveaux</option><option>BFEM</option><option>Baccalauréat</option><option>Bac+2</option><option>Bac+3</option><option>Bac+5</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Diplôme requis</label>
+          <select id="fDiplome"><option value="">Tous diplômes</option><option>BFEM</option><option>Baccalauréat</option><option>Licence</option><option>Master</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Âge maximum</label>
+          <select id="fAge"><option value="">Sans limite</option><option>18</option><option>21</option><option>25</option><option>30</option><option>35</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Date d'ouverture</label>
+          <input type="date" id="fDateOuverture" />
+        </div>
+        <div class="filter-group">
+          <label>Date limite</label>
+          <input type="date" id="fDateLimite" />
+        </div>
+      </div>
+      <div class="filters-toggles">
+        <label class="chip-toggle"><input type="checkbox" data-f="public" /> Public</label>
+        <label class="chip-toggle"><input type="checkbox" data-f="prive" /> Privé</label>
+        <label class="chip-toggle"><input type="checkbox" data-f="gratuit" /> Gratuit</label>
+        <label class="chip-toggle"><input type="checkbox" data-f="payant" /> Payant</label>
+        <label class="chip-toggle"><input type="checkbox" data-f="ouverts" /> Concours ouverts</label>
+        <label class="chip-toggle"><input type="checkbox" data-f="fermes" /> Concours fermés</label>
+      </div>
+      <div class="filters-actions">
+        <button class="btn-reset" id="btnResetFilters">Réinitialiser</button>
+        <button class="btn-apply" id="btnApplyFilters">Appliquer les filtres</button>
+      </div>
+    </div>
+  </div>
+  <!-- Recently opened -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">🟢 Récemment ouverts</h2><p class="section-sub">Inscriptions fraîchement lancées</p></div>
+    </div>
+    <div class="row-scroll" id="rowRecent"></div>
+  </div>
+  <!-- Soon to open -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">🔵 Bientôt ouverts</h2><p class="section-sub">Prépare-toi avant l'ouverture des inscriptions</p></div>
+    </div>
+    <div class="row-scroll" id="rowSoon"></div>
+  </div>
+  <!-- Closing soon -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">🔴 Bientôt clôturés</h2><p class="section-sub">Dernières chances de t'inscrire</p></div>
+    </div>
+    <div class="row-scroll" id="rowClosing"></div>
+  </div>
+  <!-- Most searched -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">🔥 Les plus recherchés</h2><p class="section-sub">Concours les plus consultés par les utilisateurs</p></div>
+    </div>
+    <div class="row-scroll" id="rowPopular"></div>
+  </div>
+  <!-- Closed -->
+  <div class="section">
+    <div class="section-head">
+      <div><h2 class="section-title">⚪ Concours fermés</h2><p class="section-sub">Archivés — à titre de référence</p></div>
+    </div>
+    <div class="row-scroll" id="rowClosed"></div>
+  </div>
+  <!-- All contests (filtered results) -->
+  <div class="section" id="allContestsSection" style="display:none;">
+    <div class="section-head">
+      <div><h2 class="section-title">📋 Tous les concours</h2><p class="section-sub" id="allContestsSub"></p></div>
+      <button class="section-link" id="btnCloseAll">Fermer ✕</button>
+    </div>
+    <div class="card-grid" id="allContestsGrid"></div>
+  </div>
+</div>
+<!-- ============================= DETAIL VIEW ============================= -->
+<div id="detailView">
+  <div class="detail-header">
+    <button class="back-btn" id="btnBack">← Retour</button>
+    <div class="detail-top">
+      <div class="detail-logo" id="dLogo"></div>
+      <div style="flex:1; min-width:200px;">
+        <h1 class="detail-name" id="dName"></h1>
+        <div class="detail-est" id="dEst"></div>
+        <div class="detail-badges" id="dBadges"></div>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <button class="btn-notify" id="btnNotify">🔔 Me prévenir</button>
+      <button class="btn-fav-lg" id="btnFavLg">♡ Favoris</button>
+      <div style="position:relative;">
+        <button class="btn-share-lg" id="btnShare">🔗 Partager</button>
+        <div class="share-menu" id="shareMenu">
+          <div class="share-item" data-share="whatsapp">💬 WhatsApp</div>
+          <div class="share-item" data-share="facebook">📘 Facebook</div>
+          <div class="share-item" data-share="messenger">✈️ Messenger</div>
+          <div class="share-item" data-share="telegram">📨 Telegram</div>
+          <div class="share-item" data-share="copy">🔗 Copier le lien</div>
+        </div>
+      </div>
+    </div>
+    <div class="verified-row" id="dVerifiedRow"></div>
+    <div class="key-strip">
+      <div class="key-item"><div class="key-label">Date d'ouverture</div><div class="key-value" id="kOuverture">—</div></div>
+      <div class="key-item"><div class="key-label">Date limite</div><div class="key-value" id="kLimite">—</div></div>
+      <div class="key-item"><div class="key-label">Date du concours</div><div class="key-value" id="kDate">—</div></div>
+      <div class="key-item"><div class="key-label">Places disponibles</div><div class="key-value" id="kPlaces">—</div></div>
+    </div>
+  </div>
+  <div class="detail-body">
+    <!-- Premium "Êtes-vous prêt pour ce concours ?" card -->
+    <div class="ready-card">
+      <div class="ready-card-top">
+        <div class="ready-icon">🎯</div>
+        <div>
+          <p class="ready-title">Êtes-vous prêt pour ce concours ?</p>
+          <p class="ready-sub">Analyse gratuite et personnalisée par NextOri</p>
+        </div>
+      </div>
+      <p class="ready-text">Découvre en 30 secondes ton pourcentage de compatibilité avec ce concours, tes points forts, ce qu'il te reste à améliorer, et une liste d'autres concours qui correspondent aussi à ton profil.</p>
+      <button class="btn-analyze-chances" id="btnAnalyzeChances">🚀 Analyser mes chances <span class="arrow">→</span></button>
+    </div>
+    <div class="detail-tabs" id="detailTabs">
+      <button class="dtab-btn active" data-dtab="infos">📄 Informations</button>
+      <button class="dtab-btn" data-dtab="admission">🎯 Admission</button>
+      <button class="dtab-btn" data-dtab="programme">📚 Programme</button>
+      <button class="dtab-btn" data-dtab="preparation">🧭 Préparation</button>
+      <button class="dtab-btn" data-dtab="resultats">🏆 Résultats</button>
+      <button class="dtab-btn" data-dtab="faq">❓ FAQ</button>
+      <button class="dtab-btn" data-dtab="contact">📞 Contact</button>
+    </div>
+    <!-- Infos -->
+    <div class="dtab-panel active" id="dtab-infos">
+      <div class="info-panel">
+        <div class="info-title">📝 Description</div>
+        <p class="info-text" id="dDescription"></p>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">🎯 Objectifs</div>
+        <p class="info-text" id="dObjectifs"></p>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">📅 Dates clés & organisation</div>
+        <table class="info-table" id="dDatesTable"></table>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">📍 Centres d'examen</div>
+        <div id="dCentres"></div>
+      </div>
+    </div>
+    <!-- Admission -->
+    <div class="dtab-panel" id="dtab-admission">
+      <div class="info-panel">
+        <div class="info-title">✅ Conditions d'admission</div>
+        <ul class="info-list" id="dConditions"></ul>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">🪪 Détails requis</div>
+        <table class="info-table" id="dRequisTable"></table>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">📎 Documents à fournir</div>
+        <div id="dDocuments"></div>
+      </div>
+    </div>
+    <!-- Programme -->
+    <div class="dtab-panel" id="dtab-programme">
+      <div class="info-panel">
+        <div class="info-title">📖 Matières du concours</div>
+        <div id="dMatieres"></div>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">📘 Programme officiel</div>
+        <p class="info-text" id="dProgramme"></p>
+      </div>
+    </div>
+    <!-- Préparation -->
+    <div class="dtab-panel" id="dtab-preparation">
+      <div class="info-panel">
+        <div class="info-title">🏆 Comment réussir ce concours</div>
+        <p class="info-text" id="dReussir"></p>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">💡 Conseils</div>
+        <div id="dConseils"></div>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">⚠️ Erreurs à éviter</div>
+        <div id="dErreurs"></div>
+      </div>
+      <div class="info-panel">
+        <div class="info-title">📚 Ressources recommandées</div>
+        <div id="dRessources"></div>
+      </div>
+    </div>
+    <!-- Résultats -->
+    <div class="dtab-panel" id="dtab-resultats">
+      <div class="info-panel">
+        <div class="info-title">🏆 Résultats & anciennes épreuves</div>
+        <p class="info-text" id="dResultats"></p>
+        <a href="#" class="official-link-btn" id="dLienOfficiel" target="_blank" rel="noopener">🔗 Voir le lien officiel</a>
+      </div>
+    </div>
+    <!-- FAQ -->
+    <div class="dtab-panel" id="dtab-faq">
+      <div class="info-panel" id="dFaqContainer"></div>
+    </div>
+    <!-- Contact -->
+    <div class="dtab-panel" id="dtab-contact">
+      <div class="info-panel" id="dContactContainer"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">✅ Action effectuée</div>
+<!-- Report an error modal -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal-box">
+    <button class="modal-close" id="reportModalClose">✕</button>
+    <div class="modal-title">🚩 Signaler une erreur</div>
+    <p class="modal-sub">Une date, un montant ou une information te semble incorrecte ? Aide-nous à garder NextOri fiable pour tout le monde.</p>
+    <textarea class="modal-textarea" id="reportText" placeholder="Décris le problème que tu as remarqué..."></textarea>
+    <button class="modal-submit" id="reportSubmit">Envoyer le signalement</button>
+  </div>
+</div>
+
+<!-- Notification preferences modal -->
+<div class="modal-overlay" id="notifyModal">
+  <div class="modal-box">
+    <button class="modal-close" id="notifyModalClose">✕</button>
+    <div class="modal-title">🔔 Comment veux-tu être prévenu(e) ?</div>
+    <p class="modal-sub" id="notifyModalSub">Choisis un ou plusieurs canaux pour ne rien rater de ce concours.</p>
+
+    <label class="notify-channel selected" data-channel="app">
+      <input type="checkbox" checked /> <div><div class="notify-channel-label">📱 Notification dans l'app</div><div class="notify-channel-sub">Gratuit, instantané</div></div>
+    </label>
+    <label class="notify-channel" data-channel="whatsapp">
+      <input type="checkbox" /> <div><div class="notify-channel-label">💬 WhatsApp</div><div class="notify-channel-sub">Idéal si tu as peu de data</div></div>
+    </label>
+    <label class="notify-channel" data-channel="sms">
+      <input type="checkbox" /> <div><div class="notify-channel-label">✉️ SMS</div><div class="notify-channel-sub">Fonctionne même hors connexion</div></div>
+    </label>
+
+    <div class="modal-phone-field" id="notifyPhoneField">
+      <input type="tel" id="notifyPhoneInput" placeholder="+221 77 000 00 00" />
+    </div>
+
+    <div class="modal-reminder-note">📅 Tu recevras un rappel à l'ouverture des inscriptions, à J-7 et J-1 avant la date limite, et dès la publication des résultats.</div>
+
+    <button class="modal-submit gold" id="notifySubmit">Activer les rappels</button>
+  </div>
+</div>
+<div id="scoreApp" style="display:none;">
+<!-- ============================= FORM VIEW ============================= -->
+<div id="formView">
+  <div class="page-wrap">
+    <div class="form-hero">
+      <span class="badge-top" id="heroBadge">✨ Découvre ton potentiel</span>
+      <h1>NextOri Success Score</h1>
+      <p id="heroSub">Remplis ton profil complet et obtiens en quelques secondes une analyse professionnelle de tes chances de réussite.</p>
+    </div>
+    <div class="prefill-banner" id="prefillBanner" style="display:none;"></div>
+    <!-- 1. Informations personnelles -->
+    <div class="form-section">
+      <div class="fsec-title"><span class="fsec-num">1</span>Informations personnelles</div>
+      <div class="fsec-sub">Quelques informations de base pour personnaliser ton analyse</div>
+      <div class="field-grid">
+        <div class="field"><label>Nom</label><input type="text" id="nom" placeholder="Diop" /></div>
+        <div class="field"><label>Prénom</label><input type="text" id="prenom" placeholder="Awa" /></div>
+        <div class="field"><label>Sexe</label><select id="sexe"><option>Féminin</option><option>Masculin</option></select></div>
+        <div class="field"><label>Âge</label><input type="number" id="age" placeholder="18" min="10" max="60" /></div>
+        <div class="field"><label>Région</label><select id="region"><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Ziguinchor</option><option>Kaolack</option></select></div>
+        <div class="field"><label>Ville</label><input type="text" id="ville" placeholder="Dakar" /></div>
+        <div class="field"><label>Nationalité</label><input type="text" id="nationalite" value="Sénégalaise" /></div>
+      </div>
+    </div>
+    <!-- 2. Parcours scolaire -->
+    <div class="form-section">
+      <div class="fsec-title"><span class="fsec-num">2</span>Parcours scolaire</div>
+      <div class="fsec-sub">Ton historique académique</div>
+      <div class="field-grid">
+        <div class="field"><label>École primaire</label><input type="text" id="primaire" placeholder="École primaire Liberté 6" /></div>
+        <div class="field"><label>Collège</label><input type="text" id="college" placeholder="CEM Liberté 6" /></div>
+        <div class="field"><label>Lycée</label><input type="text" id="lycee" placeholder="Lycée Blaise Diagne" /></div>
+        <div class="field">
+          <label>Série du Bac</label>
+          <select id="serie"><option>S1</option><option>S2</option><option>S3</option><option>L1</option><option>L2</option><option>G</option><option>T</option></select>
+        </div>
+        <div class="field">
+          <label>Mention</label>
+          <select id="mention"><option>Passable</option><option>Assez Bien</option><option>Bien</option><option>Très Bien</option></select>
+        </div>
+        <div class="field"><label>Moyenne générale (/20)</label><input type="number" id="moyenne" placeholder="15.5" step="0.1" min="0" max="20" /></div>
+        <div class="field"><label>Université</label><input type="text" id="universite" placeholder="UCAD" /></div>
+        <div class="field">
+          <label>Niveau d'étude</label>
+          <select id="niveau"><option>Terminale</option><option>Bac+1</option><option>Bac+2</option><option>Bac+3</option><option>Bac+4</option><option>Bac+5</option></select>
+        </div>
+      </div>
+    </div>
+    <!-- 3. Projet professionnel -->
+    <div class="form-section">
+      <div class="fsec-title"><span class="fsec-num">3</span>Projet professionnel</div>
+      <div class="fsec-sub">Ce que tu vises pour ton avenir</div>
+      <div class="field-grid">
+        <div class="field"><label>Métier souhaité</label><input type="text" id="metier" placeholder="Ingénieur informatique" /></div>
+        <div class="field"><label>Concours souhaité</label><input type="text" id="concours" placeholder="Concours ESP" /></div>
+        <div class="field"><label>École souhaitée</label><input type="text" id="ecole" placeholder="École Supérieure Polytechnique" /></div>
+      </div>
+    </div>
+    <!-- 4. Compétences -->
+    <div class="form-section">
+      <div class="fsec-title"><span class="fsec-num">4</span>Compétences</div>
+      <div class="fsec-sub">Sélectionne tout ce qui s'applique à toi</div>
+      <div class="field">
+        <label>Langues maîtrisées</label>
+        <div class="chip-select" data-group="langues">
+          <button type="button" class="chip-opt">Français</button>
+          <button type="button" class="chip-opt">Anglais</button>
+          <button type="button" class="chip-opt">Wolof</button>
+          <button type="button" class="chip-opt">Espagnol</button>
+          <button type="button" class="chip-opt">Arabe</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Logiciels maîtrisés</label>
+        <div class="chip-select" data-group="logiciels">
+          <button type="button" class="chip-opt">Word / Excel</button>
+          <button type="button" class="chip-opt">PowerPoint</button>
+          <button type="button" class="chip-opt">Photoshop</button>
+          <button type="button" class="chip-opt">AutoCAD</button>
+          <button type="button" class="chip-opt">Python</button>
+          <button type="button" class="chip-opt">Aucun</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Compétences techniques</label>
+        <div class="chip-select" data-group="technique">
+          <button type="button" class="chip-opt">Programmation</button>
+          <button type="button" class="chip-opt">Analyse de données</button>
+          <button type="button" class="chip-opt">Rédaction</button>
+          <button type="button" class="chip-opt">Design</button>
+          <button type="button" class="chip-opt">Gestion de projet</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Qualités personnelles</label>
+        <div class="chip-select" data-group="qualites">
+          <button type="button" class="chip-opt">Rigueur</button>
+          <button type="button" class="chip-opt">Leadership</button>
+          <button type="button" class="chip-opt">Créativité</button>
+          <button type="button" class="chip-opt">Esprit d'équipe</button>
+          <button type="button" class="chip-opt">Persévérance</button>
+        </div>
+      </div>
+    </div>
+    <!-- 5. Expériences -->
+    <div class="form-section">
+      <div class="fsec-title"><span class="fsec-num">5</span>Expériences</div>
+      <div class="fsec-sub">Tout ce que tu as déjà accompli compte</div>
+      <div class="field-grid">
+        <div class="field"><label>Stage effectué</label><input type="text" id="stage" placeholder="Ex : Stage chez Orange Sénégal (2025)" /></div>
+        <div class="field"><label>Emploi</label><input type="text" id="emploi" placeholder="Ex : Aucun / Job étudiant..." /></div>
+        <div class="field"><label>Projet personnel</label><input type="text" id="projet" placeholder="Ex : Création d'une application mobile" /></div>
+        <div class="field"><label>Bénévolat</label><input type="text" id="benevolat" placeholder="Ex : Association étudiante" /></div>
+      </div>
+    </div>
+    <div class="analyze-cta-wrap">
+      <button class="btn-analyze" id="btnAnalyze">🔍 Analyser mon profil</button>
+    </div>
+  </div>
+</div>
+<!-- ============================= LOADING OVERLAY ============================= -->
+<div id="loadingOverlay">
+  <div class="loader-ring">
+    <svg viewBox="0 0 120 120">
+      <circle class="loader-track" cx="60" cy="60" r="52"/>
+      <circle class="loader-fill" id="loaderFillCircle" cx="60" cy="60" r="52"/>
+    </svg>
+    <div class="loader-pct" id="loaderPct">0%</div>
+  </div>
+  <div class="loader-message" id="loaderMessage">🔍 Analyse de votre profil...</div>
+  <div class="loader-sub">Merci de patienter, ton rapport NextOri arrive</div>
+</div>
+<!-- ============================= RESULTS VIEW ============================= -->
+<div id="resultsView">
+  <div class="results-hero">
+    <div class="results-title">NextOri <span>Success Score</span></div>
+    <div class="score-circle-wrap">
+      <svg viewBox="0 0 220 220">
+        <circle class="score-track" cx="110" cy="110" r="95"/>
+        <circle class="score-fill" id="scoreFillCircle" cx="110" cy="110" r="95"/>
+      </svg>
+      <div class="score-center">
+        <div class="score-number" id="scoreNumber">0</div>
+        <div class="score-outof">/ 100</div>
+      </div>
+    </div>
+    <div class="score-stars" id="scoreStars"></div>
+    <div class="score-label" id="scoreLabel"></div>
+    <div class="score-name" id="scoreName"></div>
+    <div class="score-share-row" id="scoreShareRow">
+      <button class="score-share-btn" data-scoreshare="whatsapp">💬 Partager mon score</button>
+      <button class="score-share-btn" data-scoreshare="facebook">📘 Publier sur Facebook</button>
+      <button class="score-share-btn" data-scoreshare="copy">🔗 Copier</button>
+    </div>
+  </div>
+  <div class="results-body">
+    <!-- 1. NextOri Badges -->
+    <div class="badge-card" id="badgeCard">
+      <div class="badge-nextori-logo">N</div>
+      <div class="badge-icon-circle" id="badgeIconCircle">🏆</div>
+      <p class="badge-title" id="badgeTitleText">Candidat Excellent</p>
+      <p class="badge-sub" id="badgeSubText">Décerné pour un Success Score exceptionnel</p>
+      <div class="badge-share-row">
+        <button class="badge-share-btn" data-badgeshare="whatsapp">💬 WhatsApp</button>
+        <button class="badge-share-btn" data-badgeshare="facebook">📘 Facebook</button>
+        <button class="badge-share-btn" data-badgeshare="copy">🔗 Copier</button>
+      </div>
+    </div>
+
+    <!-- 2. Classement intelligent anonyme -->
+    <div class="rank-card">
+      <div class="rank-title">📊 Ma position parmi les candidats</div>
+      <div class="rank-highlight">
+        <div class="rank-medal" id="rankMedal">🥇</div>
+        <div class="rank-text-main">Vous êtes classé <strong id="rankPosition">24ᵉ</strong> parmi <strong id="rankTotal">1 250</strong> candidats analysés pour <span id="rankConcoursName">ce concours</span>.</div>
+      </div>
+      <div class="rank-stats-row">
+        <div class="rank-stat-box"><div class="rank-stat-num" id="rankPercentileNum">98%</div><div class="rank-stat-label">Mieux classé que</div></div>
+        <div class="rank-stat-box"><div class="rank-stat-num" id="rankTotalBox">1 250</div><div class="rank-stat-label">Candidats analysés</div></div>
+      </div>
+      <div class="rank-evolution" id="rankEvolution">↑ 12 places gagnées depuis ta dernière analyse</div>
+      <div class="rank-motivation"><strong>💪 Continue tes efforts pour améliorer ton classement !</strong></div>
+    </div>
+
+    <!-- 3. Mon niveau NextOri -->
+    <div class="level-card">
+      <div class="level-title">🎯 Mon niveau NextOri</div>
+      <p class="level-current-label">Ton niveau évolue automatiquement selon ton Success Score : <strong id="levelScoreRef">0/100</strong></p>
+      <div class="level-track" id="levelTrack"></div>
+      <div class="level-legend">
+        <div class="level-legend-item">Débutant</div>
+        <div class="level-legend-item">Progression</div>
+        <div class="level-legend-item">Bon niveau</div>
+        <div class="level-legend-item">Excellent</div>
+        <div class="level-legend-item">Prêt</div>
+      </div>
+      <div class="level-badge-row">
+        <div class="level-emoji" id="levelEmoji">🔴</div>
+        <div>
+          <div class="level-name" id="levelName">Niveau 1 : Débutant</div>
+          <div class="level-desc" id="levelDesc">Continue de remplir ton profil pour progresser</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Plan d'amélioration personnalisé IA -->
+    <div class="plan-card" id="planCard">
+      <div class="plan-title">🚀 Mon plan pour augmenter mes chances de réussite</div>
+      <div class="plan-scores-row">
+        <div class="plan-score-box"><div class="plan-score-num current" id="planCurrentScore">0</div><div class="plan-score-label">Score actuel</div></div>
+        <div class="plan-arrow">→</div>
+        <div class="plan-score-box"><div class="plan-score-num target" id="planTargetScore">90</div><div class="plan-score-label">Objectif</div></div>
+      </div>
+      <div class="plan-progress-track"><div class="plan-progress-fill" id="planProgressFill"></div></div>
+      <div class="plan-cols">
+        <div>
+          <div class="plan-col-title">✅ Points forts</div>
+          <div id="planStrengths"></div>
+        </div>
+        <div>
+          <div class="plan-col-title">⚠️ Points faibles</div>
+          <div id="planWeaknesses"></div>
+        </div>
+      </div>
+      <div class="plan-col-title">📌 Actions recommandées</div>
+      <div class="plan-actions-list" id="planActions"></div>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card 1: Points forts -->
+      <div class="r-card" style="animation-delay:0.05s;">
+        <div class="r-card-title">💪 Vos points forts</div>
+        <div id="strengthsList"></div>
+      </div>
+      <!-- Card 2: Points à améliorer -->
+      <div class="r-card" style="animation-delay:0.1s;">
+        <div class="r-card-title">🎯 Points à améliorer</div>
+        <div id="improveList"></div>
+      </div>
+      <!-- Card 3: Compatibilité -->
+      <div class="r-card" style="animation-delay:0.15s;">
+        <div class="r-card-title">📊 Compatibilité</div>
+        <div class="gauge-row" id="gaugeRow"></div>
+      </div>
+      <!-- Card 4: Pourquoi ce score -->
+      <div class="r-card" style="animation-delay:0.2s;">
+        <div class="r-card-title">🧠 Pourquoi ce score ?</div>
+        <p class="why-text" id="whyIntro"></p>
+        <ul class="why-list" id="whyList"></ul>
+      </div>
+      <!-- Card 5: Conseils -->
+      <div class="r-card full" style="animation-delay:0.25s;">
+        <div class="r-card-title">📌 Conseils NextOri</div>
+        <div id="adviceList"></div>
+      </div>
+      <!-- Card 6: Autres concours compatibles -->
+      <div class="r-card full" style="animation-delay:0.3s;">
+        <div class="r-card-title">🧭 Autres concours compatibles avec ton profil</div>
+        <div id="otherContestsList"></div>
+      </div>
+    </div>
+    <div class="referral-card" id="referralCard">
+      <div class="referral-top">
+        <div class="referral-icon">🎁</div>
+        <div>
+          <p class="referral-title">Invite 3 amis, débloque un accompagnement offert</p>
+          <p class="referral-sub">Un conseiller NextOri t'aide gratuitement à préparer ton concours</p>
+        </div>
+      </div>
+      <p class="referral-text">Partage ton code avec tes amis. Dès que 3 personnes créent leur profil NextOri avec ton code, tu débloques une séance de coaching gratuite (valeur 8 000 FCFA).</p>
+      <div class="referral-progress-track"><div class="referral-progress-fill" id="referralProgressFill"></div></div>
+      <div class="referral-progress-label" id="referralProgressLabel">0 / 3 amis inscrits</div>
+      <div class="referral-code-row">
+        <div class="referral-code" id="referralCode">NEXTORI-XXXX</div>
+        <button class="referral-copy-btn" id="referralCopyBtn">Copier</button>
+      </div>
+      <div class="referral-actions">
+        <button class="referral-share-btn" id="referralShareWhatsapp">💬 Inviter sur WhatsApp</button>
+        <button class="referral-share-btn outline" id="referralShareFacebook">📘 Inviter sur Facebook</button>
+      </div>
+    </div>
+    <div class="actions-secondary">
+      <button class="action-btn-2 gold" id="btnShareScore2">📤 Partager mon score</button>
+      <button class="action-btn-2 navy" id="btnInviteFriends2">👥 Inviter mes amis</button>
+      <button class="action-btn-2 outline" id="btnImproveScore">📈 Améliorer mon score</button>
+      <button class="action-btn-2 outline" id="btnViewPlan">📋 Voir mon plan personnalisé</button>
+    </div>
+    <div class="actions-final">
+      <button class="action-btn primary" id="btnDownload"><span class="action-icon">📄</span>Télécharger mon rapport</button>
+      <button class="action-btn" id="btnRedo"><span class="action-icon">🔄</span>Refaire l'analyse</button>
+      <button class="action-btn" id="btnEdit"><span class="action-icon">📝</span>Modifier mon profil</button>
+      <button class="action-btn" id="btnHome"><span class="action-icon">🏠</span>Retour à l'accueil</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+/* CONCOURS SÉNÉGAL — APP LOGIC */
+/* ============================= DATA ============================= */
+const CONTESTS = [
+  { id:'esp', name:'Concours ESP', aliases:['esp','ecole superieure polytechnique','poly'], establishment:'École Supérieure Polytechnique — UCAD', category:'grande-ecole', region:'Dakar', ville:'Dakar', domaine:'Ingénierie', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'public', prix:'gratuit', statut:'recent', ageMax:22, logoColor:'#2563eb', logoIcon:'ESP', dateOuverture:'2026-08-01', dateLimite:'2026-09-15', dateConcours:'2026-10-10', places:180, cout:'Gratuit', description:"Le concours d'entrée à l'ESP permet aux bacheliers scientifiques d'intégrer la plus grande école d'ingénieurs du Sénégal, rattachée à l'UCAD.", objectifs:"Sélectionner les meilleurs profils scientifiques pour former les futurs ingénieurs du pays dans les filières informatique, génie civil, génie électrique et télécommunications.", conditions:["Être titulaire d'un Baccalauréat série S1, S2 ou S3","Avoir au maximum 22 ans à la date du concours","Ne jamais avoir redoublé plus d'une fois au lycée","Dossier de candidature complet déposé dans les délais"], nationalite:'Sénégalaise ou résident CEDEAO', documents:['Extrait de naissance','Copie du Baccalauréat','2 photos d\'identité','Certificat de scolarité','Fiche de candidature remplie'], centres:['Dakar (ESP)','Thiès','Saint-Louis','Ziguinchor','Kaolack'], matieres:[{nom:'Mathématiques',coef:4},{nom:'Physique-Chimie',coef:3},{nom:'Sciences de la vie et de la terre',coef:1},{nom:'Culture générale',coef:1}], programme:"Le programme couvre l'intégralité du programme de Terminale S, avec un accent particulier sur l'algèbre, l'analyse, la mécanique et l'électricité.", reussir:"La réussite passe par une maîtrise solide des mathématiques et de la physique de Terminale, complétée par un entraînement régulier aux annales des années précédentes.", conseils:["Réviser en priorité les mathématiques et la physique","S'entraîner sur les annales des 5 dernières années","Gérer son temps efficacement le jour du concours","Rejoindre un groupe de révision"], erreurs:["Négliger la culture générale","Arriver en retard le jour du concours","Ne pas relire son dossier avant dépôt","Réviser seulement la veille"], ressources:['📘 Annales ESP 2020-2025','🎥 Chaîne YouTube "Prépa ESP Sénégal"','📝 Cours de soutien Mathématiques Terminale S','🧮 Quiz d\'entraînement NextOri'], resultats:"Les résultats d'admissibilité sont publiés sur le site de l'UCAD environ 3 semaines après l'épreuve écrite, suivis d'un entretien oral pour les candidats retenus.", lienOfficiel:'https://ucad.sn', contact:{adresse:'Avenue Cheikh Anta Diop, Dakar', telephone:'+221 33 824 65 74', email:'scolarite@esp.sn', site:'esp.sn', reseaux:'@ESP_Dakar'}, faq:[ {q:"Le concours est-il ouvert aux candidats libres ?", r:"Oui, tout bachelier scientifique peut candidater, qu'il soit scolarisé ou candidat libre."}, {q:"Peut-on repasser le concours plusieurs fois ?", r:"Le concours est ouvert chaque année ; il n'y a pas de limite officielle de tentatives."}, {q:"Le concours est-il payant ?", r:"Non, l'inscription au concours ESP est gratuite pour les candidats sénégalais."} ], popularity: 98 },
+  { id:'ena', name:'Concours ENA', aliases:['ena','ecole nationale administration'], establishment:"École Nationale d'Administration", category:'grande-ecole', region:'Dakar', ville:'Dakar', domaine:'Administration', niveau:'Bac+3', diplome:'Licence', secteur:'public', prix:'payant', statut:'soon', ageMax:30, logoColor:'#0B1F4D', logoIcon:'ENA', dateOuverture:'2026-09-01', dateLimite:'2026-10-20', dateConcours:'2026-12-05', places:60, cout:'15 000 FCFA', description:"Le concours de l'ENA forme les futurs cadres de l'administration publique sénégalaise : magistrats, administrateurs civils, inspecteurs du trésor.", objectifs:"Préparer une élite administrative rigoureuse, intègre et compétente au service de l'État et des citoyens.", conditions:["Être titulaire d'une Licence (Bac+3) ou diplôme équivalent","Avoir entre 21 et 30 ans","Être de nationalité sénégalaise","Jouir de ses droits civiques"], nationalite:'Sénégalaise exclusivement', documents:['Diplôme de Licence légalisé','Casier judiciaire','Certificat médical','Extrait de naissance','Photos d\'identité'], centres:['Dakar (ENA)','Saint-Louis','Thiès'], matieres:[{nom:'Culture générale',coef:3},{nom:'Droit public',coef:4},{nom:'Économie',coef:2},{nom:'Langue étrangère',coef:1}], programme:"Le programme couvre le droit constitutionnel, le droit administratif, les finances publiques et l'actualité socio-économique nationale et internationale.", reussir:"Une lecture régulière de la presse nationale et une bonne maîtrise du droit public sont indispensables pour réussir ce concours très sélectif.", conseils:["Suivre l'actualité politique et économique quotidiennement","Maîtriser le droit constitutionnel sénégalais","S'entraîner à la dissertation juridique","Travailler l'expression écrite"], erreurs:["Négliger la culture générale au profit du seul droit","Rendre une copie mal structurée","Ignorer les réformes administratives récentes"], ressources:['📘 Code des institutions du Sénégal','🎥 Cours de droit public en ligne','📰 Revue de presse hebdomadaire NextOri','🧮 Annales ENA'], resultats:"Les résultats sont publiés en deux temps : admissibilité (écrit) puis admission définitive (oral), généralement sur le site de la Fonction Publique.", lienOfficiel:'https://fonctionpublique.gouv.sn', contact:{adresse:'Route de Ouakam, Dakar', telephone:'+221 33 869 08 08', email:'contact@ena.sn', site:'ena.sn', reseaux:'@ENA_Senegal'}, faq:[ {q:"Le concours est-il accessible aux salariés du privé ?", r:"Oui, tant que les conditions de diplôme et d'âge sont respectées."}, {q:"Combien de places sont ouvertes chaque année ?", r:"Le nombre varie chaque année selon les besoins de l'État, généralement entre 40 et 70 places."} ], popularity: 95 },
+  { id:'police', name:'Concours Police Nationale', aliases:['police','commissaire','inspecteur police'], establishment:'Police Nationale du Sénégal', category:'defense-securite', region:'Dakar', ville:'Dakar', domaine:'Sécurité', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'public', prix:'gratuit', statut:'recent', ageMax:28, logoColor:'#1e3a8a', logoIcon:'🚓', dateOuverture:'2026-07-15', dateLimite:'2026-08-30', dateConcours:'2026-10-01', places:500, cout:'Gratuit', description:"Le concours de recrutement d'élèves-inspecteurs et agents de police permet d'intégrer les rangs de la Police Nationale.", objectifs:"Recruter des agents rigoureux, physiquement aptes et intègres pour assurer la sécurité publique.", conditions:["Être de nationalité sénégalaise","Avoir entre 18 et 28 ans","Mesurer au moins 1,70m (hommes) / 1,60m (femmes)","Être titulaire du Baccalauréat","Aptitude physique confirmée par un médecin agréé"], nationalite:'Sénégalaise exclusivement', documents:['Extrait de naissance','Certificat de nationalité','Certificat médical d\'aptitude','Casier judiciaire (bulletin n°3)','Copie du Baccalauréat'], centres:['Dakar','Thiès','Saint-Louis','Kaolack','Ziguinchor','Tambacounda'], matieres:[{nom:'Culture générale',coef:2},{nom:'Tests psychotechniques',coef:2},{nom:'Épreuves physiques',coef:3},{nom:'Entretien oral',coef:2}], programme:"Le programme comprend une épreuve écrite de culture générale, des tests psychotechniques, une évaluation physique (course, tractions, natation) et un entretien de personnalité.", reussir:"Une préparation physique rigoureuse sur plusieurs mois est essentielle, combinée à une bonne culture générale sur l'actualité sécuritaire nationale.", conseils:["Démarrer la préparation physique au moins 3 mois à l'avance","S'entraîner à la course de fond et aux tractions","Lire l'actualité sécuritaire et les faits de société","Préparer l'entretien oral en travaillant l'expression"], erreurs:["Négliger la préparation physique","Se présenter sans les documents administratifs complets","Manquer de confiance à l'entretien oral"], ressources:['🏃 Programme d\'entraînement physique 12 semaines','📘 Fiches culture générale sécurité','🎥 Témoignages d\'anciens lauréats'], resultats:"Les résultats sont affichés dans les commissariats et publiés sur le site du Ministère de l'Intérieur environ 1 mois après les épreuves.", lienOfficiel:'https://interieur.gouv.sn', contact:{adresse:'Avenue Blaise Diagne, Dakar', telephone:'+221 33 823 71 11', email:'recrutement@police.gouv.sn', site:'police.gouv.sn', reseaux:'@PoliceSenegal'}, faq:[ {q:"Les femmes peuvent-elles candidater ?", r:"Oui, le concours est ouvert aux hommes et aux femmes selon les mêmes conditions de diplôme."}, {q:"Faut-il déjà avoir une expérience militaire ?", r:"Non, aucune expérience préalable n'est exigée pour les candidats civils."} ], popularity: 99 },
+  { id:'gendarmerie', name:'Concours Gendarmerie Nationale', aliases:['gendarmerie','gendarme'], establishment:'Gendarmerie Nationale', category:'defense-securite', region:'Dakar', ville:'Dakar', domaine:'Sécurité', niveau:'BFEM', diplome:'BFEM', secteur:'public', prix:'gratuit', statut:'soon', ageMax:25, logoColor:'#166534', logoIcon:'🛡️', dateOuverture:'2026-09-10', dateLimite:'2026-10-25', dateConcours:'2026-11-20', places:300, cout:'Gratuit', description:"Concours de recrutement de gendarmes adjoints volontaires et sous-officiers au sein de la Gendarmerie Nationale.", objectifs:"Former des militaires de la gendarmerie assurant la sécurité publique sur l'ensemble du territoire, notamment en zone rurale.", conditions:["Être de nationalité sénégalaise","Avoir entre 18 et 25 ans","Être titulaire du BFEM au minimum","Casier judiciaire vierge","Aptitude physique confirmée"], nationalite:'Sénégalaise exclusivement', documents:['Extrait de naissance','BFEM ou diplôme équivalent','Certificat médical','Casier judiciaire','Certificat de résidence'], centres:['Dakar','Thiès','Kaolack','Tambacounda','Kolda'], matieres:[{nom:'Épreuve écrite générale',coef:2},{nom:'Tests physiques',coef:3},{nom:'Entretien',coef:2}], programme:"Le programme évalue le niveau scolaire de base (français, mathématiques), la condition physique et la motivation du candidat.", reussir:"La préparation physique est déterminante ; il est conseillé de s'entraîner régulièrement plusieurs mois avant le concours.", conseils:["Travailler l'endurance physique","Réviser les bases en français et mathématiques","Se renseigner sur les valeurs et missions de la gendarmerie"], erreurs:["Se présenter sans préparation physique","Méconnaître l'organisation de la gendarmerie"], ressources:['🏃 Guide de préparation physique','📘 Fiches de culture générale','🎥 Journée portes ouvertes Gendarmerie'], resultats:"Résultats affichés dans les brigades de gendarmerie et publiés sur le site du Ministère des Forces Armées.", lienOfficiel:'https://gendarmerie.sn', contact:{adresse:'Camp Djibril Ba, Dakar', telephone:'+221 33 889 15 15', email:'recrutement@gendarmerie.sn', site:'gendarmerie.sn', reseaux:'@GendarmerieSN'}, faq:[{q:"Le concours BFEM permet-il d'évoluer vers officier ?", r:"Oui, des concours internes permettent une évolution de carrière vers les grades supérieurs."}], popularity: 90 },
+  { id:'douane', name:'Concours Douanes Sénégalaises', aliases:['douane','douanes','inspecteur douane'], establishment:'Direction Générale des Douanes', category:'defense-securite', region:'Dakar', ville:'Dakar', domaine:'Administration', niveau:'Bac+2', diplome:'BTS/DUT', secteur:'public', prix:'payant', statut:'closing', ageMax:28, logoColor:'#7c2d12', logoIcon:'🛃', dateOuverture:'2026-06-01', dateLimite:'2026-07-28', dateConcours:'2026-09-15', places:80, cout:'10 000 FCFA', description:"Le concours des Douanes recrute des agents et inspecteurs chargés du contrôle des marchandises et de la lutte contre la fraude.", objectifs:"Renforcer les effectifs de l'administration douanière pour sécuriser les recettes de l'État et lutter contre la contrebande.", conditions:["Être de nationalité sénégalaise","Avoir entre 21 et 28 ans","Être titulaire d'un diplôme Bac+2 minimum","Aptitude physique requise pour certains postes"], nationalite:'Sénégalaise exclusivement', documents:['Diplôme Bac+2 légalisé','Extrait de naissance','Certificat médical','Casier judiciaire'], centres:['Dakar','Saint-Louis (frontière)','Ziguinchor (frontière)'], matieres:[{nom:'Droit et réglementation douanière',coef:3},{nom:'Économie',coef:2},{nom:'Culture générale',coef:2}], programme:"Le programme couvre le code des douanes, les procédures d'import-export et l'actualité économique et commerciale.", reussir:"Une bonne connaissance du commerce international et du code des douanes est un atout majeur.", conseils:["Étudier le code des douanes sénégalais","Suivre l'actualité économique régionale (CEDEAO, UEMOA)","S'entraîner aux calculs de taxes et tarifs"], erreurs:["Sous-estimer les épreuves de culture économique","Ne pas maîtriser les bases du droit douanier"], ressources:['📘 Code des douanes du Sénégal','📰 Actualité économique UEMOA','🧮 Annales concours douanes'], resultats:"Résultats publiés sur le site du Ministère des Finances et du Budget environ 6 semaines après les épreuves.", lienOfficiel:'https://douanes.sn', contact:{adresse:'Boulevard de la République, Dakar', telephone:'+221 33 889 75 00', email:'concours@douanes.sn', site:'douanes.sn', reseaux:'@DouanesSN'}, faq:[{q:"Les candidats du secteur privé peuvent-ils postuler ?", r:"Oui, aucune expérience préalable dans l'administration n'est exigée."}], popularity: 82 },
+  { id:'ucad-l1', name:'Orientation UCAD (Bacheliers)', aliases:['ucad','universite cheikh anta diop'], establishment:'Université Cheikh Anta Diop', category:'universite-publique', region:'Dakar', ville:'Dakar', domaine:'Toutes filières', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'public', prix:'gratuit', statut:'closed', ageMax:null, logoColor:'#2563eb', logoIcon:'UCAD', dateOuverture:'2026-07-01', dateLimite:'2026-07-20', dateConcours:'—', places:12000, cout:'Gratuit', description:"Procédure d'orientation des nouveaux bacheliers vers les facultés et instituts de l'UCAD via la plateforme Campusen.", objectifs:"Répartir les nouveaux bacheliers dans les filières universitaires selon leurs vœux, leur série et leurs résultats au Baccalauréat.", conditions:["Être titulaire du Baccalauréat de l'année en cours","S'inscrire sur la plateforme Campusen dans les délais"], nationalite:'Sénégalaise', documents:['Relevé de notes du Baccalauréat','Extrait de naissance','Photo d\'identité numérique'], centres:['En ligne (plateforme Campusen)'], matieres:[], programme:"Pas d'épreuve écrite : orientation automatisée basée sur les résultats du Baccalauréat et les vœux exprimés par le candidat.", reussir:"Bien classer ses vœux d'orientation selon ses résultats et ses centres d'intérêt réels augmente les chances d'être satisfait de son affectation.", conseils:["Renseigner plusieurs vœux réalistes","Vérifier les prérequis de chaque filière avant de candidater","Suivre les délais de la plateforme Campusen de près"], erreurs:["Ne classer qu'un seul vœu","Rater la date limite d'inscription sur Campusen"], ressources:['🌐 Plateforme Campusen','📘 Guide des filières UCAD'], resultats:"Les affectations sont publiées directement sur la plateforme Campusen.", lienOfficiel:'https://campusen.sn', contact:{adresse:'Avenue Cheikh Anta Diop, Dakar', telephone:'+221 33 824 65 74', email:'scolarite@ucad.sn', site:'ucad.sn', reseaux:'@UCAD_Dakar'}, faq:[{q:"Peut-on changer de vœu après inscription ?", r:"Oui, tant que la période d'inscription sur Campusen n'est pas terminée."}], popularity: 88 },
+  { id:'ism', name:'Concours d\'entrée ISM', aliases:['ism','institut superieur management'], establishment:'Institut Supérieur de Management', category:'universite-privee', region:'Dakar', ville:'Dakar', domaine:'Gestion', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'prive', prix:'payant', statut:'recent', ageMax:null, logoColor:'#7e22ce', logoIcon:'ISM', dateOuverture:'2026-07-10', dateLimite:'2026-09-30', dateConcours:'2026-10-05', places:400, cout:'25 000 FCFA', description:"Concours d'entrée en 1ère année de Licence pour intégrer les filières commerce, finance et management de l'ISM.", objectifs:"Sélectionner des bacheliers motivés pour les former aux métiers de la gestion, du commerce et du management.", conditions:["Être titulaire du Baccalauréat (toutes séries)","Constituer un dossier de candidature complet","Réussir le test d'entrée écrit"], nationalite:'Toutes nationalités acceptées', documents:['Copie du Baccalauréat','Extrait de naissance','2 photos d\'identité','Frais de dossier'], centres:['Dakar (Campus ISM)'], matieres:[{nom:'Culture générale',coef:2},{nom:'Aptitude numérique',coef:2},{nom:'Anglais',coef:1}], programme:"Le test évalue le raisonnement logique, les bases en mathématiques et la culture générale économique.", reussir:"Une bonne préparation en logique et en anglais des affaires permet d'aborder sereinement ce concours.", conseils:["S'entraîner aux tests de logique et d'aptitude numérique","Réviser les bases d'anglais professionnel","Préparer un projet professionnel clair pour l'entretien"], erreurs:["Négliger l'entretien de motivation","Arriver sans avoir préparé son projet d'études"], ressources:['🧮 Tests d\'aptitude en ligne','📘 Guide des filières ISM','🎥 Journée portes ouvertes ISM'], resultats:"Résultats communiqués directement par email et affichés sur le campus environ 2 semaines après le test.", lienOfficiel:'https://ism.edu.sn', contact:{adresse:'Sacré-Cœur 3, Dakar', telephone:'+221 33 869 93 93', email:'admission@ism.edu.sn', site:'ism.edu.sn', reseaux:'@ISM_Dakar'}, faq:[{q:"Existe-t-il des bourses pour les meilleurs dossiers ?", r:"Oui, l'ISM propose une bourse mérite pour les bacheliers mention Très Bien."}], popularity: 76 },
+  { id:'ipd', name:'Concours IPD', aliases:['ipd','institut prive developpement'], establishment:'Institut Privé de Développement', category:'universite-privee', region:'Dakar', ville:'Dakar', domaine:'Gestion', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'prive', prix:'payant', statut:'soon', ageMax:null, logoColor:'#0d9488', logoIcon:'IPD', dateOuverture:'2026-08-15', dateLimite:'2026-10-01', dateConcours:'2026-10-12', places:250, cout:'20 000 FCFA', description:"Test d'admission pour intégrer les filières de gestion, informatique et communication de l'IPD.", objectifs:"Accueillir des bacheliers motivés dans un cursus professionnalisant orienté vers l'emploi.", conditions:["Être titulaire du Baccalauréat","Dossier de candidature complet","Entretien de motivation"], nationalite:'Toutes nationalités acceptées', documents:['Copie du Baccalauréat','Extrait de naissance','Photos d\'identité'], centres:['Dakar (Campus IPD)'], matieres:[{nom:'Test de logique',coef:2},{nom:'Culture générale',coef:1},{nom:'Entretien',coef:2}], programme:"Évaluation du raisonnement logique et de la motivation du candidat pour la filière choisie.", reussir:"Bien préparer son entretien de motivation en ayant une idée claire du projet professionnel visé.", conseils:["Se renseigner sur les débouchés de la filière choisie","Préparer des exemples concrets pour l'entretien"], erreurs:["Ne pas connaître les filières proposées par l'IPD avant l'entretien"], ressources:['📘 Guide des filières IPD','🎥 Vidéos de présentation des programmes'], resultats:"Résultats communiqués par SMS et email dans les 10 jours suivant le test.", lienOfficiel:'https://ipd.sn', contact:{adresse:'Liberté 6, Dakar', telephone:'+221 33 827 45 10', email:'admission@ipd.sn', site:'ipd.sn', reseaux:'@IPD_Senegal'}, faq:[{q:"Y a-t-il des sessions de rattrapage ?", r:"Oui, une seconde session est généralement organisée en fin d'année."}], popularity: 60 },
+  { id:'sage-femme', name:'Concours Sage-Femme d\'État', aliases:['sage-femme','sage femme','ecole sage-femme'], establishment:'École Nationale de Développement Sanitaire et Social', category:'sante', region:'Dakar', ville:'Dakar', domaine:'Santé', niveau:'Baccalauréat', diplome:'Baccalauréat série S/SVT', secteur:'public', prix:'payant', statut:'soon', ageMax:26, logoColor:'#db2777', logoIcon:'🩺', dateOuverture:'2026-08-20', dateLimite:'2026-10-05', dateConcours:'2026-11-08', places:120, cout:'12 000 FCFA', description:"Concours d'entrée en formation de sage-femme d'État, un métier essentiel pour la santé maternelle et infantile au Sénégal.", objectifs:"Former des professionnelles de santé qualifiées pour accompagner les grossesses et les accouchements sur tout le territoire.", conditions:["Être titulaire du Baccalauréat série S ou équivalent","Avoir entre 18 et 26 ans","Aptitude médicale confirmée"], nationalite:'Sénégalaise', documents:['Copie du Baccalauréat','Extrait de naissance','Certificat médical','Casier judiciaire'], centres:['Dakar','Saint-Louis','Kaolack','Ziguinchor'], matieres:[{nom:'Sciences de la vie et de la terre',coef:3},{nom:'Physique-Chimie',coef:2},{nom:'Culture générale',coef:1}], programme:"Le programme couvre la biologie humaine, l'anatomie de base et des notions générales de santé publique.", reussir:"Une bonne maîtrise des SVT de Terminale et une motivation claire pour le métier sont essentielles.", conseils:["Réviser en priorité la biologie humaine","Se renseigner sur le quotidien du métier de sage-femme","S'entraîner aux annales des années précédentes"], erreurs:["Négliger la physique-chimie au profit des seules SVT","Ne pas se renseigner sur les réalités du métier avant de candidater"], ressources:['📘 Manuel de biologie humaine Terminale','🎥 Témoignages de sages-femmes en exercice','🧮 Annales concours santé'], resultats:"Résultats affichés dans les centres régionaux de santé et publiés sur le site du Ministère de la Santé.", lienOfficiel:'https://sante.gouv.sn', contact:{adresse:'Fann Résidence, Dakar', telephone:'+221 33 869 42 42', email:'concours@sante.gouv.sn', site:'sante.gouv.sn', reseaux:'@MinSanteSN'}, faq:[{q:"Le concours est-il ouvert aux hommes ?", r:"Oui, la formation de sage-femme est ouverte à tous les candidats remplissant les conditions."}], popularity: 84 },
+  { id:'ens', name:'Concours ENS (Enseignants)', aliases:['ens','ecole normale superieure','enseignant','professeur'], establishment:'École Normale Supérieure', category:'enseignement', region:'Dakar', ville:'Dakar', domaine:'Éducation', niveau:'Bac+3', diplome:'Licence', secteur:'public', prix:'gratuit', statut:'recent', ageMax:35, logoColor:'#b45309', logoIcon:'ENS', dateOuverture:'2026-07-05', dateLimite:'2026-08-25', dateConcours:'2026-09-28', places:350, cout:'Gratuit', description:"Concours de recrutement de professeurs de collège et de lycée dans les différentes disciplines enseignées au Sénégal.", objectifs:"Recruter et former des enseignants qualifiés pour répondre aux besoins du système éducatif national.", conditions:["Être titulaire d'une Licence dans la discipline choisie","Avoir entre 21 et 35 ans","Nationalité sénégalaise"], nationalite:'Sénégalaise exclusivement', documents:['Diplôme de Licence légalisé','Extrait de naissance','Casier judiciaire','Certificat médical'], centres:['Dakar','Thiès','Saint-Louis','Kaolack','Ziguinchor'], matieres:[{nom:'Épreuve de spécialité',coef:4},{nom:'Culture générale',coef:2},{nom:'Pédagogie',coef:2}], programme:"Le programme est spécifique à chaque discipline (mathématiques, lettres, histoire-géographie, etc.) et inclut une épreuve pédagogique commune.", reussir:"Une maîtrise approfondie de sa discipline de Licence associée à des notions de pédagogie augmente significativement les chances de réussite.", conseils:["Réviser en profondeur le programme de sa discipline","Se former aux bases de la pédagogie","S'entraîner à la simulation de cours"], erreurs:["Négliger l'épreuve pédagogique","Ne pas s'entraîner à l'oral face à un jury"], ressources:['📘 Manuels de préparation par discipline','🎥 Simulations de leçons filmées','🧮 Annales ENS'], resultats:"Résultats publiés sur le site du Ministère de l'Éducation Nationale environ 5 semaines après les épreuves.", lienOfficiel:'https://education.gouv.sn', contact:{adresse:'Colobane, Dakar', telephone:'+221 33 821 89 89', email:'concours@ens.sn', site:'ens.sn', reseaux:'@ENS_Senegal'}, faq:[{q:"Peut-on choisir sa région d'affectation ?", r:"Les affectations tiennent compte des vœux mais dépendent avant tout des besoins du système éducatif."}], popularity: 91 },
+  { id:'sapeurs-pompiers', name:'Concours Sapeurs-Pompiers', aliases:['sapeurs-pompiers','pompier','pompiers'], establishment:'Brigade Nationale des Sapeurs-Pompiers', category:'defense-securite', region:'Dakar', ville:'Dakar', domaine:'Sécurité', niveau:'BFEM', diplome:'BFEM', secteur:'public', prix:'gratuit', statut:'closed', ageMax:25, logoColor:'#dc2626', logoIcon:'🚒', dateOuverture:'2026-05-01', dateLimite:'2026-06-15', dateConcours:'2026-07-10', places:150, cout:'Gratuit', description:"Concours de recrutement de sapeurs-pompiers volontaires et professionnels chargés de la sécurité civile.", objectifs:"Renforcer les effectifs chargés de la lutte contre les incendies et des secours d'urgence sur le territoire national.", conditions:["Être titulaire du BFEM minimum","Avoir entre 18 et 25 ans","Excellente condition physique"], nationalite:'Sénégalaise exclusivement', documents:['BFEM ou diplôme équivalent','Extrait de naissance','Certificat médical','Casier judiciaire'], centres:['Dakar','Thiès','Kaolack'], matieres:[{nom:'Tests physiques',coef:4},{nom:'Épreuve écrite générale',coef:2},{nom:'Entretien',coef:2}], programme:"Évaluation de la condition physique (course, natation, portage) et des connaissances générales de base.", reussir:"Une préparation physique intensive est le facteur clé de réussite à ce concours très exigeant physiquement.", conseils:["S'entraîner à la natation et à la course d'endurance","Travailler le port de charges lourdes","Se renseigner sur les gestes de premiers secours"], erreurs:["Négliger l'entraînement en natation","Se présenter en sous-préparation physique"], ressources:['🏊 Programme d\'entraînement natation et course','📘 Guide des premiers secours de base'], resultats:"Résultats affichés dans les casernes et publiés sur le site du Ministère de l'Intérieur.", lienOfficiel:'https://interieur.gouv.sn', contact:{adresse:'Caserne des Sapeurs-Pompiers, Dakar', telephone:'+221 33 823 44 44', email:'recrutement@pompiers.gouv.sn', site:'pompiers.gouv.sn', reseaux:'@PompiersSN'}, faq:[{q:"Faut-il savoir nager pour candidater ?", r:"Oui, une épreuve de natation fait partie intégrante des tests physiques."}], popularity: 70 },
+  { id:'uam', name:'Concours d\'entrée UAM', aliases:['uam','universite amadou mahtar mbow'], establishment:'Université Amadou Mahtar Mbow', category:'universite-publique', region:'Dakar', ville:'Diamniadio', domaine:'Toutes filières', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'public', prix:'gratuit', statut:'soon', ageMax:null, logoColor:'#0369a1', logoIcon:'UAM', dateOuverture:'2026-08-10', dateLimite:'2026-09-20', dateConcours:'—', places:2000, cout:'Gratuit', description:"Procédure d'orientation vers l'Université Amadou Mahtar Mbow, campus moderne basé à Diamniadio, orienté vers les filières innovantes.", objectifs:"Offrir une alternative moderne et pluridisciplinaire aux bacheliers, avec un accent sur l'innovation et le numérique.", conditions:["Être titulaire du Baccalauréat de l'année en cours","S'inscrire via la plateforme Campusen"], nationalite:'Sénégalaise', documents:['Relevé de notes du Baccalauréat','Extrait de naissance'], centres:['En ligne (plateforme Campusen)'], matieres:[], programme:"Orientation automatisée selon les résultats et les vœux exprimés sur Campusen, sans épreuve écrite.", reussir:"Bien renseigner ses vœux d'orientation en cohérence avec ses résultats scolaires.", conseils:["Explorer les filières innovantes proposées par l'UAM avant de candidater","Vérifier les capacités d'accueil de chaque filière"], erreurs:["Ignorer les spécificités pédagogiques de l'UAM avant de choisir cette filière"], ressources:['🌐 Plateforme Campusen','📘 Présentation des filières UAM'], resultats:"Affectations publiées directement sur la plateforme Campusen.", lienOfficiel:'https://uam.edu.sn', contact:{adresse:'Diamniadio, Dakar', telephone:'+221 33 000 00 00', email:'contact@uam.edu.sn', site:'uam.edu.sn', reseaux:'@UAM_Senegal'}, faq:[{q:"L'UAM propose-t-elle des logements étudiants ?", r:"Oui, le campus de Diamniadio dispose de résidences universitaires."}], popularity: 65 },
+  { id:'isep', name:'Concours ISEP', aliases:['isep','institut superieur enseignement professionnel'], establishment:'Institut Supérieur d\'Enseignement Professionnel', category:'grande-ecole', region:'Dakar', ville:'Dakar', domaine:'Ingénierie', niveau:'Baccalauréat', diplome:'Baccalauréat', secteur:'public', prix:'gratuit', statut:'soon', ageMax:24, logoColor:'#0891b2', logoIcon:'ISEP', dateOuverture:'2026-08-05', dateLimite:'2026-09-18', dateConcours:'2026-10-15', places:220, cout:'Gratuit', description:"Le concours ISEP permet aux bacheliers scientifiques et techniques d'intégrer une formation courte et professionnalisante en génie et technologies appliquées.", objectifs:"Former des techniciens supérieurs rapidement opérationnels dans les secteurs du BTP, de l'électromécanique et de l'informatique industrielle.", conditions:["Être titulaire d'un Baccalauréat série S ou technique (T)","Avoir au maximum 24 ans à la date du concours","Dossier de candidature complet déposé dans les délais"], nationalite:'Sénégalaise ou résident CEDEAO', documents:['Extrait de naissance','Copie du Baccalauréat','2 photos d\'identité','Fiche de candidature remplie'], centres:['Dakar (ISEP)','Thiès','Diourbel'], matieres:[{nom:'Mathématiques',coef:3},{nom:'Physique-Chimie',coef:3},{nom:'Technologie',coef:2},{nom:'Culture générale',coef:1}], programme:"Le programme couvre les bases scientifiques de Terminale S/T ainsi que des notions de technologie industrielle et de dessin technique.", reussir:"Une bonne maîtrise des mathématiques, de la physique et des matières technologiques permet d'aborder ce concours sereinement.", conseils:["Réviser les mathématiques et la physique de Terminale","Se familiariser avec le dessin technique","S'entraîner sur les annales ISEP"], erreurs:["Négliger la technologie au profit des seules matières générales","Ne pas se renseigner sur les filières professionnelles proposées"], ressources:['📘 Annales ISEP','🎥 Présentation des filières techniques','🧮 Quiz technologie NextOri'], resultats:"Résultats publiés sur le site du Ministère de la Formation Professionnelle environ 3 semaines après l'épreuve.", lienOfficiel:'https://isep.sn', contact:{adresse:'Hann Mariste, Dakar', telephone:'+221 33 832 40 40', email:'concours@isep.sn', site:'isep.sn', reseaux:'@ISEP_Senegal'}, faq:[{q:"Le diplôme ISEP est-il reconnu par l'État ?", r:"Oui, il s'agit d'un diplôme professionnel reconnu, souvent équivalent à un BTS."}], popularity: 72 }
+];
+const CATEGORY_LABELS = {
+  'universite-publique':'Université publique', 'grande-ecole':'Grande école publique',
+  'universite-privee':'Université privée', 'defense-securite':'Défense & Sécurité',
+  'sante':'Santé', 'enseignement':'Enseignement'
+};
+const STATUS_LABELS = { recent:'Ouvert', soon:'Bientôt', closing:'Se termine bientôt', closed:'Fermé' };
+const STATUS_BADGE_CLASS = { recent:'badge-recent', soon:'badge-soon', closing:'badge-closing', closed:'badge-closed' };
+let favorites = new Set();
+let notifySet = new Set();
+let notifGlobalOn = false;
+let activeCategory = 'tous';
+/* ============================= HELPERS ============================= */
+function fmtDate(d){ if(!d || d==='—') return '—'; const dt = new Date(d); return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'}); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer=setTimeout(()=>t.classList.remove('show'),2600); }
+function logoNode(c, size){
+  const el = document.createElement('div');
+  el.style.background = c.logoColor;
+  el.style.fontSize = (c.logoIcon.length>3 ? '18px':'13px');
+  el.textContent = c.logoIcon;
+  return el;
+}
+/* ============================= RELIABILITY: verified dates ============================= */
+const VERIFIED_DATES = { esp:'15 Juil. 2026', ena:'10 Juil. 2026', police:'18 Juil. 2026', gendarmerie:'12 Juil. 2026', douane:'5 Juil. 2026', 'ucad-l1':'20 Juil. 2026', ism:'14 Juil. 2026', ipd:'8 Juil. 2026', 'sage-femme':'16 Juil. 2026', ens:'11 Juil. 2026', 'sapeurs-pompiers':'1 Juil. 2026', uam:'17 Juil. 2026', isep:'13 Juil. 2026' };
+function verifiedDateFor(id){ return VERIFIED_DATES[id] || '10 Juil. 2026'; }
+
+/* ============================= CARD RENDER ============================= */
+function contestCard(c){
+  const div = document.createElement('div');
+  div.className = 'contest-card';
+  div.onclick = ()=> openDetail(c.id);
+  const isFav = favorites.has(c.id);
+  div.innerHTML = `
+    <div class="contest-top">
+      <div class="contest-logo" style="background:${c.logoColor}; font-size:${c.logoIcon.length>3?'18px':'14px'};">${c.logoIcon}</div>
+      <button class="fav-btn ${isFav?'active':''}" data-fav="${c.id}">${isFav?'❤️':'♡'}</button>
+    </div>
+    <div class="contest-body">
+      <div class="contest-name">${c.name}</div>
+      <div class="contest-est">${c.establishment}</div>
+      <div class="status-badges">
+        <span class="badge ${STATUS_BADGE_CLASS[c.statut]}">${STATUS_LABELS[c.statut]}</span>
+        <span class="badge ${c.prix==='gratuit'?'badge-free':'badge-public'}">${c.prix==='gratuit'?'Gratuit':'Payant'}</span>
+        <span class="verified-tag">✓ Vérifié ${verifiedDateFor(c.id)}</span>
+      </div>
+      <div class="contest-meta">
+        <span>📍 ${c.ville}</span>
+        <span>🎓 ${c.niveau}</span>
+        <span>📅 Limite : ${fmtDate(c.dateLimite)}</span>
+      </div>
+      <div class="contest-bottom">
+        <button class="btn-mini btn-mini-navy" data-detail="${c.id}">Voir détails</button>
+        <button class="btn-mini btn-mini-outline" data-notifycard="${c.id}">🔔</button>
+      </div>
+    </div>
+  `;
+  div.querySelector('[data-fav]').addEventListener('click', e=>{ e.stopPropagation(); toggleFavorite(c.id); });
+  div.querySelector('[data-notifycard]').addEventListener('click', e=>{ e.stopPropagation(); openNotifyModal(c.id); });
+  return div;
+}
+function renderRow(containerId, list){
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  if(!list.length){ el.innerHTML = '<div class="empty-state">Aucun concours dans cette catégorie pour le moment.</div>'; return; }
+  list.forEach(c => el.appendChild(contestCard(c)));
+}
+function refreshHomeRows(){
+  const byCat = c => activeCategory==='tous' || c.category===activeCategory;
+  renderRow('rowRecent', CONTESTS.filter(c=>c.statut==='recent' && byCat(c)));
+  renderRow('rowSoon', CONTESTS.filter(c=>c.statut==='soon' && byCat(c)));
+  renderRow('rowClosing', CONTESTS.filter(c=>c.statut==='closing' && byCat(c)));
+  renderRow('rowClosed', CONTESTS.filter(c=>c.statut==='closed' && byCat(c)));
+  renderRow('rowPopular', [...CONTESTS].filter(byCat).sort((a,b)=>b.popularity-a.popularity).slice(0,8));
+  document.getElementById('countTous').textContent = CONTESTS.length;
+}
+/* ============================= CATEGORIES ============================= */
+document.getElementById('categoryScroll').addEventListener('click', e=>{
+  const chip = e.target.closest('.cat-chip');
+  if(!chip) return;
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  activeCategory = chip.dataset.cat;
+  refreshHomeRows();
+  document.getElementById('allContestsSection').style.display = 'none';
+});
+/* ============================= FAVORITES / NOTIFY ============================= */
+function toggleFavorite(id){
+  if(favorites.has(id)){ favorites.delete(id); showToast('💔 Retiré des favoris'); }
+  else { favorites.add(id); showToast('❤️ Ajouté aux favoris'); }
+  refreshHomeRows();
+  if(currentDetailId===id) updateDetailButtons();
+  if(document.getElementById('allContestsSection').style.display!=='none') renderAllGrid(lastFilteredList);
+}
+function toggleNotify(id){
+  if(notifySet.has(id)){ notifySet.delete(id); showToast('🔕 Notification désactivée'); if(currentDetailId===id) updateDetailButtons(); return; }
+  openNotifyModal(id);
+}
+
+/* ============================= NOTIFICATION PREFERENCES MODAL (point 2) ============================= */
+let notifyModalTargetId = null; // null = global (all favorited contests)
+const notifyModal = document.getElementById('notifyModal');
+const notifyPhoneField = document.getElementById('notifyPhoneField');
+
+function openNotifyModal(id){
+  notifyModalTargetId = id;
+  const c = id ? CONTESTS.find(x=>x.id===id) : null;
+  document.getElementById('notifyModalSub').textContent = c
+    ? `Choisis un ou plusieurs canaux pour ne rien rater de "${c.name}".`
+    : 'Choisis un ou plusieurs canaux pour être averti(e) sur tous tes concours suivis.';
+  notifyModal.classList.add('show');
+}
+function closeNotifyModal(){ notifyModal.classList.remove('show'); }
+document.getElementById('notifyModalClose').addEventListener('click', closeNotifyModal);
+notifyModal.addEventListener('click', e=>{ if(e.target===notifyModal) closeNotifyModal(); });
+
+document.querySelectorAll('.notify-channel').forEach(chan=>{
+  chan.addEventListener('click', e=>{
+    e.preventDefault();
+    const cb = chan.querySelector('input');
+    cb.checked = !cb.checked;
+    chan.classList.toggle('selected', cb.checked);
+    const whatsappOn = document.querySelector('.notify-channel[data-channel="whatsapp"] input').checked;
+    const smsOn = document.querySelector('.notify-channel[data-channel="sms"] input').checked;
+    notifyPhoneField.classList.toggle('show', whatsappOn || smsOn);
+  });
+});
+
+document.getElementById('notifySubmit').addEventListener('click', ()=>{
+  const channels = [];
+  document.querySelectorAll('.notify-channel').forEach(chan=>{
+    if(chan.querySelector('input').checked) channels.push(chan.dataset.channel);
+  });
+  if(!channels.length){ showToast('⚠️ Choisis au moins un canal de notification'); return; }
+  const needsPhone = channels.includes('whatsapp') || channels.includes('sms');
+  const phone = document.getElementById('notifyPhoneInput').value.trim();
+  if(needsPhone && !phone){ showToast('📱 Merci de renseigner un numéro de téléphone'); return; }
+
+  if(notifyModalTargetId){
+    notifySet.add(notifyModalTargetId);
+    if(currentDetailId===notifyModalTargetId) updateDetailButtons();
+  } else {
+    notifGlobalOn = true;
+    const btn = document.getElementById('notifToggle');
+    btn.classList.add('on');
+    btn.textContent = '🔔 Notifications activées';
+  }
+  const labels = { app:'notification app', whatsapp:'WhatsApp', sms:'SMS' };
+  const channelText = channels.map(c=>labels[c]).join(' + ');
+  closeNotifyModal();
+  showToast(`✅ Rappels activés par ${channelText} !`);
+});
+
+/* ============================= REPORT AN ERROR MODAL (point 1) ============================= */
+const reportModal = document.getElementById('reportModal');
+let reportModalTargetContest = null;
+function openReportModal(c){
+  reportModalTargetContest = c;
+  document.getElementById('reportText').value = '';
+  reportModal.classList.add('show');
+}
+function closeReportModal(){ reportModal.classList.remove('show'); }
+document.getElementById('reportModalClose').addEventListener('click', closeReportModal);
+reportModal.addEventListener('click', e=>{ if(e.target===reportModal) closeReportModal(); });
+document.getElementById('reportSubmit').addEventListener('click', ()=>{
+  const text = document.getElementById('reportText').value.trim();
+  if(!text){ showToast('✍️ Décris rapidement le problème avant d\'envoyer'); return; }
+  closeReportModal();
+  showToast('🚩 Merci ! Notre équipe va vérifier "' + (reportModalTargetContest ? reportModalTargetContest.name : 'ce concours') + '"');
+});
+
+document.getElementById('notifToggle').addEventListener('click', function(){
+  if(notifGlobalOn){
+    notifGlobalOn = false;
+    this.classList.remove('on');
+    this.textContent = '🔔 Activer les notifications';
+    showToast('Notifications désactivées');
+  } else {
+    openNotifyModal(null);
+  }
+});
+/* ============================= SEARCH ============================= */
+const searchInput = document.getElementById('searchInput');
+const suggestionsBox = document.getElementById('searchSuggestions');
+const searchClear = document.getElementById('searchClear');
+function matchContest(c, q){
+  q = q.toLowerCase();
+  return c.name.toLowerCase().includes(q) ||
+         c.establishment.toLowerCase().includes(q) ||
+         c.aliases.some(a=>a.includes(q));
+}
+searchInput.addEventListener('input', ()=>{
+  const q = searchInput.value.trim();
+  searchClear.style.display = q ? 'flex' : 'none';
+  if(!q){ suggestionsBox.classList.remove('show'); return; }
+  const results = CONTESTS.filter(c=>matchContest(c,q)).slice(0,8);
+  suggestionsBox.innerHTML = '';
+  if(!results.length){
+    suggestionsBox.innerHTML = '<div class="sugg-empty">Aucun concours trouvé pour "'+q+'"</div>';
+  } else {
+    results.forEach(c=>{
+      const item = document.createElement('div');
+      item.className = 'sugg-item';
+      item.innerHTML = `<div class="sugg-logo" style="background:${c.logoColor}; font-size:${c.logoIcon.length>3?'13px':'14px'};">${c.logoIcon}</div>
+        <div><div class="sugg-name">${c.name}</div><div class="sugg-sub">${c.establishment} · ${c.ville}</div></div>`;
+      item.addEventListener('click', ()=>{ openDetail(c.id); suggestionsBox.classList.remove('show'); searchInput.value=''; searchClear.style.display='none'; });
+      suggestionsBox.appendChild(item);
+    });
+  }
+  suggestionsBox.classList.add('show');
+});
+searchClear.addEventListener('click', ()=>{ searchInput.value=''; searchClear.style.display='none'; suggestionsBox.classList.remove('show'); });
+document.addEventListener('click', e=>{ if(!e.target.closest('.search-wrap')) suggestionsBox.classList.remove('show'); });
+/* ============================= FILTERS PANEL ============================= */
+document.getElementById('filterToggleBtn').addEventListener('click', ()=>{
+  document.getElementById('filtersPanel').classList.toggle('open');
+});
+document.getElementById('btnOpenFilters').addEventListener('click', ()=>{
+  document.getElementById('filtersPanel').classList.add('open');
+  document.getElementById('filtersPanel').scrollIntoView({behavior:'smooth', block:'center'});
+});
+function countActiveFilters(){
+  let n = 0;
+  ['fRegion','fVille','fDomaine','fNiveau','fDiplome','fAge','fDateOuverture','fDateLimite'].forEach(id=>{
+    if(document.getElementById(id).value) n++;
+  });
+  document.querySelectorAll('.chip-toggle input:checked').forEach(()=>n++);
+  return n;
+}
+let lastFilteredList = CONTESTS;
+function applyFilters(){
+  const region = document.getElementById('fRegion').value;
+  const ville = document.getElementById('fVille').value;
+  const domaine = document.getElementById('fDomaine').value;
+  const niveau = document.getElementById('fNiveau').value;
+  const diplome = document.getElementById('fDiplome').value;
+  const age = document.getElementById('fAge').value;
+  const dOuv = document.getElementById('fDateOuverture').value;
+  const dLim = document.getElementById('fDateLimite').value;
+  const toggles = {};
+  document.querySelectorAll('.chip-toggle input').forEach(inp=>{ toggles[inp.dataset.f] = inp.checked; });
+  const filtered = CONTESTS.filter(c=>{
+    if(region && c.region!==region) return false;
+    if(ville && c.ville!==ville) return false;
+    if(domaine && c.domaine!==domaine) return false;
+    if(niveau && c.niveau!==niveau) return false;
+    if(diplome && c.diplome!==diplome) return false;
+    if(age && (c.ageMax===null || c.ageMax>parseInt(age))) return false;
+    if(dOuv && c.dateOuverture < dOuv) return false;
+    if(dLim && c.dateLimite > dLim) return false;
+    if(toggles.public && c.secteur!=='public') return false;
+    if(toggles.prive && c.secteur!=='prive') return false;
+    if(toggles.gratuit && c.prix!=='gratuit') return false;
+    if(toggles.payant && c.prix!=='payant') return false;
+    if(toggles.ouverts && !(c.statut==='recent'||c.statut==='soon'||c.statut==='closing')) return false;
+    if(toggles.fermes && c.statut!=='closed') return false;
+    return true;
+  });
+  lastFilteredList = filtered;
+  document.getElementById('filterCountBadge').textContent = countActiveFilters();
+  renderAllGrid(filtered);
+  document.getElementById('allContestsSection').style.display = 'block';
+  document.getElementById('allContestsSection').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function renderAllGrid(list){
+  const grid = document.getElementById('allContestsGrid');
+  grid.innerHTML = '';
+  document.getElementById('allContestsSub').textContent = list.length + ' concours correspondant à ta recherche';
+  if(!list.length){ grid.innerHTML = '<div class="empty-state">Aucun concours ne correspond à ces critères.</div>'; return; }
+  list.forEach(c=>grid.appendChild(contestCard(c)));
+}
+document.getElementById('btnApplyFilters').addEventListener('click', applyFilters);
+document.getElementById('btnResetFilters').addEventListener('click', ()=>{
+  ['fRegion','fVille','fDomaine','fNiveau','fDiplome','fAge','fDateOuverture','fDateLimite'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.chip-toggle input').forEach(inp=>inp.checked=false);
+  document.getElementById('filterCountBadge').textContent = '0';
+  document.getElementById('allContestsSection').style.display = 'none';
+});
+document.getElementById('btnAllContests').addEventListener('click', ()=>{
+  lastFilteredList = CONTESTS;
+  renderAllGrid(CONTESTS);
+  document.getElementById('allContestsSection').style.display = 'block';
+  document.getElementById('allContestsSection').scrollIntoView({behavior:'smooth', block:'start'});
+});
+document.getElementById('btnCloseAll').addEventListener('click', ()=>{
+  document.getElementById('allContestsSection').style.display = 'none';
+});
+/* ============================= DETAIL VIEW ============================= */
+let currentDetailId = null;
+function openDetail(id){
+  const c = CONTESTS.find(x=>x.id===id);
+  if(!c) return;
+  currentDetailId = id;
+  document.getElementById('homeView').classList.add('hidden');
+  document.getElementById('detailView').classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('dLogo').style.background = c.logoColor;
+  document.getElementById('dLogo').style.fontSize = c.logoIcon.length>3 ? '18px':'22px';
+  document.getElementById('dLogo').textContent = c.logoIcon;
+  document.getElementById('dName').textContent = c.name;
+  document.getElementById('dEst').textContent = c.establishment + ' · ' + c.ville;
+  document.getElementById('dBadges').innerHTML = `
+    <span class="badge ${STATUS_BADGE_CLASS[c.statut]}">${STATUS_LABELS[c.statut]}</span>
+    <span class="badge ${c.prix==='gratuit'?'badge-free':'badge-public'}">${c.prix==='gratuit'?'Gratuit':'Payant · '+c.cout}</span>
+    <span class="badge badge-public">${c.secteur==='public'?'Public':'Privé'}</span>
+    <span class="badge badge-soon">${CATEGORY_LABELS[c.category]}</span>
+  `;
+  document.getElementById('kOuverture').textContent = fmtDate(c.dateOuverture);
+  document.getElementById('kLimite').textContent = fmtDate(c.dateLimite);
+  document.getElementById('kDate').textContent = fmtDate(c.dateConcours);
+  document.getElementById('kPlaces').textContent = c.places ? c.places.toLocaleString('fr-FR') : '—';
+  // Infos tab
+  document.getElementById('dDescription').textContent = c.description;
+  document.getElementById('dObjectifs').textContent = c.objectifs;
+  document.getElementById('dDatesTable').innerHTML = `
+    <tr><td>Date d'ouverture</td><td>${fmtDate(c.dateOuverture)}</td></tr>
+    <tr><td>Date limite d'inscription</td><td>${fmtDate(c.dateLimite)}</td></tr>
+    <tr><td>Date du concours</td><td>${fmtDate(c.dateConcours)}</td></tr>
+    <tr><td>Nombre de places</td><td>${c.places ? c.places.toLocaleString('fr-FR') : '—'}</td></tr>
+    <tr><td>Coût de l'inscription</td><td>${c.cout}</td></tr>
+  `;
+  document.getElementById('dCentres').innerHTML = c.centres.map(x=>`<span class="doc-tag">📍 ${x}</span>`).join('');
+  // Admission tab
+  document.getElementById('dConditions').innerHTML = c.conditions.map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('dRequisTable').innerHTML = `
+    <tr><td>Diplôme demandé</td><td>${c.diplome}</td></tr>
+    <tr><td>Âge maximum</td><td>${c.ageMax ? c.ageMax + ' ans' : 'Sans limite'}</td></tr>
+    <tr><td>Nationalité</td><td>${c.nationalite}</td></tr>
+    <tr><td>Domaine</td><td>${c.domaine}</td></tr>
+  `;
+  document.getElementById('dDocuments').innerHTML = c.documents.map(x=>`<span class="doc-tag">📎 ${x}</span>`).join('');
+  // Programme tab
+  document.getElementById('dMatieres').innerHTML = c.matieres.length
+    ? c.matieres.map(m=>`<div class="matiere-row"><span>${m.nom}</span><span class="matiere-coef">Coef. ${m.coef}</span></div>`).join('')
+    : '<div class="empty-state">Pas d\'épreuve écrite pour ce concours (orientation automatisée).</div>';
+  document.getElementById('dProgramme').textContent = c.programme;
+  // Préparation tab
+  document.getElementById('dReussir').textContent = c.reussir;
+  document.getElementById('dConseils').innerHTML = c.conseils.map(x=>`<div class="advice-item"><span class="advice-icon">💡</span><span class="advice-text">${x}</span></div>`).join('');
+  document.getElementById('dErreurs').innerHTML = c.erreurs.map(x=>`<div class="advice-item"><span class="advice-icon">⚠️</span><span class="advice-text">${x}</span></div>`).join('');
+  document.getElementById('dRessources').innerHTML = c.ressources.map(x=>`<div class="resource-chip">${x}</div>`).join('');
+  // Résultats tab
+  document.getElementById('dResultats').textContent = c.resultats;
+  document.getElementById('dLienOfficiel').href = c.lienOfficiel;
+  // FAQ tab
+  document.getElementById('dFaqContainer').innerHTML = c.faq.map((f,i)=>`
+    <div class="faq-item" data-faq="${i}">
+      <div class="faq-q">${f.q} <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">${f.r}</div>
+    </div>
+  `).join('');
+  document.querySelectorAll('#dFaqContainer .faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click', ()=> item.classList.toggle('open'));
+  });
+  // Contact tab
+  document.getElementById('dContactContainer').innerHTML = `
+    <div class="contact-row"><div class="contact-icon">📍</div><div>${c.contact.adresse}</div></div>
+    <div class="contact-row"><div class="contact-icon">📞</div><a class="contact-link" href="tel:${c.contact.telephone}">${c.contact.telephone}</a></div>
+    <div class="contact-row"><div class="contact-icon">✉️</div><a class="contact-link" href="mailto:${c.contact.email}">${c.contact.email}</a></div>
+    <div class="contact-row"><div class="contact-icon">🌐</div><a class="contact-link" href="https://${c.contact.site}" target="_blank" rel="noopener">${c.contact.site}</a></div>
+    <div class="contact-row"><div class="contact-icon">📱</div><div>${c.contact.reseaux}</div></div>
+  `;
+  // Reliability strip: verified date + "signaler une erreur"
+  document.getElementById('dVerifiedRow').innerHTML = `
+    <span class="verified-tag">✓ Informations vérifiées le ${verifiedDateFor(c.id)}</span>
+    <button class="btn-report" id="btnReport">🚩 Signaler une erreur</button>
+  `;
+  document.getElementById('btnReport').onclick = ()=> openReportModal(c);
+  // Premium "Analyser mes chances" button — redirects to NextOri Success Score
+  // with this contest's info pre-filled in the analysis form.
+  document.getElementById('btnAnalyzeChances').onclick = ()=>{
+    goToScorePage({
+      concours: c.name,
+      ecole: c.establishment,
+      metier: metierSuggestionFor(c),
+      niveau: c.niveau,
+      serie: serieSuggestionFor(c)
+    });
+  };
+  updateDetailButtons();
+  switchDetailTab('infos');
+}
+function metierSuggestionFor(c){
+  const map = {
+    'esp':'Ingénieur', 'ena':'Administrateur civil', 'police':'Officier de police',
+    'gendarmerie':'Gendarme', 'douane':'Inspecteur des douanes', 'ucad-l1':'Étudiant',
+    'ism':'Cadre en gestion', 'ipd':'Cadre en gestion', 'sage-femme':'Sage-femme d\'État',
+    'ens':'Enseignant', 'sapeurs-pompiers':'Sapeur-pompier', 'uam':'Étudiant', 'isep':'Technicien supérieur'
+  };
+  return map[c.id] || c.domaine;
+}
+function serieSuggestionFor(c){
+  const map = { 'esp':'S2','isep':'S2','ena':'L2','ucad-l1':'S1','uam':'S1' };
+  return map[c.id] || 'S1';
+}
+function updateDetailButtons(){
+  const isFav = favorites.has(currentDetailId);
+  const isNotif = notifySet.has(currentDetailId);
+  const favBtn = document.getElementById('btnFavLg');
+  favBtn.classList.toggle('active', isFav);
+  favBtn.innerHTML = (isFav?'❤️':'♡') + ' Favoris';
+  const notifBtn = document.getElementById('btnNotify');
+  notifBtn.classList.toggle('on', isNotif);
+  notifBtn.innerHTML = isNotif ? '🔔 Notifications activées' : '🔔 Me prévenir';
+}
+document.getElementById('btnBack').addEventListener('click', ()=>{
+  document.getElementById('detailView').classList.remove('active');
+  document.getElementById('homeView').classList.remove('hidden');
+  window.scrollTo(0,0);
+});
+document.getElementById('btnFavLg').addEventListener('click', ()=> toggleFavorite(currentDetailId));
+document.getElementById('btnNotify').addEventListener('click', ()=> toggleNotify(currentDetailId));
+document.getElementById('btnShare').addEventListener('click', e=>{
+  e.stopPropagation();
+  document.getElementById('shareMenu').classList.toggle('show');
+});
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#btnShare')) document.getElementById('shareMenu').classList.remove('show');
+});
+document.getElementById('shareMenu').addEventListener('click', e=>{
+  const item = e.target.closest('.share-item');
+  if(!item) return;
+  const c = CONTESTS.find(x=>x.id===currentDetailId);
+  const url = 'https://nextori.sn/concours/' + c.id;
+  const text = encodeURIComponent(c.name + ' — ' + c.establishment + ' : ' + url);
+  const platform = item.dataset.share;
+  if(platform==='whatsapp') window.open('https://wa.me/?text='+text, '_blank');
+  else if(platform==='facebook') window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url), '_blank');
+  else if(platform==='messenger') window.open('https://www.facebook.com/dialog/send?link='+encodeURIComponent(url)+'&redirect_uri='+encodeURIComponent(url), '_blank');
+  else if(platform==='telegram') window.open('https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(c.name), '_blank');
+  else if(platform==='copy'){ navigator.clipboard?.writeText(url); showToast('🔗 Lien copié !'); }
+  document.getElementById('shareMenu').classList.remove('show');
+});
+/* ============================= DETAIL TABS ============================= */
+function switchDetailTab(tab){
+  document.querySelectorAll('.dtab-btn').forEach(b=>b.classList.toggle('active', b.dataset.dtab===tab));
+  document.querySelectorAll('.dtab-panel').forEach(p=>p.classList.toggle('active', p.id==='dtab-'+tab));
+}
+document.getElementById('detailTabs').addEventListener('click', e=>{
+  const btn = e.target.closest('.dtab-btn');
+  if(!btn) return;
+  switchDetailTab(btn.dataset.dtab);
+});
+/* ============================= INIT ============================= */
+refreshHomeRows();
+</script>
+<script>
+/* NEXTORI SUCCESS SCORE — APP LOGIC */
+/* ============================= CHIP SELECTION ============================= */
+document.querySelectorAll('.chip-select').forEach(group=>{
+  group.addEventListener('click', e=>{
+    const btn = e.target.closest('.chip-opt');
+    if(!btn) return;
+    btn.classList.toggle('selected');
+  });
+});
+function getSelectedChips(groupName){
+  return Array.from(document.querySelectorAll(`.chip-select[data-group="${groupName}"] .chip-opt.selected`)).map(b=>b.textContent);
+}
+/* ============================= OTHER CONTESTS DATABASE ============================= */
+/* Mirrors the main "Concours Sénégal" database — used to suggest compatible contests */
+const OTHER_CONTESTS = [
+  { name:'Concours ESP', establishment:'École Supérieure Polytechnique', domaine:'Ingénierie', logoColor:'#2563eb', logoIcon:'ESP' },
+  { name:'Concours ISEP', establishment:"Institut Supérieur d'Enseignement Professionnel", domaine:'Ingénierie', logoColor:'#0891b2', logoIcon:'ISEP' },
+  { name:'Concours ENA', establishment:"École Nationale d'Administration", domaine:'Administration', logoColor:'#0B1F4D', logoIcon:'ENA' },
+  { name:'Concours Police Nationale', establishment:'Police Nationale du Sénégal', domaine:'Sécurité', logoColor:'#1e3a8a', logoIcon:'🚓' },
+  { name:'Concours Gendarmerie Nationale', establishment:'Gendarmerie Nationale', domaine:'Sécurité', logoColor:'#166534', logoIcon:'🛡️' },
+  { name:'Concours Douanes Sénégalaises', establishment:'Direction Générale des Douanes', domaine:'Administration', logoColor:'#7c2d12', logoIcon:'🛃' },
+  { name:'Orientation UCAD', establishment:'Université Cheikh Anta Diop', domaine:'Toutes filières', logoColor:'#2563eb', logoIcon:'UCAD' },
+  { name:"Concours d'entrée UAM", establishment:'Université Amadou Mahtar Mbow', domaine:'Toutes filières', logoColor:'#0369a1', logoIcon:'UAM' },
+  { name:"Concours d'entrée ISM", establishment:'Institut Supérieur de Management', domaine:'Gestion', logoColor:'#7e22ce', logoIcon:'ISM' },
+  { name:'Concours IPD', establishment:'Institut Privé de Développement', domaine:'Gestion', logoColor:'#0d9488', logoIcon:'IPD' },
+  { name:"Concours Sage-Femme d'État", establishment:'ENDSS', domaine:'Santé', logoColor:'#db2777', logoIcon:'🩺' },
+  { name:'Concours ENS (Enseignants)', establishment:'École Normale Supérieure', domaine:'Éducation', logoColor:'#b45309', logoIcon:'ENS' },
+  { name:'Concours Sapeurs-Pompiers', establishment:'Brigade Nationale des Sapeurs-Pompiers', domaine:'Sécurité', logoColor:'#dc2626', logoIcon:'🚒' }
+];
+/* ============================= PREFILL FROM CONCOURS PAGE (direct call, same page) ============================= */
+function prefillScoreForm(data){
+  if(!data || !data.concours) return;
+  const { concours, ecole, metier, niveau, serie } = data;
+  if(concours) document.getElementById('concours').value = concours;
+  if(ecole) document.getElementById('ecole').value = ecole;
+  if(metier) document.getElementById('metier').value = metier;
+  if(serie && [...document.getElementById('serie').options].some(o=>o.value===serie)) document.getElementById('serie').value = serie;
+  const banner = document.getElementById('prefillBanner');
+  banner.style.display = 'flex';
+  banner.innerHTML = `<span class="pf-icon">🎯</span><span class="pf-text">Concours présélectionné : <strong>${concours}</strong>${ecole ? ' — ' + ecole : ''}. Complète le reste de ton profil pour une analyse précise.</span>`;
+  document.getElementById('heroSub').textContent = `Ton profil est en cours d'analyse pour "${concours}". Termine les sections ci-dessous pour un résultat précis.`;
+}
+/* Switches the whole app from the Concours pages to the Success Score app */
+function goToScorePage(data){
+  document.getElementById('homeView').classList.add('hidden');
+  document.getElementById('detailView').classList.remove('active');
+  document.getElementById('scoreApp').style.display = 'block';
+  document.getElementById('resultsView').classList.remove('active');
+  document.getElementById('formView').classList.remove('hidden');
+  window.scrollTo(0,0);
+  prefillScoreForm(data);
+}
+/* Switches back from the Success Score app to the Concours home page */
+function goToConcoursHome(){
+  document.getElementById('scoreApp').style.display = 'none';
+  document.getElementById('homeView').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+/* ============================= TOAST ============================= */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+/* ============================= SCORE COMPUTATION ============================= */
+function computeScore(){
+  const moyenne = parseFloat(document.getElementById('moyenne').value) || 12;
+  const mention = document.getElementById('mention').value;
+  const niveau = document.getElementById('niveau').value;
+  const stage = document.getElementById('stage').value.trim();
+  const projet = document.getElementById('projet').value.trim();
+  const benevolat = document.getElementById('benevolat').value.trim();
+  const emploi = document.getElementById('emploi').value.trim();
+  const langues = getSelectedChips('langues');
+  const logiciels = getSelectedChips('logiciels').filter(x=>x!=='Aucun');
+  const technique = getSelectedChips('technique');
+  const qualites = getSelectedChips('qualites');
+  let score = 40; // base
+  // Moyenne (max +25)
+  score += Math.min(25, Math.max(0, (moyenne - 10) * 3.5));
+  // Mention (max +10)
+  const mentionPoints = {'Passable':2,'Assez Bien':5,'Bien':8,'Très Bien':10};
+  score += mentionPoints[mention] || 0;
+  // Niveau d'étude (max +6)
+  const niveauPoints = {'Terminale':2,'Bac+1':3,'Bac+2':4,'Bac+3':5,'Bac+4':5.5,'Bac+5':6};
+  score += niveauPoints[niveau] || 2;
+  // Compétences (max +12)
+  score += Math.min(4, langues.length * 1.3);
+  score += Math.min(3, logiciels.length * 1);
+  score += Math.min(3, technique.length * 1);
+  score += Math.min(2, qualites.length * 0.6);
+  // Expériences (max +12)
+  if(stage) score += 4;
+  if(projet) score += 3;
+  if(benevolat) score += 2.5;
+  if(emploi) score += 2.5;
+  score = Math.round(Math.min(100, Math.max(28, score)));
+  return score;
+}
+function scoreColor(score){
+  if(score>=95) return '#16a34a';
+  if(score>=80) return '#2563eb';
+  if(score>=60) return '#eab308';
+  if(score>=40) return '#f97316';
+  return '#e0433f';
+}
+function scoreLabelText(score){
+  if(score>=90) return '⭐⭐⭐⭐⭐ Excellent profil';
+  if(score>=75) return '⭐⭐⭐⭐ Très bon profil';
+  if(score>=60) return '⭐⭐⭐ Bon profil';
+  if(score>=40) return '⭐⭐ Profil à améliorer';
+  return '⭐ Profil à renforcer';
+}
+/* ============================= LOADING ANIMATION ============================= */
+const loadingMessages = [
+  '🔍 Analyse de votre profil...',
+  '📊 Vérification de votre parcours...',
+  '🎯 Comparaison avec les critères...',
+  '📚 Analyse des compétences...',
+  '🏫 Vérification des exigences...',
+  '✅ Génération du rapport...'
+];
+document.getElementById('btnAnalyze').addEventListener('click', ()=>{
+  document.getElementById('loadingOverlay').classList.add('active');
+  const pctEl = document.getElementById('loaderPct');
+  const msgEl = document.getElementById('loaderMessage');
+  const circle = document.getElementById('loaderFillCircle');
+  const circumference = 2 * Math.PI * 52;
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = circumference;
+  let progress = 0;
+  let msgIndex = 0;
+  msgEl.textContent = loadingMessages[0];
+  const msgInterval = setInterval(()=>{
+    msgIndex = (msgIndex + 1) % loadingMessages.length;
+    msgEl.style.opacity = 0;
+    setTimeout(()=>{ msgEl.textContent = loadingMessages[msgIndex]; msgEl.style.opacity = 1; }, 250);
+  }, 700);
+  const progressInterval = setInterval(()=>{
+    progress += Math.random()*8 + 4;
+    if(progress >= 100){
+      progress = 100;
+      clearInterval(progressInterval);
+      clearInterval(msgInterval);
+      pctEl.textContent = '100%';
+      circle.style.strokeDashoffset = 0;
+      setTimeout(()=>{
+        document.getElementById('loadingOverlay').classList.remove('active');
+        showResults();
+      }, 500);
+      return;
+    }
+    pctEl.textContent = Math.round(progress) + '%';
+    circle.style.strokeDashoffset = circumference * (1 - progress/100);
+  }, 220);
+});
+/* ============================= RESULTS RENDERING ============================= */
+function showResults(){
+  const score = computeScore();
+  const color = scoreColor(score);
+  document.getElementById('formView').classList.add('hidden');
+  document.getElementById('resultsView').classList.add('active');
+  window.scrollTo(0,0);
+  // Animate score circle
+  const circle = document.getElementById('scoreFillCircle');
+  const circumference = 2 * Math.PI * 95;
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = circumference;
+  circle.style.stroke = color;
+  // Animate number count-up
+  const numberEl = document.getElementById('scoreNumber');
+  let current = 0;
+  const duration = 1800;
+  const startTime = performance.now();
+  function animateNumber(t){
+    const elapsed = t - startTime;
+    const progress = Math.min(1, elapsed/duration);
+    const eased = 1 - Math.pow(1-progress, 3);
+    current = Math.round(eased * score);
+    numberEl.textContent = current;
+    if(progress < 1) requestAnimationFrame(animateNumber);
+  }
+  requestAnimationFrame(animateNumber);
+  setTimeout(()=>{ circle.style.strokeDashoffset = circumference * (1 - score/100); }, 100);
+  document.getElementById('scoreStars').textContent = score>=90?'⭐⭐⭐⭐⭐':score>=75?'⭐⭐⭐⭐':score>=60?'⭐⭐⭐':score>=40?'⭐⭐':'⭐';
+  document.getElementById('scoreLabel').textContent = scoreLabelText(score).replace(/⭐/g,'').trim();
+  const prenom = document.getElementById('prenom').value.trim();
+  const metier = document.getElementById('metier').value.trim() || 'ton projet professionnel';
+  document.getElementById('scoreName').textContent = (prenom ? prenom + ', voici' : 'Voici') + ' ton analyse pour ' + metier;
+  /* ---- Points forts (dynamic based on inputs) ---- */
+  const moyenne = parseFloat(document.getElementById('moyenne').value) || 0;
+  const mention = document.getElementById('mention').value;
+  const serie = document.getElementById('serie').value;
+  const langues = getSelectedChips('langues');
+  const technique = getSelectedChips('technique');
+  const stage = document.getElementById('stage').value.trim();
+  const projet = document.getElementById('projet').value.trim();
+  const concours = document.getElementById('concours').value.trim() || 'ton concours';
+  const ecole = document.getElementById('ecole').value.trim() || 'ton école';
+  const strengths = [];
+  if(['S1','S2','S3'].includes(serie)) strengths.push('Série du Bac adaptée aux filières scientifiques et techniques');
+  if(moyenne >= 14) strengths.push('Très bonne moyenne générale (' + moyenne + '/20)');
+  if(mention==='Bien' || mention==='Très Bien') strengths.push('Mention "' + mention + '" qui valorise fortement ton dossier');
+  if(concours && document.getElementById('concours').value) strengths.push('Projet professionnel cohérent avec ton parcours scolaire');
+  if(technique.length) strengths.push('Compétences techniques recherchées : ' + technique.join(', '));
+  if(langues.length >= 2) strengths.push('Bon niveau linguistique (' + langues.join(', ') + ')');
+  if(stage) strengths.push('Expérience de stage valorisable dans ton dossier');
+  if(projet) strengths.push('Projet personnel démontrant ton initiative');
+  if(!strengths.length) strengths.push('Motivation claire pour ton projet professionnel');
+  renderList('strengthsList', strengths.slice(0,6), 'strength');
+  /* ---- Points à améliorer ---- */
+  const improve = [];
+  if(!langues.includes('Anglais')) improve.push("Améliorer ton niveau d'anglais, souvent déterminant pour les concours");
+  if(!stage) improve.push("Ajouter une première expérience de stage à ton profil");
+  if(!getSelectedChips('logiciels').filter(x=>x!=='Aucun').length) improve.push('Obtenir une certification sur un logiciel professionnel');
+  if(technique.length < 2) improve.push('Développer davantage tes compétences numériques et techniques');
+  if(moyenne && moyenne < 14) improve.push('Continuer à progresser sur ta moyenne générale');
+  if(!projet) improve.push('Lancer un petit projet personnel pour enrichir ton dossier');
+  if(!improve.length) improve.push('Continuer sur cette excellente lancée, ton profil est déjà très solide');
+  renderList('improveList', improve.slice(0,5), 'improve');
+  /* ---- Compatibilité (gauges) ---- */
+  const compatConcours = Math.min(99, Math.max(55, score + (Math.random()*6-3)));
+  const compatEcole = Math.min(99, Math.max(55, score + 3 + (Math.random()*5-2)));
+  const compatMetier = Math.min(99, Math.max(55, score + 5 + (Math.random()*5-2)));
+  renderGauges([
+    {label: concours, sub:'Concours choisi', value: Math.round(compatConcours), color:'#2563eb'},
+    {label: ecole, sub:'École choisie', value: Math.round(compatEcole), color:'#7c3aed'},
+    {label: metier, sub:'Métier choisi', value: Math.round(compatMetier), color:'#16a34a'}
+  ]);
+  /* ---- Pourquoi ce score ---- */
+  document.getElementById('whyIntro').textContent =
+    `Ton score de ${score}/100 reflète la cohérence globale entre ton parcours scolaire, tes compétences et ton objectif professionnel (${metier}).`;
+  const whyPoints = [];
+  whyPoints.push(`Ta série de Bac (${serie}) est ${['S1','S2','S3'].includes(serie)?'adaptée':'à confirmer'} par rapport à ${concours}.`);
+  whyPoints.push(`Ton niveau universitaire (${document.getElementById('niveau').value}) correspond globalement aux exigences habituelles.`);
+  whyPoints.push(`Tu possèdes ${technique.length + langues.length} compétence(s) recherchée(s) dans ton domaine.`);
+  whyPoints.push('Quelques améliorations ciblées permettront d\'augmenter encore ton score dans les mois à venir.');
+  document.getElementById('whyList').innerHTML = whyPoints.map(p=>`<li>${p}</li>`).join('');
+  /* ---- Conseils NextOri ---- */
+  const advice = [];
+  if(!langues.includes('Anglais')) advice.push("Renforce ton niveau d'anglais, notamment technique et académique.");
+  advice.push(`Prépare-toi dès maintenant aux épreuves de ${concours}.`);
+  if(!stage) advice.push('Participe à un stage, même court, pour enrichir ton expérience.');
+  if(!projet) advice.push('Développe un projet personnel en lien avec ton domaine.');
+  advice.push('Continue à améliorer tes compétences techniques et numériques.');
+  advice.push(`Renseigne-toi en détail sur les critères d'admission de ${ecole}.`);
+  renderAdvice(advice.slice(0,6));
+  /* ---- Autres concours compatibles ---- */
+  renderOtherContests(score, concours, technique, langues);
+  /* ---- Viral loop : partage du score + parrainage ---- */
+  setupScoreSharing(score, concours, prenom);
+  setupReferralCard(prenom || document.getElementById('nom').value.trim());
+  /* ---- 1. Badge NextOri ---- */
+  renderBadge(score, concours, prenom);
+  /* ---- 2. Classement intelligent anonyme ---- */
+  renderRanking(score, concours);
+  /* ---- 3. Mon niveau NextOri ---- */
+  renderLevel(score);
+  /* ---- 4. Plan d'amélioration personnalisé IA ---- */
+  renderImprovementPlan(score, strengths, improve, advice);
+}
+function badgeInfoFor(score){
+  if(score>90) return {icon:'🏆', title:'Candidat Excellent', sub:'Décerné pour un Success Score exceptionnel (supérieur à 90/100)'};
+  if(score>=80) return {icon:'🥇', title:'Profil très prometteur', sub:'Décerné pour un Success Score entre 80 et 89/100'};
+  if(score>=60) return {icon:'🥈', title:'Candidat en progression', sub:'Décerné pour un Success Score entre 60 et 79/100'};
+  return {icon:'🎯', title:'Profil à renforcer', sub:'Décerné pour un Success Score inférieur à 60/100'};
+}
+function renderBadge(score, concours, prenom){
+  const b = badgeInfoFor(score);
+  document.getElementById('badgeIconCircle').textContent = b.icon;
+  document.getElementById('badgeTitleText').textContent = b.title;
+  document.getElementById('badgeSubText').textContent = b.sub;
+  const shareText = encodeURIComponent(`${prenom ? prenom+' a' : 'J\'ai'} obtenu le badge "${b.title}" ${b.icon} sur NextOri pour ${concours} ! Découvre ton propre badge :`);
+  const url = encodeURIComponent('https://nextori.sn');
+  document.querySelector('#badgeCard .badge-share-row').onclick = (e)=>{
+    const btn = e.target.closest('[data-badgeshare]');
+    if(!btn) return;
+    const type = btn.dataset.badgeshare;
+    if(type==='whatsapp') window.open('https://wa.me/?text='+shareText+'%20'+url, '_blank');
+    else if(type==='facebook') window.open('https://www.facebook.com/sharer/sharer.php?u='+url+'&quote='+shareText, '_blank');
+    else if(type==='copy'){ navigator.clipboard?.writeText(decodeURIComponent(shareText)+' https://nextori.sn'); showToast('🔗 Badge copié, prêt à partager !'); }
+  };
+}
+function renderRanking(score, concours){
+  // Deterministic pseudo-ranking derived from the score (higher score => better rank), for a plausible pool size.
+  const total = 800 + Math.round((score % 10) * 45) + 250;
+  const percentile = Math.min(99, Math.max(1, score));
+  const rank = Math.max(1, Math.round(total * (1 - percentile/100)));
+  const medal = rank<=3 ? '🥇' : rank<=10 ? '🥈' : rank<=50 ? '🥉' : '🎖️';
+  document.getElementById('rankMedal').textContent = medal;
+  document.getElementById('rankPosition').textContent = rank + (rank===1?'ᵉʳ':'ᵉ');
+  document.getElementById('rankTotal').textContent = total.toLocaleString('fr-FR');
+  document.getElementById('rankTotalBox').textContent = total.toLocaleString('fr-FR');
+  document.getElementById('rankConcoursName').textContent = concours;
+  document.getElementById('rankPercentileNum').textContent = percentile + '%';
+  const evolution = 3 + Math.round(score % 15);
+  document.getElementById('rankEvolution').textContent = `↑ ${evolution} places gagnées depuis ta dernière analyse`;
+}
+function levelInfoFor(score){
+  if(score>=95) return {n:5, emoji:'🟣', color:'#8b5cf6', name:'Niveau 5 : Candidat prêt', desc:'Tu es fin prêt(e) à te présenter au concours !'};
+  if(score>=80) return {n:4, emoji:'🟢', color:'#16a34a', name:'Niveau 4 : Excellent candidat', desc:'Ton profil est très solide, continue ainsi.'};
+  if(score>=60) return {n:3, emoji:'🔵', color:'#2563eb', name:'Niveau 3 : Bon niveau', desc:'Tu es sur la bonne voie, quelques efforts en plus feront la différence.'};
+  if(score>=40) return {n:2, emoji:'🟡', color:'#eab308', name:'Niveau 2 : En progression', desc:'Ton profil progresse, continue à te renforcer.'};
+  return {n:1, emoji:'🔴', color:'#e0433f', name:'Niveau 1 : Débutant', desc:'Continue de remplir ton profil pour progresser rapidement.'};
+}
+function renderLevel(score){
+  const lvl = levelInfoFor(score);
+  document.getElementById('levelScoreRef').textContent = score + '/100';
+  const track = document.getElementById('levelTrack');
+  track.innerHTML = '';
+  const colors = ['#e0433f','#eab308','#2563eb','#16a34a','#8b5cf6'];
+  for(let i=1;i<=5;i++){
+    const seg = document.createElement('div');
+    seg.className = 'level-segment' + (i<=lvl.n ? ' filled' : '') + (i===lvl.n ? ' active-seg' : '');
+    if(i<=lvl.n) seg.style.setProperty('--seg-color', colors[i-1]);
+    track.appendChild(seg);
+  }
+  document.querySelectorAll('.level-legend-item').forEach((el,i)=> el.classList.toggle('current', i+1===lvl.n));
+  document.getElementById('levelEmoji').textContent = lvl.emoji;
+  document.getElementById('levelName').textContent = lvl.name;
+  document.getElementById('levelDesc').textContent = lvl.desc;
+}
+function renderImprovementPlan(score, strengths, improve, advice){
+  const target = score>=90 ? Math.min(100, score+5) : 90;
+  document.getElementById('planCurrentScore').textContent = score;
+  document.getElementById('planTargetScore').textContent = target;
+  document.getElementById('planProgressFill').style.width = '0%';
+  setTimeout(()=>{ document.getElementById('planProgressFill').style.width = Math.round((score/target)*100) + '%'; }, 200);
+  document.getElementById('planStrengths').innerHTML = strengths.slice(0,3).map(s=>`<div class="plan-mini-item">✅ ${s}</div>`).join('');
+  document.getElementById('planWeaknesses').innerHTML = improve.slice(0,3).map(s=>`<div class="plan-mini-item">⚠️ ${s}</div>`).join('');
+  document.getElementById('planActions').innerHTML = advice.slice(0,5).map(a=>`<div class="plan-action-item"><span class="plan-action-check">✅</span><span>${a}</span></div>`).join('');
+}
+function setupScoreSharing(score, concours, prenom){
+  const text = encodeURIComponent(`${prenom || 'J\'ai'} obtenu ${score}% de compatibilité avec "${concours}" sur NextOri Success Score ! 🎯 Découvre ton propre score gratuitement :`);
+  const url = encodeURIComponent('https://nextori.sn');
+  document.getElementById('scoreShareRow').onclick = (e)=>{
+    const btn = e.target.closest('[data-scoreshare]');
+    if(!btn) return;
+    const type = btn.dataset.scoreshare;
+    if(type==='whatsapp') window.open('https://wa.me/?text='+text+'%20'+url, '_blank');
+    else if(type==='facebook') window.open('https://www.facebook.com/sharer/sharer.php?u='+url+'&quote='+text, '_blank');
+    else if(type==='copy'){ navigator.clipboard?.writeText(decodeURIComponent(text)+' https://nextori.sn'); showToast('🔗 Score copié, prêt à partager !'); }
+  };
+}
+function setupReferralCard(name){
+  const clean = (name || 'ELEVE').toUpperCase().replace(/[^A-Z]/g,'').slice(0,5) || 'AMI';
+  const code = 'NEXTORI-' + clean + Math.floor(1000 + Math.random()*9000);
+  document.getElementById('referralCode').textContent = code;
+  const invited = Math.floor(Math.random()*2); // demo: 0 or 1 déjà invités
+  document.getElementById('referralProgressFill').style.width = Math.round((invited/3)*100) + '%';
+  document.getElementById('referralProgressLabel').textContent = `${invited} / 3 amis inscrits`;
+  document.getElementById('referralCopyBtn').onclick = ()=>{
+    navigator.clipboard?.writeText(code);
+    showToast('📋 Code de parrainage copié !');
+  };
+  const referralMsg = encodeURIComponent(`Découvre NextOri, la plateforme qui t'aide à choisir tes études et concours au Sénégal ! Utilise mon code ${code} en t'inscrivant : https://nextori.sn`);
+  document.getElementById('referralShareWhatsapp').onclick = ()=> window.open('https://wa.me/?text='+referralMsg, '_blank');
+  document.getElementById('referralShareFacebook').onclick = ()=> window.open('https://www.facebook.com/sharer/sharer.php?u=https://nextori.sn&quote='+referralMsg, '_blank');
+}
+function renderOtherContests(score, currentConcoursName, technique, langues){
+  const domainBonus = { 'Ingénierie': technique.length ? 6 : 0, 'Administration': langues.length>=2 ? 4:0, 'Sécurité': 3, 'Santé': 2, 'Gestion': technique.length?4:0, 'Éducation': 3, 'Toutes filières': 5 };
+  const candidates = OTHER_CONTESTS
+    .filter(oc => !currentConcoursName || !oc.name.toLowerCase().includes(currentConcoursName.toLowerCase().split(' ').pop().toLowerCase()))
+    .map(oc => {
+      const bonus = domainBonus[oc.domaine] || 0;
+      const variance = Math.random()*10 - 5;
+      const pct = Math.round(Math.min(98, Math.max(35, score - 8 + bonus + variance)));
+      return { ...oc, pct };
+    })
+    .sort((a,b)=>b.pct - a.pct)
+    .slice(0,5);
+  const el = document.getElementById('otherContestsList');
+  el.innerHTML = candidates.map(c => `
+    <div class="other-contest-row">
+      <div class="oc-logo" style="background:${c.logoColor}; font-size:${c.logoIcon.length>3?'10px':'13px'};">${c.logoIcon}</div>
+      <div class="oc-info">
+        <div class="oc-name">${c.name}</div>
+        <div class="oc-sub">${c.establishment}</div>
+      </div>
+      <div class="oc-bar-wrap">
+        <div class="oc-bar-track"><div class="oc-bar-fill" data-pct="${c.pct}" style="background:${scoreColor(c.pct)};"></div></div>
+        <div class="oc-bar-pct" style="color:${scoreColor(c.pct)};">${c.pct}%</div>
+      </div>
+    </div>
+  `).join('');
+  // Animate bars in after render
+  setTimeout(()=>{
+    document.querySelectorAll('#otherContestsList .oc-bar-fill').forEach(bar=>{
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 200);
+}
+function renderList(containerId, items, type){
+  const el = document.getElementById(containerId);
+  const icon = type==='strength' ? '<span class="strength-icon">✅</span>' : '<span class="improve-icon">⚠️</span>';
+  const cls = type==='strength' ? 'strength-item' : 'improve-item';
+  el.innerHTML = items.map(txt => `<div class="${cls}">${icon}<span>${txt}</span></div>`).join('');
+}
+function renderGauges(list){
+  const el = document.getElementById('gaugeRow');
+  el.innerHTML = '';
+  list.forEach((g, i)=>{
+    const wrap = document.createElement('div');
+    wrap.className = 'gauge-item';
+    const circumference = 2 * Math.PI * 30;
+    wrap.innerHTML = `
+      <div class="gauge-circle-wrap">
+        <svg viewBox="0 0 74 74">
+          <circle class="gauge-track" cx="37" cy="37" r="30"/>
+          <circle class="gauge-fill" cx="37" cy="37" r="30" style="stroke:${g.color}; stroke-dasharray:${circumference}; stroke-dashoffset:${circumference};"/>
+        </svg>
+        <div class="gauge-pct">${g.value}%</div>
+      </div>
+      <div>
+        <div class="gauge-label">${g.label}</div>
+        <div class="gauge-sub">${g.sub}</div>
+      </div>
+    `;
+    el.appendChild(wrap);
+    const fillCircle = wrap.querySelector('.gauge-fill');
+    setTimeout(()=>{ fillCircle.style.strokeDashoffset = circumference * (1 - g.value/100); }, 150 + i*150);
+  });
+}
+function renderAdvice(list){
+  document.getElementById('adviceList').innerHTML = list.map(txt=>`<div class="advice-row"><span class="advice-pin">📌</span><span>${txt}</span></div>`).join('');
+}
+/* ============================= FINAL ACTION BUTTONS ============================= */
+document.getElementById('btnRedo').addEventListener('click', ()=>{
+  document.getElementById('resultsView').classList.remove('active');
+  document.getElementById('formView').classList.remove('hidden');
+  window.scrollTo(0,0);
+  document.getElementById('btnAnalyze').click();
+});
+document.getElementById('btnEdit').addEventListener('click', ()=>{
+  document.getElementById('resultsView').classList.remove('active');
+  document.getElementById('formView').classList.remove('hidden');
+  window.scrollTo(0,0);
+});
+document.getElementById('btnHome').addEventListener('click', ()=>{
+  goToConcoursHome();
+  showToast('🏠 Retour à l\'accueil Concours Sénégal');
+});
+document.getElementById('btnDownload').addEventListener('click', ()=>{
+  showToast('📄 Génération du rapport PDF en cours...');
+});
+document.getElementById('btnShareScore2').addEventListener('click', ()=>{
+  document.getElementById('scoreShareRow').scrollIntoView({behavior:'smooth', block:'center'});
+  showToast('👆 Choisis un canal juste au-dessus pour partager ton score');
+});
+document.getElementById('btnInviteFriends2').addEventListener('click', ()=>{
+  document.getElementById('referralCard').scrollIntoView({behavior:'smooth', block:'center'});
+  showToast('🎁 Invite tes amis avec ton code juste ici !');
+});
+document.getElementById('btnImproveScore').addEventListener('click', ()=>{
+  document.getElementById('planCard').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('btnViewPlan').addEventListener('click', ()=>{
+  document.getElementById('planCard').scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+</body>
+</html>

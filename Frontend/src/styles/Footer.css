@@ -1,0 +1,458 @@
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer {
+    width: 100%;
+    box-sizing: border-box;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    padding: 45px 24px 20px;
+}
+
+
+/* =========================
+   CONTENEUR PRINCIPAL
+========================= */
+
+.site-footer-container {
+    width: min(100%, 1200px);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+
+    gap: 50px;
+
+    align-items: start;
+}
+
+
+/* =========================
+   IDENTITÉ
+========================= */
+
+.site-footer-brand {
+    width: 100%;
+    max-width: 320px;
+}
+
+.site-footer-brand h2 {
+    margin: 0 0 15px;
+
+    color: #F4B400;
+
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.site-footer-brand p {
+    margin: 0;
+
+    color: #F2F4F7;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.site-footer-links {
+    width: 100%;
+}
+
+.site-footer-links h3,
+.site-footer-social h3 {
+    margin: 0 0 15px;
+
+    color: #F4B400;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* Liste des liens */
+
+.site-footer-link-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 8px 10px;
+
+    max-width: 360px;
+}
+
+
+/* Liens */
+
+.site-footer-links a {
+    color: #FFFFFF;
+
+    font-size: 14px;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.site-footer-links a:hover {
+    color: #F4B400;
+}
+
+
+/* Séparateurs */
+
+.footer-separator {
+    color: #F4B400;
+
+    font-weight: bold;
+
+    margin: 0 2px;
+}
+
+
+/* =========================
+   RÉSEAUX SOCIAUX
+========================= */
+
+.site-footer-social {
+    width: 100%;
+}
+
+
+/*
+   IMPORTANT :
+   On cible uniquement .social-links
+   et non tous les div du footer.
+*/
+
+.social-links {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 12px;
+
+    max-width: 260px;
+}
+
+
+/* Icônes */
+
+.site-footer-social .social-links a {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: #FFFFFF;
+
+    font-size: 21px;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease;
+}
+
+
+/* SVG React */
+
+.site-footer-social .social-links svg {
+    width: 21px;
+    height: 21px;
+
+    display: block;
+}
+
+
+/* Hover */
+
+.site-footer-social .social-links a:hover {
+    transform: translateY(-4px);
+
+    background: #F4B400;
+
+    color: #0D1B2A;
+}
+
+
+/* =========================
+   BAS DU FOOTER
+========================= */
+
+.site-footer-bottom {
+    width: min(100%, 1200px);
+
+    margin: 35px auto 0;
+
+    padding-top: 18px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+    text-align: center;
+}
+
+.site-footer-bottom p {
+    margin: 0;
+
+    color: #F2F4F7;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   TABLETTE
+========================= */
+
+@media (max-width: 900px) {
+
+    .site-footer {
+        padding: 40px 22px 20px;
+    }
+
+    .site-footer-container {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 40px 35px;
+    }
+
+    /*
+       La marque prend toute la première ligne.
+    */
+
+    .site-footer-brand {
+        grid-column: 1 / -1;
+
+        max-width: 420px;
+    }
+
+    .site-footer-brand h2 {
+        font-size: 24px;
+    }
+
+    .site-footer-brand p {
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .site-footer {
+        padding: 35px 18px 18px;
+    }
+
+
+    .site-footer-container {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 30px;
+
+        width: 100%;
+    }
+
+
+    .site-footer-brand,
+    .site-footer-links,
+    .site-footer-social {
+        width: 100%;
+
+        max-width: none;
+    }
+
+
+    .site-footer-brand h2 {
+        font-size: 23px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .site-footer-brand p {
+        max-width: 360px;
+
+        font-size: 14px;
+
+        line-height: 1.65;
+    }
+
+
+    .site-footer-links h3,
+    .site-footer-social h3 {
+        font-size: 16px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .site-footer-link-list {
+        width: 100%;
+
+        max-width: 100%;
+
+        gap: 7px 9px;
+    }
+
+
+    .site-footer-links a {
+        font-size: 13px;
+    }
+
+
+    .footer-separator {
+        margin: 0;
+    }
+
+
+    /* Réseaux */
+
+    .social-links {
+        width: 100%;
+
+        max-width: 100%;
+
+        gap: 10px;
+    }
+
+
+    .site-footer-social .social-links a {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 11px;
+
+        font-size: 19px;
+    }
+
+
+    .site-footer-social .social-links svg {
+        width: 19px;
+        height: 19px;
+    }
+
+
+    /* Bas */
+
+    .site-footer-bottom {
+        margin-top: 28px;
+
+        padding-top: 14px;
+    }
+
+
+    .site-footer-bottom p {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================
+   TRÈS PETITS ÉCRANS
+========================= */
+
+@media (max-width: 380px) {
+
+    .site-footer {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+
+    .site-footer-container {
+        gap: 25px;
+    }
+
+
+    .site-footer-brand h2 {
+        font-size: 21px;
+    }
+
+
+    .site-footer-brand p {
+        font-size: 13px;
+    }
+
+
+    .site-footer-links a {
+        font-size: 12px;
+    }
+
+
+    .site-footer-social .social-links {
+        gap: 8px;
+    }
+
+
+    .site-footer-social .social-links a {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .site-footer-social .social-links svg {
+        width: 18px;
+        height: 18px;
+    }
+
+
+    .site-footer-bottom p {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
+.footer-logo {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 550px) {
+
+    .footer-logo {
+        width: 60px;
+        margin-bottom: 12px;
+    }
+
+}
+
+

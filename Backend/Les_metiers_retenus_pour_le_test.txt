@@ -1,0 +1,125 @@
+1 - Développeur Web
+2 - Data Scientist
+4 - Médecin
+5 - Avocat
+8 - Administrateur Réseau
+9 - Data Analyst
+10 - Ingénieur Logiciel
+14 - Expert Cybersécurité
+15 - Administrateur Base de Données
+16 - Ingénieur Cloud et DevOps
+17 - UX/UI Designer
+18 - Ingénieur Intelligence Artificielle
+20 - Administrateur Systèmes
+22 - Technicien Support Informatique
+24 - Pharmacien
+25 - Infirmier
+26 - Sage-femme
+27 - Dentiste
+28 - Biologiste Médical
+29 - Technicien de Laboratoire Médical
+30 - Vétérinaire
+31 - Psychologue
+32 - Nutritionniste / Diététicien
+33 - Kinésithérapeute
+34 - Ingénieur Biomédical
+37 - Manipulateur en Imagerie Médicale
+38 - Assistant Médical
+39 - Technicien en Pharmacie
+41 - Architecte
+42 - Conducteur de Travaux
+45 - Géomètre-Topographe
+46 - Technicien Génie Civil
+47 - Dessinateur-Projeteur BTP
+48 - Urbaniste
+49 - Ingénieur Environnement et Construction Durable
+50 - Ingénieur Routes et Transports
+68 - Métreur / Économiste de la Construction
+69 - Électricien Bâtiment
+71 - Géomaticien BTP
+72 - Logisticien
+75 - Responsable Import-Export
+76 - Agent Transit / Déclarant en Douane
+79 - Gestionnaire des Stocks
+81 - Analyste Supply Chain
+82 - Ingénieur Énergétique
+83 - Ingénieur Pétrole et Gaz
+84 - Ingénieur Mines et Géologie
+85 - Ingénieur Industriel
+87 - Technicien Maintenance Industrielle
+88 - Ingénieur Automatisme Industriel
+89 - Ingénieur HSE (Hygiène Sécurité Environnement)
+90 - Responsable Production Industrielle
+92 - Ingénieur Agronome
+93 - Ingénieur Agroalimentaire
+94 - Technicien Agricole
+95 - Responsable Production Agricole
+98 - Contrôleur Qualité Agroalimentaire
+99 - Ingénieur Élevage et Productions Animales
+100 - Technicien Agroalimentaire
+101 - Agripreneur
+102 - Analyste Financier
+103 - Contrôleur de Gestion
+104 - Auditeur Financier
+105 - Gestionnaire de Banque
+106 - Chargé de Clientèle Banque
+108 - Analyste Crédit
+109 - Gestionnaire Assurance
+110 - Expert Finance Digitale et Fintech
+112 - Juriste d’entreprise
+113 - Magistrat
+114 - Administrateur public
+115 - Inspecteur des finances publiques
+116 - Chargé de projet développement
+117 - Spécialiste Passation des Marchés Publics
+118 - Économiste
+119 - Sociologue
+120 - Analyste des politiques publiques
+121 - Gestionnaire de projet humanitaire
+122 - Enseignant / Professeur
+123 - Enseignant-chercheur
+124 - Formateur professionnel
+125 - Ingénieur pédagogique
+126 - Concepteur pédagogique numérique
+127 - Chercheur scientifique
+128 - Conseiller d’orientation scolaire et professionnel
+129 - Responsable Formation
+130 - Statisticien chercheur / Chargé d’études
+131 - Chargé de communication
+132 - Journaliste
+133 - Community Manager
+134 - Graphiste Designer
+135 - Designer Multimédia
+136 - Réalisateur audiovisuel
+137 - Technicien audiovisuel
+138 - Responsable événementiel
+139 - Chargé des relations publiques
+140 - Responsable hôtelier
+142 - Réceptionniste hôtelier
+143 - Agent de voyage / Conseiller voyage
+144 - Guide touristique professionnel
+145 - Responsable restauration
+146 - Chef cuisinier professionnel
+147 - Pâtissier professionnel
+148 - Assistant comptable
+149 - Expert-comptable
+150 - Fiscaliste
+151 - Comptable public
+154 - Spécialiste marketing digital
+155 - Commercial
+156 - Business developer
+157 - Spécialiste e-commerce
+159 - Entrepreneur / Consultant en développement commercial
+160 - Ingénieur télécommunications
+161 - Technicien réseaux et télécommunications
+162 - Ingénieur réseaux mobiles (4G/5G)
+164 - Technicien fibre optique
+167 - Gestionnaire des ressources humaines
+168 - Consultant en ressources humaines
+169 - Psychologue du travail
+170 - Coach professionnel
+171 - Spécialiste développement organisationnel
+172 - Assistant de direction
+173 - Secrétaire de direction
+174 - Gestionnaire administratif
+175 - Office Manager

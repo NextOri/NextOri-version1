@@ -1,0 +1,843 @@
+/* ===========================
+   PAGE
+=========================== */
+
+.metiers-page {
+    width: 90%;
+    
+    max-width: none;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 75px;
+}
+
+
+
+/* ===========================
+   HEADER
+=========================== */
+
+.metiers-header{
+
+    background:#0D1B2A;
+
+    padding:25px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    margin-bottom:25px;
+
+
+}
+
+
+.metiers-header h1{
+
+    color:#FFFFFF;
+
+    font-size:2rem;
+
+    margin-bottom:10px;
+
+
+}
+
+
+.metiers-header p{
+
+    color:#FFFFFF;
+
+    font-size:1rem;
+
+}
+
+
+
+/* ===========================
+   FILTRES
+=========================== */
+
+/* ===========================
+   FILTRES
+=========================== */
+
+.metiers-filtres {
+
+    position: sticky;
+    top: 10px;
+
+    z-index: 100;
+
+    background: #FFFFFF;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    box-shadow: 0 8px 20px rgba(13, 27, 42, 0.10);
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1fr;
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+
+.filtre-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+.filtre-item label{
+
+    margin-bottom:8px;
+
+    color:#0D1B2A;
+
+    font-weight:600;
+
+    font-size:14px;
+
+}
+
+
+.metiers-search,
+.filtre-item select{
+
+    padding:13px 15px;
+
+    border:1px solid #D9DDE3;
+
+    border-radius:12px;
+
+    background:#FFFFFF;
+
+    font-size:15px;
+
+    transition:.3s;
+
+    outline:none;
+
+}
+
+
+.metiers-search:focus,
+.filtre-item select:focus{
+
+    border-color:#1E3A8A;
+
+    box-shadow:0 0 0 3px rgba(30,58,138,.15);
+
+}
+
+.metiers-search:focus,
+.metiers-filtres select:focus{
+
+    border-color:#1E3A8A;
+
+    box-shadow:0 0 0 3px rgba(30,58,138,.15);
+
+}
+
+
+
+/* ===========================
+   LISTE
+=========================== */
+
+.metiers-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:25px;
+
+    margin-bottom: 40px;
+
+}
+
+
+
+/* ===========================
+   CARTE
+=========================== */
+
+.metier-card{
+
+    background:#FFFFFF;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    box-shadow:0 10px 25px rgba(13,27,42,.08);
+
+    border:1px solid #E8ECF2;
+
+    border-top:5px solid #F4B400;
+
+    transition:all .30s ease;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow: hidden;
+
+}
+
+
+.metier-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 35px rgba(13,27,42,.15);
+
+}
+
+
+.metier-card h2{
+
+    color:#0D1B2A;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    margin-bottom:14px;
+
+}
+
+
+.metier-card p{
+
+    color:#555;
+
+    line-height:1.7;
+
+    margin-bottom:12px;
+
+    font-size:15px;
+
+}
+
+
+.metier-card strong{
+
+    color:#1E3A8A;
+
+    font-weight:600;
+
+}
+
+.metier-top-bar{
+
+    width:100%;
+
+    height:4px;
+
+    background:#F4B400;
+
+    border-radius: 10px;
+
+    margin-bottom:18px;
+
+}
+
+
+
+/* ===========================
+   TENDANCE
+=========================== */
+
+.metier-card p:last-of-type{
+
+    margin-top:8px;
+
+    margin-bottom:18px;
+
+}
+
+.metier-card p:last-of-type strong{
+
+    background:#EAF2FF;
+
+    color:#1E3A8A;
+
+    padding:6px 12px;
+
+    border-radius:25px;
+
+    font-size:13px;
+
+}
+
+
+
+/* ===========================
+   BOUTON
+=========================== */
+
+.metier-button{
+
+    margin-top:auto;
+
+    width:100%;
+
+    padding:13px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#1E3A8A;
+
+    color:#FFFFFF;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+
+.metier-button:hover{
+
+    background:#0D1B2A;
+
+    letter-spacing:.3px;
+
+}
+
+.metier-button:active{
+
+    transform:scale(.98);
+
+}
+
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .metiers-filtres{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+/* ===========================
+   NOMBRE DE RESULTATS
+=========================== */
+
+.metiers-count{
+
+    margin-bottom:20px;
+
+    color:#1E3A8A;
+
+    font-weight:600;
+
+    font-size:15px;
+
+}
+
+
+/* ===========================
+   AUCUN RESULTAT
+=========================== */
+
+.aucun-metier{
+
+    width:100%;
+
+    grid-column:1/-1;
+
+    text-align:center;
+
+    background:#FFFFFF;
+
+    padding:50px 20px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.aucun-metier h2{
+
+    color:#0D1B2A;
+
+    margin-bottom:10px;
+
+}
+
+.aucun-metier p{
+
+    color:#666;
+
+}
+
+
+.tendance-badge{
+
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    margin-left:8px;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+.tendance-tres-forte{
+
+    background:#DFF8E7;
+
+    color:#0A7A38;
+
+}
+
+
+.tendance-forte{
+
+    background:#E8F5E9;
+
+    color:#2E7D32;
+
+}
+
+
+.tendance-croissance{
+
+    background:#FFF3D6;
+
+    color:#D88900;
+
+}
+
+
+.tendance-stable{
+
+    background:#ECEFF1;
+
+    color:#546E7A;
+
+}
+
+
+.tendance-baisse{
+
+    background:#FDE7E7;
+
+    color:#C62828;
+
+}
+
+/* ===========================
+   ICÔNES REACT
+=========================== */
+
+.metiers-header h1,
+.filtre-item label,
+.metier-card strong,
+.aucun-metier h2,
+.tendance-badge {
+    display: inline-flex;
+    align-items: center;
+}
+
+.metiers-header h1 {
+    justify-content: center;
+    gap: 10px;
+}
+
+.metiers-header-icon {
+    color: #F4B400;
+}
+
+.filtre-item label {
+    gap: 7px;
+}
+
+.filtre-item label svg {
+    color: #1E3A8A;
+    font-size: 14px;
+}
+
+.metier-card strong {
+    gap: 6px;
+}
+
+.metier-card strong svg {
+    color: #1E3A8A;
+    flex-shrink: 0;
+}
+
+.tendance-badge svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.aucun-metier h2 {
+    justify-content: center;
+    gap: 8px;
+}
+
+.aucun-metier h2 svg {
+    color: #F4B400;
+}
+
+
+/* ===========================
+   TABLETTE
+=========================== */
+
+@media (max-width: 900px) {
+
+    .metiers-page {
+        width: 94%;
+        padding: 16px;
+    }
+
+    .metiers-header {
+        padding: 22px 18px;
+        margin-bottom: 20px;
+    }
+
+    .metiers-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .metiers-header p {
+        font-size: .95rem;
+        line-height: 1.6;
+    }
+
+    .metiers-filtres {
+        padding: 20px;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .metiers-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .metier-card {
+        padding: 20px;
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 600px) {
+
+    .metiers-page {
+        width: 100%;
+        padding: 12px 12px 70px;
+    }
+
+    .metiers-header {
+        padding: 20px 15px;
+        border-radius: 18px;
+        margin-bottom: 15px;
+    }
+
+    .metiers-header h1 {
+        font-size: 1.45rem;
+        line-height: 1.3;
+        gap: 8px;
+    }
+
+    .metiers-header-icon {
+        font-size: 20px;
+    }
+
+    .metiers-header p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* FILTRES */
+
+    .metiers-filtres {
+        position: sticky;
+        top: 0;
+        padding: 16px;
+        border-radius: 18px;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .filtre-item {
+        width: 100%;
+    }
+
+    .filtre-item label {
+        font-size: 13px;
+        margin-bottom: 6px;
+    }
+
+    .metiers-search,
+    .filtre-item select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 12px;
+        font-size: 14px;
+    }
+
+
+    /* COMPTEUR */
+
+    .metiers-count {
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+
+    /* CARTES */
+
+    .metiers-list {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .metier-card {
+        padding: 18px;
+        border-radius: 17px;
+        border-top-width: 4px;
+    }
+
+    .metier-card h2 {
+        font-size: 19px;
+        line-height: 1.35;
+        margin-bottom: 12px;
+    }
+
+    .metier-top-bar {
+        height: 3px;
+        margin-bottom: 15px;
+    }
+
+    .metier-card p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .metier-card strong {
+        gap: 5px;
+    }
+
+    .metier-card strong svg {
+        font-size: 13px;
+    }
+
+
+    /* TENDANCE */
+
+    .tendance-badge {
+        margin-left: 5px;
+        padding: 4px 8px;
+        font-size: 12px;
+        gap: 5px;
+    }
+
+    .tendance-badge svg {
+        width: 12px;
+        height: 12px;
+    }
+
+
+    /* BOUTON */
+
+    .metier-button {
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 11px;
+    }
+
+
+    /* AUCUN RÉSULTAT */
+
+    .aucun-metier {
+        padding: 35px 15px;
+        border-radius: 16px;
+    }
+
+    .aucun-metier h2 {
+        font-size: 19px;
+    }
+
+    .aucun-metier p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+}
+
+
+/* ===========================
+   TRÈS PETIT MOBILE
+=========================== */
+
+@media (max-width: 380px) {
+
+    .metiers-page {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .metiers-header {
+        padding: 17px 12px;
+    }
+
+    .metiers-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .metiers-header p {
+        font-size: 12px;
+    }
+
+    .metiers-filtres {
+        padding: 13px;
+    }
+
+    .metier-card {
+        padding: 15px;
+    }
+
+    .metier-card h2 {
+        font-size: 18px;
+    }
+
+    .metier-card p {
+        font-size: 13px;
+    }
+
+    .metier-button {
+        font-size: 13px;
+    }
+
+}
+
+/* =========================================================
+   CHARGEMENT DES MÉTIERS
+========================================================= */
+
+.metiers-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+    padding: 40px 20px;
+
+    background: #FFFFFF;
+    border-radius: 18px;
+    text-align: center;
+}
+
+
+/* Cercle de chargement */
+
+.metiers-loading-spinner {
+    width: 42px;
+    height: 42px;
+
+    border: 4px solid #F2F4F7;
+    border-top-color: #F4B400;
+
+    border-radius: 50%;
+
+    animation: metiers-spin 0.8s linear infinite;
+
+    margin-bottom: 18px;
+}
+
+
+/* Texte */
+
+.metiers-loading h2 {
+    margin: 0 0 8px;
+
+    color: #0D1B2A;
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+.metiers-loading p {
+    margin: 0;
+
+    color: #1E3A8A;
+
+    font-size: 0.9rem;
+}
+
+
+/* Animation */
+
+@keyframes metiers-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* Accessibilité */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .metiers-loading-spinner {
+        animation: none;
+    }
+
+}

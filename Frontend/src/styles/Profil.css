@@ -1,0 +1,1055 @@
+/* =========================================================
+   NEXTORI — PROFIL
+   Charte :
+   #0D1B2A
+   #1E3A8A
+   #F2F4F7
+   #F4B400
+   #FFFFFF
+   ========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+:root {
+
+    --nextori-dark: #0D1B2A;
+    --nextori-blue: #1E3A8A;
+    --nextori-bg: #F2F4F7;
+    --nextori-gold: #F4B400;
+    --nextori-white: #FFFFFF;
+
+    --nextori-text-soft: #64748B;
+    --nextori-border: #E2E8F0;
+
+    --nextori-radius-lg: 22px;
+    --nextori-radius-md: 16px;
+    --nextori-radius-sm: 12px;
+
+    --nextori-shadow:
+        0 10px 30px rgba(13, 27, 42, 0.07);
+
+    --nextori-shadow-hover:
+        0 18px 40px rgba(13, 27, 42, 0.12);
+
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.profile-page {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(30, 58, 138, 0.07),
+            transparent 32%
+        ),
+        var(--nextori-bg);
+
+    color: var(--nextori-dark);
+
+    padding: 40px 20px 110px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.profile-container {
+
+    width: 100%;
+
+    max-width: 860px;
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+
+}
+
+
+/* =========================================================
+   HEADER PROFIL
+   ========================================================= */
+
+.profile-header {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--nextori-dark),
+            var(--nextori-blue)
+        );
+
+    color: var(--nextori-white);
+
+    border-radius: var(--nextori-radius-lg);
+
+    padding: 38px 36px;
+
+    text-align: center;
+
+    box-shadow:
+        0 16px 40px rgba(13, 27, 42, 0.18);
+
+}
+
+
+/* Décoration discrète */
+
+.profile-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+
+    background: rgba(244, 180, 0, 0.08);
+
+    top: -90px;
+    right: -50px;
+
+}
+
+
+.profile-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 120px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    bottom: -60px;
+    left: -30px;
+
+}
+
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.profile-avatar {
+
+    position: relative;
+
+    z-index: 1;
+
+    width: 92px;
+    height: 92px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: var(--nextori-white);
+
+    color: var(--nextori-blue);
+
+    border: 5px solid rgba(244, 180, 0, 0.9);
+
+    font-size: 28px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.18);
+
+}
+
+
+.profile-header h1 {
+
+    position: relative;
+
+    z-index: 1;
+
+    margin: 0;
+
+    font-size: clamp(26px, 4vw, 34px);
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+
+}
+
+
+.profile-header p {
+
+    position: relative;
+
+    z-index: 1;
+
+    margin: 8px 0 0;
+
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
+   SECTION INFORMATIONS
+   ========================================================= */
+
+.profile-section {
+
+    background: var(--nextori-white);
+
+    border: 1px solid var(--nextori-border);
+
+    border-radius: var(--nextori-radius-lg);
+
+    padding: 28px;
+
+    box-shadow: var(--nextori-shadow);
+
+}
+
+
+.profile-section h2 {
+
+    margin: 0 0 22px;
+
+    color: var(--nextori-dark);
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.2px;
+
+}
+
+
+/* =========================================================
+   INFORMATIONS
+   ========================================================= */
+
+.info-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    padding: 17px 4px;
+
+    border-bottom: 1px solid var(--nextori-border);
+
+}
+
+
+.info-item:last-child {
+
+    border-bottom: none;
+
+    padding-bottom: 4px;
+
+}
+
+
+.info-item svg {
+
+    flex-shrink: 0;
+
+    width: 20px;
+    height: 20px;
+
+    color: var(--nextori-blue);
+
+    stroke-width: 2;
+
+}
+
+
+.info-item > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    min-width: 0;
+
+}
+
+
+.info-item span {
+
+    color: var(--nextori-text-soft);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.info-item strong {
+
+    color: var(--nextori-dark);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* =========================================================
+   HISTORIQUE DES TESTS
+   ========================================================= */
+
+.profil-tests-history {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: var(--nextori-white);
+
+    border: 1px solid var(--nextori-border);
+
+    border-radius: var(--nextori-radius-lg);
+
+    padding: 28px;
+
+    box-shadow: var(--nextori-shadow);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+.profil-tests-history:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow: var(--nextori-shadow-hover);
+
+}
+
+
+/* petite ligne d'accent */
+
+.profil-tests-history::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--nextori-blue),
+            var(--nextori-gold)
+        );
+
+}
+
+
+/* =========================================================
+   HEADER HISTORIQUE
+   ========================================================= */
+
+.profil-tests-history-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+}
+
+
+.profil-tests-history-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+
+.profil-tests-history-icon {
+
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(30, 58, 138, 0.09);
+
+    color: var(--nextori-blue);
+
+}
+
+
+.profil-tests-history-icon svg {
+
+    width: 23px;
+    height: 23px;
+
+    stroke-width: 2;
+
+}
+
+
+.profil-tests-history-title span {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--nextori-blue);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+
+}
+
+
+.profil-tests-history-title h2 {
+
+    margin: 0;
+
+    color: var(--nextori-dark);
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   COMPTEUR
+   ========================================================= */
+
+.profil-tests-history-count {
+
+    min-width: 100px;
+
+    padding: 11px 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        rgba(244, 180, 0, 0.11);
+
+    border: 1px solid rgba(244, 180, 0, 0.28);
+
+}
+
+
+.profil-tests-history-count strong {
+
+    color: var(--nextori-dark);
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    font-weight: 900;
+
+}
+
+
+.profil-tests-history-count span {
+
+    margin-top: 5px;
+
+    color: #8A6500;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-align: center;
+
+}
+
+
+/* =========================================================
+   CONTENU HISTORIQUE
+   ========================================================= */
+
+.profil-tests-history-content {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid var(--nextori-border);
+
+}
+
+
+.profil-tests-history-description {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.profil-tests-history-description svg {
+
+    flex-shrink: 0;
+
+    width: 21px;
+    height: 21px;
+
+    color: var(--nextori-blue);
+
+}
+
+
+.profil-tests-history-description p {
+
+    margin: 0;
+
+    max-width: 470px;
+
+    color: var(--nextori-text-soft);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   BOUTON HISTORIQUE
+   ========================================================= */
+
+.profil-tests-history-button {
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 46px;
+
+    padding: 0 19px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--nextori-blue);
+
+    color: var(--nextori-white);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 16px rgba(30, 58, 138, 0.2);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.profil-tests-history-button svg {
+
+    width: 18px;
+    height: 18px;
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.profil-tests-history-button:hover {
+
+    background: var(--nextori-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 22px rgba(13, 27, 42, 0.22);
+
+}
+
+
+.profil-tests-history-button:hover svg {
+
+    transform: translateX(3px);
+
+}
+
+
+.profil-tests-history-button:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+   ========================================================= */
+
+.logout-button {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid rgba(220, 38, 38, 0.18);
+
+    border-radius: 14px;
+
+    background: var(--nextori-white);
+
+    color: #B42318;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.logout-button svg {
+
+    width: 18px;
+    height: 18px;
+
+}
+
+
+.logout-button:hover {
+
+    background: #FFF5F4;
+
+    border-color: rgba(180, 35, 24, 0.3);
+
+    transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   PAGE NON CONNECTÉ
+   ========================================================= */
+
+.non-connecte-profil-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 30px 20px 100px;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(30, 58, 138, 0.08),
+            transparent 40%
+        ),
+        var(--nextori-bg);
+
+    box-sizing: border-box;
+
+}
+
+
+.profil-non-connecte {
+
+    width: 100%;
+
+    max-width: 470px;
+
+    padding: 42px 32px;
+
+    background: var(--nextori-white);
+
+    border: 1px solid var(--nextori-border);
+
+    border-radius: var(--nextori-radius-lg);
+
+    box-shadow: var(--nextori-shadow);
+
+    text-align: center;
+
+}
+
+
+.profil-non-connecte-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--nextori-blue);
+
+    color: var(--nextori-white);
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+}
+
+
+.profil-non-connecte h1 {
+
+    margin: 0;
+
+    color: var(--nextori-dark);
+
+    font-size: 28px;
+
+    font-weight: 800;
+
+}
+
+
+.profil-non-connecte p {
+
+    margin: 12px 0 25px;
+
+    color: var(--nextori-text-soft);
+
+    line-height: 1.6;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   CONNEXION
+   ========================================================= */
+
+.profil-login-button {
+
+    min-height: 46px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: var(--nextori-blue);
+
+    color: var(--nextori-white);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.profil-login-button:hover {
+
+    background: var(--nextori-dark);
+
+    transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+.profil-tests-history-button:focus-visible,
+.logout-button:focus-visible,
+.profil-login-button:focus-visible {
+
+    outline: 3px solid rgba(244, 180, 0, 0.45);
+
+    outline-offset: 3px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .profile-page {
+
+        padding:
+            24px
+            14px
+            100px;
+
+    }
+
+
+    .profile-header {
+
+        padding: 32px 22px;
+
+    }
+
+
+    .profile-section,
+    .profil-tests-history {
+
+        padding: 22px 18px;
+
+    }
+
+
+    .profil-tests-history-content {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: 18px;
+
+    }
+
+
+    .profil-tests-history-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .profile-page {
+
+        padding:
+            18px
+            12px
+            95px;
+
+    }
+
+
+    .profile-header {
+
+        border-radius: 18px;
+
+        padding: 28px 18px;
+
+    }
+
+
+    .profile-avatar {
+
+        width: 78px;
+        height: 78px;
+
+        font-size: 24px;
+
+    }
+
+
+    .profile-section,
+    .profil-tests-history {
+
+        border-radius: 18px;
+
+        padding: 20px 16px;
+
+    }
+
+
+    .profil-tests-history-header {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+    }
+
+
+    .profil-tests-history-count {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        flex-direction: row;
+
+        justify-content: flex-start;
+
+        gap: 10px;
+
+    }
+
+
+    .profil-tests-history-count span {
+
+        margin-top: 0;
+
+    }
+
+
+    .info-item {
+
+        gap: 12px;
+
+        padding: 15px 2px;
+
+    }
+
+
+    .info-item svg {
+
+        width: 18px;
+        height: 18px;
+
+    }
+
+}

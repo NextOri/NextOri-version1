@@ -1,0 +1,3010 @@
+/* ===========================
+   PAGE
+=========================== */
+
+.dashboard-page{
+
+    width:100%;
+
+    min-height:100vh;
+
+    background:#F2F4F7;
+
+    padding-bottom:75px;
+
+}
+
+.dashboard-page svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+
+
+/* ===========================
+   HEADER
+=========================== */
+
+.dashboard-header{
+
+    
+
+    background:#0D1B2A;
+
+    padding:35px 25px 40px;
+
+    border-bottom-left-radius:25px;
+
+    border-bottom-right-radius:25px;
+
+}
+
+
+
+.dashboard-subtitle{
+
+    color:#FFFFFF;
+
+    opacity:0.8;
+
+    font-size:16px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+.dashboard-header h1{
+
+    font-size:38px;
+
+    font-weight:800;
+
+    color:#FFFFFF;
+
+}
+
+
+
+.dashboard-header span{
+
+    color:#F4B400;
+
+}
+
+/* ===========================
+   LOGO NEXTORI
+=========================== */
+
+.dashboard-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+.dashboard-logo{
+
+    width:90px;
+
+    height:100px;
+
+    object-fit:contain;
+
+    flex-shrink:0;
+
+}
+
+
+.dashboard-brand > div{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+.dashboard-brand .dashboard-subtitle{
+
+    margin:0 0 5px;
+
+}
+
+
+.dashboard-brand h1{
+
+    margin:0;
+
+}
+
+
+
+/* ===========================
+   CARTES
+=========================== */
+
+.level-card,
+.statistics-section,
+.welcome-card,
+.orientation-path,
+.action-button-section,
+.quick-actions,
+.project-card,
+.help-card,
+.badges-section{
+    width:min(94%, 980px);
+    margin:0 auto;
+}
+
+
+
+/* Décalage des cartes */
+
+.level-card{
+
+    margin-top:-40px;
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+}
+
+
+
+/* Style commun */
+
+.level-card,
+.welcome-card,
+.orientation-path,
+.project-card,
+.help-card{
+
+    background:#FFFFFF;
+
+    border-radius:18px;
+
+    box-shadow:0 10px 25px rgba(13,27,42,0.08);
+
+    padding:16px;
+
+    margin-bottom:18px;
+
+}
+
+/* ===========================
+   CARTE NIVEAU
+=========================== */
+
+.level-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.level-header h2{
+
+    color:#0D1B2A;
+
+    font-size:26px;
+
+    font-weight:700;
+
+}
+
+
+
+.level-header span{
+
+    background:#F4B400;
+
+    color:#0D1B2A;
+
+    padding:8px 18px;
+
+    border-radius:30px;
+
+    font-weight:700;
+
+}
+
+
+
+/* Barre */
+
+.progress-bar{
+
+    width:100%;
+
+    height:14px;
+
+    background:#E5E7EB;
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+}
+
+
+
+.progress-fill{
+
+    width:60%;
+
+    height:100%;
+
+    background:#F4B400;
+
+    border-radius:30px;
+
+}
+
+
+
+.progress-text{
+
+    margin-top:15px;
+
+    text-align:center;
+
+    color:#1E3A8A;
+
+    font-weight:600;
+
+}
+
+/* ===========================
+   STATISTIQUES
+=========================== */
+
+.statistics-section{
+
+    width:min(90%, 980px);
+
+    margin:25px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+
+
+.stat-card{
+
+    background:#FFFFFF;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    text-align:center;
+
+    box-shadow:0 8px 20px rgba(13,27,42,0.08);
+
+    transition:0.3s;
+
+}
+
+
+
+.stat-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+
+.stat-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 10px;
+    border-radius: 16px;
+    background: #FFF4CC;
+    color: #0D1B2A;
+}
+
+.stat-card h3 svg {
+    width: 25px;
+    height: 25px;
+    color: #F4B400;
+    stroke: #F4B400;
+}
+
+
+
+.stat-card h2{
+
+    color:#1E3A8A;
+
+    font-size:24px;
+
+    margin-bottom:6px;
+
+}
+
+
+
+.stat-card p{
+
+    color:#0D1B2A;
+
+    font-weight:600;
+
+}
+
+
+/* ===============================
+   WELCOME CARD - NEXTORI
+================================ */
+
+
+.welcome-card{
+
+background:#FFFFFF;
+
+border-radius:24px;
+
+padding:30px;
+
+margin:35px auto 18px;
+
+box-shadow:0 12px 35px rgba(13,27,42,0.08);
+
+display:flex;
+
+flex-direction:column;
+
+gap:25px;
+
+}
+
+
+/* Partie principale */
+
+.welcome-content{
+
+display:flex;
+
+align-items:flex-start;
+
+gap:20px;
+
+}
+
+
+/* Icône */
+
+.welcome-icon {
+    width: 65px;
+    height: 65px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    box-shadow:
+        0 10px 25px rgba(30, 58, 138, 0.25);
+}
+
+.welcome-icon svg {
+    width: 30px;
+    height: 30px;
+
+    color: #FFFFFF;
+
+    stroke: #FFFFFF;
+
+    stroke-width: 2;
+}
+
+
+/* Texte */
+
+.welcome-content h2{
+
+font-size:26px;
+
+font-weight:700;
+
+color:#0D1B2A;
+
+margin-bottom:12px;
+
+}
+
+
+.welcome-content p{
+
+font-size:16px;
+
+line-height:1.8;
+
+color:#555;
+
+}
+
+
+/* Zone A propos */
+
+
+
+.welcome-about {
+    margin-top: 25px;
+    padding: 25px;
+    background: #F2F4F7;
+    border-radius: 15px;
+}
+
+
+.welcome-about h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #0D1B2A;
+}
+
+
+.welcome-about p {
+    line-height: 1.8;
+    font-size: 16px;
+    color: #555;
+}
+
+
+
+/* Responsive */
+
+@media(max-width:768px){
+
+
+.welcome-content{
+
+flex-direction:column;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+
+.welcome-action{
+
+flex-direction:column;
+
+}
+
+
+.primary-dashboard-button{
+
+width:100%;
+
+}
+
+
+}
+
+
+/* ===========================
+   ACTIONS RAPIDES
+=========================== */
+
+
+.quick-actions{
+
+    width:min(90%, 980px);
+
+    margin:20px auto;
+
+}
+
+
+
+.quick-actions h2{
+
+    color:#0D1B2A;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.actions-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+
+
+.action-card{
+
+    background:#FFFFFF;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    box-shadow:0 8px 20px rgba(13,27,42,0.08);
+
+    position: relative;
+
+}
+
+.action-card > svg {
+    width: 32px;
+    height: 32px;
+
+    margin-bottom: 8px;
+
+    color: #1E3A8A;
+
+    stroke: currentColor;
+
+    stroke-width: 2;
+}
+
+.action-card .action-icon {
+    color: #1E3A8A;
+    stroke: #1E3A8A;
+}
+
+
+
+.action-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+
+
+
+
+.action-card h3{
+
+    color:#1E3A8A;
+
+    margin:10px 0;
+
+}
+
+
+
+.action-card p{
+
+    color:#0D1B2A;
+
+    font-size:14px;
+
+}
+
+
+/* ===========================
+   PROJET D'AVENIR
+=========================== */
+
+
+.project-card h2 {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #0D1B2A;
+
+    font-size: 26px;
+
+    margin-bottom: 15px;
+}
+
+.project-card h2 svg {
+    width: 25px;
+    height: 25px;
+
+    color: #F4B400;
+
+    stroke: currentColor;
+
+    stroke-width: 2.2;
+}
+
+
+.project-card p{
+
+    color:#0D1B2A;
+
+    line-height:1.5;
+
+}
+
+
+
+.project-steps{
+
+    margin-top:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+
+.project-step{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+
+.project-step span{
+
+    width:35px;
+
+    height:35px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:50%;
+
+    background:#F4B400;
+
+    color:#0D1B2A;
+
+    font-weight:700;
+
+}
+
+
+
+.project-step p{
+
+    margin:0;
+
+    font-weight:600;
+
+}
+
+.future-plan-card{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+padding:18px;
+
+margin:20px 0;
+
+background:#f8fafc;
+
+border-radius:15px;
+
+border:1px solid #e5e7eb;
+
+}
+
+.future-icon {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #E8EEFF;
+
+    color: #1E3A8A;
+
+    box-shadow:
+        0 8px 20px rgba(30, 58, 138, 0.22);
+}
+
+.future-icon svg {
+    width: 28px;
+    height: 28px;
+
+    stroke: #1E3A8A;
+
+    stroke: #1E3A8A;
+}
+
+.future-content h3{
+
+margin-bottom:8px;
+
+color:#1e3a8a;
+
+font-size:18px;
+
+}
+
+.future-content p{
+
+font-size:14px;
+
+color:#555;
+
+line-height:1.6;
+
+}
+
+.future-button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:12px;
+
+background:#1e3a8a;
+
+color:white;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.future-button:hover{
+
+transform:translateY(-1px);
+
+
+
+}
+
+.premium-note {
+    display: flex;
+
+    margin-top:12px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #6B7280;
+
+    font-size: 13px;
+}
+
+.premium-note svg {
+    width: 17px;
+    height: 17px;
+
+    color: #1E3A8A;
+
+    stroke: #1E3A8A;
+}
+
+
+
+
+
+/* ===========================
+   PARCOURS ORIENTATION
+=========================== */
+
+
+.orientation-path h2{
+
+    color:#0D1B2A;
+
+    font-size:26px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+.path-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+
+.path-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    opacity:0.6;
+
+}
+
+
+
+.path-item.completed,
+.path-item.active{
+
+    opacity:1;
+
+}
+
+
+
+.path-circle{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#F2F4F7;
+
+    color:#0D1B2A;
+
+    font-weight:700;
+
+    font-size:18px;
+
+}
+
+
+
+.path-item.completed .path-circle{
+
+    background:#F4B400;
+
+    color:#0D1B2A;
+
+}
+
+
+
+.path-item.active .path-circle{
+
+    background:#1E3A8A;
+
+    color:#FFFFFF;
+
+}
+.path-circle svg {
+    width: 22px;
+    height: 22px;
+
+    
+}
+
+
+
+.path-item h3{
+
+    color:#0D1B2A;
+
+    margin:0 0 5px;
+
+}
+
+
+
+.path-item p{
+
+    margin:0;
+
+    font-size:14px;
+
+    color:#1E3A8A;
+
+}
+
+
+
+
+
+/* ==================================
+   ACTION BUTTON SECTION - NEXTORI
+================================== */
+
+
+.action-button-section{
+    width:min(94%, 980px);
+    margin:35px auto;
+    background:#FFFFFF;
+    border-radius:24px;
+    padding:35px 30px;
+    text-align:center;
+    box-shadow:0 12px 35px rgba(13,27,42,0.08);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+}
+
+.action-button-section h2{
+    font-size:28px;
+    font-weight:700;
+    color:#0D1B2A;
+    margin:0;
+}
+
+.action-button-section h2 svg,
+.badges-title h2 svg {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.action-button-section h2 svg {
+    color: #F4B400;
+    stroke: #F4B400;
+}
+
+.action-button-section p{
+    max-width:500px;
+    font-size:15px;
+    line-height:1.8;
+    color:#555;
+}
+
+.dashboard-page .start-test-button{
+    background:#1E3A8A;
+    color:#FFFFFF;
+    border:none;
+    border-radius:15px;
+    padding:15px 35px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    margin:0 auto;
+    box-shadow:0 10px 25px rgba(30,58,138,0.25);
+}
+
+/* Icône */
+
+.action-icon{
+
+width:70px;
+
+height:70px;
+
+border-radius:22px;
+
+background:#F4B400;
+
+color:#0D1B2A;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:34px;
+
+box-shadow:
+0 10px 25px rgba(244,180,0,0.25);
+
+}
+
+.action-icon svg {
+    width: 30px;
+    height: 30px;
+    color: #0D1B2A;
+    stroke: #0D1B2A;
+}
+
+
+
+
+
+
+.start-test-button:hover{
+
+transform:translateY(-3px);
+
+}
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.action-button-section{
+
+padding:25px 20px;
+
+}
+
+
+.action-button-section h2{
+
+font-size:24px;
+
+}
+
+
+.start-test-button{
+
+width:100%;
+
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===========================
+   HELP CARD - NEXTORI
+=========================== */
+
+.help-card{
+
+background:#ffffff;
+
+border-radius:22px;
+
+padding:28px;
+
+margin:35px auto 18px;
+
+box-shadow:0 10px 35px rgba(0,0,0,.06);
+
+display:flex;
+
+flex-direction:column;
+
+gap:28px;
+
+overflow:hidden;
+
+}
+
+
+/* ===========================
+   Partie supérieure
+=========================== */
+
+.help-top{
+
+display:flex;
+
+align-items:flex-start;
+
+gap:20px;
+
+}
+
+.help-icon {
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+}
+
+.help-icon svg {
+    width: 28px;
+    height: 28px;
+
+    color: #FFFFFF;
+
+    stroke: #FFFFFF;
+}
+
+.help-card:hover .help-icon{
+
+transform:translateY(-3px);
+
+}
+
+
+/* ===========================
+   Texte
+=========================== */
+
+.help-card-content{
+
+flex:1;
+
+}
+
+.help-card-content h2{
+
+font-size:24px;
+
+font-weight:700;
+
+color:#173B6D;
+
+margin-bottom:12px;
+
+}
+
+.help-card-content p{
+
+font-size:15px;
+
+line-height:1.8;
+
+color:#666;
+
+}
+
+
+/* ===========================
+   Carte intérieure
+=========================== */
+
+.help-soon{
+
+background:#F7F9FC;
+
+border:1px solid #E8EEF8;
+
+border-radius:18px;
+
+padding:22px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+
+/* ===========================
+   Badge
+=========================== */
+
+.help-badge{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:10px;
+
+width:fit-content;
+
+padding:8px 18px;
+
+border-radius:40px;
+
+background:rgba(0,87,217,.10);
+
+color:var(--primary-color);
+
+font-size:13px;
+
+font-weight:600;
+
+}
+
+.help-dot{
+
+width:10px;
+
+height:10px;
+
+border-radius:50%;
+
+background:#22C55E;
+
+box-shadow:0 0 10px rgba(34,197,94,.45);
+
+}
+
+
+/* ===========================
+   Texte Premium
+=========================== */
+
+.help-soon-text{
+
+font-size:15px;
+
+line-height:1.8;
+
+color:#555;
+
+}
+
+
+/* ===========================
+   Bouton
+=========================== */
+
+.help-button{
+
+align-self:flex-start;
+
+padding:14px 26px;
+
+border:none;
+
+border-radius:14px;
+
+background:#1E3A8A;
+
+color:#FFFFFF;
+
+font-size:15px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:0 8px 25px rgba(0,87,217,.18);
+
+}
+
+.help-button svg {
+    width: 19px;
+    height: 19px;
+
+    color: #FFFFFF;
+
+    stroke: #FFFFFF;
+}
+
+.help-button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 14px 35px rgba(0,87,217,.28);
+
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:768px){
+
+.help-card{
+
+padding:22px;
+
+}
+
+.help-top{
+
+flex-direction:column;
+
+align-items:center;
+
+text-align:center;
+
+}
+
+.help-card-content{
+
+text-align:center;
+
+}
+
+.help-button{
+
+width:100%;
+
+justify-content:center;
+
+align-self:stretch;
+
+}
+
+.help-soon{
+
+padding:18px;
+
+}
+
+}
+
+/*Liste des badges*/
+
+.badges-section{
+
+    margin-top:50px;
+
+    width: min(94%, 980px);
+
+    margin: 0 auto 24px;
+
+    margin-bottom: 24px;
+
+    background:#FFFFFF;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    box-shadow:0 10px 30px rgba(13,27,42,.08);
+
+}
+
+.badges-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.badges-title h2 {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #0D1B2A;
+}
+
+.badges-title h2 svg {
+    width: 25px;
+    height: 25px;
+
+    color: #F4B400;
+
+    stroke: #F4B400;
+
+    stroke-width: 2.2;
+}
+
+.badges-title p{
+
+    color:#6B7280;
+
+    margin-top:6px;
+
+}
+
+.badges-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+
+    gap:20px;
+
+}
+
+.badge-card{
+
+    background:#F2F4F7;
+
+    border-radius:18px;
+
+    padding:22px 15px;
+
+    text-align:center;
+
+    transition:.35s;
+
+    cursor:pointer;
+
+    border:2px solid transparent;
+
+}
+
+.badge-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:#F4B400;
+
+    box-shadow:0 10px 25px rgba(244,180,0,.18);
+
+}
+
+.badge-icon{
+
+    width:70px;
+
+    height:70px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#F4B400;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+
+    color:#0D1B2A;
+
+    margin-bottom:18px;
+
+}
+
+.badge-icon svg {
+    width: 32px;
+    height: 32px;
+
+    color: #0D1B2A;
+
+    stroke-width: 2.2;
+}
+
+.badge-name{
+
+    color:#0D1B2A;
+
+    font-weight:600;
+
+    font-size:15px;
+
+}
+
+.badge-status{
+
+    margin-top:12px;
+
+    color:#1E3A8A;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+.statistics-section h3 svg,
+.welcome-icon svg,
+.path-circle svg,
+.action-card > svg,
+.action-button-section h2 svg,
+.future-icon svg,
+.help-icon svg,
+.help-button svg,
+.badges-title h2 svg,
+.premium-note svg {
+    width: 24px;
+    height: 24px;
+}
+
+
+.help-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.premium-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+
+/* =========================================
+   RESPONSIVE ICÔNES
+========================================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-page svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .stat-card h3 {
+        width: 48px;
+        height: 48px;
+    }
+
+    .welcome-icon {
+        width: 58px;
+        height: 58px;
+    }
+
+    .welcome-icon svg {
+        width: 27px;
+        height: 27px;
+    }
+
+    .future-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    .future-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .help-icon {
+        width: 58px;
+        height: 58px;
+    }
+
+    .help-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE DASHBOARD - NEXTORI
+========================================================= */
+
+
+/* =========================
+   TABLETTES
+========================= */
+
+@media (max-width: 900px) {
+
+    .level-card,
+    .welcome-card,
+    .orientation-path,
+    .action-button-section,
+    .quick-actions,
+    .project-card,
+    .help-card,
+    .badges-section,
+    .statistics-section {
+
+        width: calc(100% - 32px);
+
+        max-width: none;
+
+    }
+
+
+    .dashboard-header {
+
+        padding: 30px 20px 45px;
+
+    }
+
+
+    .dashboard-header h1 {
+
+        font-size: 34px;
+
+    }
+
+
+    .statistics-section {
+
+        grid-template-columns: repeat(3, 1fr);
+
+    }
+
+
+    .actions-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .dashboard-page {
+
+        width: 100%;
+
+        overflow-x: hidden;
+
+        padding-bottom: 75px;
+
+    }
+
+
+    /* =====================
+       HEADER
+    ===================== */
+
+    .dashboard-header {
+
+        padding: 25px 18px 55px;
+
+        border-bottom-left-radius: 22px;
+
+        border-bottom-right-radius: 22px;
+
+    }
+
+
+    .dashboard-subtitle {
+
+        font-size: 14px;
+
+        margin-bottom: 7px;
+
+    }
+
+
+    .dashboard-header h1 {
+
+        font-size: 30px;
+
+        margin: 0;
+
+    }
+
+
+    /* =====================
+       CARTES PRINCIPALES
+    ===================== */
+
+    .level-card,
+    .welcome-card,
+    .orientation-path,
+    .action-button-section,
+    .quick-actions,
+    .project-card,
+    .help-card,
+    .badges-section,
+    .statistics-section {
+
+        width: calc(100% - 28px);
+
+        margin-left: auto;
+
+        margin-right: auto;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =====================
+       CARTE NIVEAU
+    ===================== */
+
+    .level-card {
+
+        margin-top: -35px;
+
+        position: relative;
+
+        top: auto;
+
+        z-index: 10;
+
+    }
+
+
+    .level-header {
+
+        gap: 12px;
+
+    }
+
+
+    .level-header h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .level-header span {
+
+        padding: 7px 12px;
+
+        font-size: 13px;
+
+        white-space: nowrap;
+
+    }
+
+
+    .progress-bar {
+
+        height: 11px;
+
+    }
+
+
+    .progress-text {
+
+        font-size: 14px;
+
+    }
+
+
+    /* =====================
+       STATISTIQUES
+    ===================== */
+
+    .statistics-section {
+
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 8px;
+
+        margin-top: 20px;
+
+        margin-bottom: 20px;
+
+    }
+
+
+    .stat-card {
+
+        padding: 14px 7px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .stat-card h3 {
+
+        font-size: 21px;
+
+        margin-bottom: 5px;
+
+    }
+
+
+    .stat-card h2 {
+
+        font-size: 20px;
+
+        margin: 0 0 4px;
+
+    }
+
+
+    .stat-card p {
+
+        font-size: 12px;
+
+    }
+
+
+    /* =====================
+       WELCOME
+    ===================== */
+
+    .welcome-card {
+
+        padding: 22px 18px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .welcome-content {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        gap: 14px;
+
+    }
+
+
+    .welcome-icon {
+
+        width: 58px;
+
+        height: 58px;
+
+    }
+
+
+    .welcome-content h2 {
+
+        font-size: 21px;
+
+        margin-bottom: 8px;
+
+    }
+
+
+    .welcome-content p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+    }
+
+
+    /* =====================
+       PARCOURS
+    ===================== */
+
+    .orientation-path {
+
+        padding: 22px 18px;
+
+    }
+
+
+    .orientation-path h2 {
+
+        font-size: 22px;
+
+        margin-bottom: 20px;
+
+    }
+
+
+    .path-container {
+
+        gap: 18px;
+
+    }
+
+
+    .path-item {
+
+        align-items: flex-start;
+
+        gap: 12px;
+
+    }
+
+
+    .path-circle {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        font-size: 16px;
+
+    }
+
+
+    .path-item h3 {
+
+        font-size: 15px;
+
+        line-height: 1.4;
+
+    }
+
+
+    .path-item p {
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
+    }
+
+
+    /* =====================
+       ACTIONS RAPIDES
+    ===================== */
+
+    .quick-actions {
+
+        margin-top: 25px;
+
+    }
+
+
+    .quick-actions h2 {
+
+        font-size: 22px;
+
+    }
+
+
+    .actions-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 10px;
+
+    }
+
+
+    .action-card {
+
+        padding: 17px 10px;
+
+        border-radius: 16px;
+
+        min-width: 0;
+
+    }
+
+
+    .action-card span {
+
+        font-size: 25px;
+
+    }
+
+
+    .action-card h3 {
+
+        font-size: 15px;
+
+        margin: 8px 0;
+
+    }
+
+
+    .action-card p {
+
+        font-size: 12px;
+
+        line-height: 1.5;
+
+    }
+
+
+    /* =====================
+       CTA
+    ===================== */
+
+    .action-button-section {
+
+        padding: 25px 18px;
+
+        border-radius: 20px;
+
+        gap: 14px;
+
+    }
+
+
+    .action-button-section h2 {
+
+        font-size: 22px;
+
+        line-height: 1.3;
+
+    }
+
+
+    .action-button-section p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        margin: 0;
+
+    }
+
+
+    .dashboard-page .start-test-button {
+
+        width: 100%;
+
+        padding: 14px 20px;
+
+        font-size: 15px;
+
+    }
+
+
+    .action-icon {
+
+        width: 58px;
+
+        height: 58px;
+
+        font-size: 28px;
+
+    }
+
+
+    /* =====================
+       PROJET D'AVENIR
+    ===================== */
+
+    .project-card {
+
+        padding: 22px 18px;
+
+    }
+
+
+    .project-card h2 {
+
+        font-size: 22px;
+
+        line-height: 1.3;
+
+    }
+
+
+    .project-card p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+    }
+
+
+    .future-plan-card {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        padding: 18px 14px;
+
+    }
+
+
+    .future-icon {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 58px;
+
+        height: 58px;
+
+    }
+
+
+    .future-icon svg {
+
+        width: 30px;
+
+        height: 30px;
+
+    }
+
+
+    .future-content h3 {
+
+        font-size: 16px;
+
+    }
+
+
+    .future-content p {
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .future-button {
+
+        font-size: 14px;
+
+        padding: 13px;
+
+    }
+
+
+    /* =====================
+       HELP
+    ===================== */
+
+    .help-card {
+
+        padding: 22px 18px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .help-top {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        gap: 14px;
+
+    }
+
+
+    .help-icon {
+
+        width: 58px;
+
+        height: 58px;
+
+    }
+
+
+    .help-card-content h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .help-card-content p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+    }
+
+
+    .help-soon {
+
+        padding: 17px;
+
+        gap: 14px;
+
+    }
+
+
+    .help-badge {
+
+        font-size: 12px;
+
+        padding: 7px 12px;
+
+    }
+
+
+    .help-soon-text {
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .help-button {
+
+        width: 100%;
+
+        align-self: stretch;
+
+        padding: 13px;
+
+    }
+
+
+    /* =====================
+       BADGES
+    ===================== */
+
+    .badges-section {
+
+        padding: 22px 16px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .badges-header {
+
+        margin-bottom: 18px;
+
+    }
+
+
+    .badges-title h2 {
+
+        font-size: 22px;
+
+        margin: 0;
+
+    }
+
+
+    .badges-title p {
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .badges-container {
+
+        display: grid;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+    }
+
+
+    .badge-card {
+
+        padding: 17px 8px;
+
+        border-radius: 15px;
+
+        min-width: 0;
+
+    }
+
+
+    .badge-icon {
+
+        width: 54px;
+
+        height: 54px;
+
+        margin-bottom: 12px;
+
+    }
+
+
+    .badge-icon svg {
+
+        width: 25px;
+
+        height: 25px;
+
+    }
+
+
+    .badge-name {
+
+        font-size: 13px;
+
+        line-height: 1.3;
+
+    }
+
+
+    .badge-status {
+
+        font-size: 11px;
+
+        margin-top: 8px;
+
+    }
+
+
+    /* =====================
+       ICÔNES REACT
+    ===================== */
+
+    .statistics-section h3 svg,
+    .welcome-icon svg,
+    .path-circle svg,
+    .action-card > svg,
+    .action-button-section h2 svg,
+    .future-icon svg,
+    .help-icon svg,
+    .help-button svg,
+    .badges-title h2 svg,
+    .premium-note svg {
+
+        width: 22px;
+
+        height: 22px;
+
+        flex-shrink: 0;
+
+    }
+
+}
+
+
+/* =========================
+   PETITS TÉLÉPHONES
+========================= */
+
+@media (max-width: 480px) {
+
+    .dashboard-header {
+
+        padding: 22px 15px 50px;
+
+    }
+
+
+    .dashboard-header h1 {
+
+        font-size: 27px;
+
+    }
+
+
+    .dashboard-subtitle {
+
+        font-size: 13px;
+
+    }
+
+
+    .level-card,
+    .welcome-card,
+    .orientation-path,
+    .action-button-section,
+    .quick-actions,
+    .project-card,
+    .help-card,
+    .badges-section,
+    .statistics-section {
+
+        width: calc(100% - 20px);
+
+    }
+
+
+    .level-header h2 {
+
+        font-size: 19px;
+
+    }
+
+
+    .level-header span {
+
+        font-size: 12px;
+
+        padding: 6px 10px;
+
+    }
+
+
+    .statistics-section {
+
+        gap: 6px;
+
+    }
+
+
+    .stat-card {
+
+        padding: 12px 5px;
+
+    }
+
+
+    .stat-card h3 {
+
+        font-size: 19px;
+
+    }
+
+
+    .stat-card h2 {
+
+        font-size: 18px;
+
+    }
+
+
+    .stat-card p {
+
+        font-size: 11px;
+
+    }
+
+
+    .actions-grid {
+
+        gap: 8px;
+
+    }
+
+
+    .action-card {
+
+        padding: 15px 7px;
+
+    }
+
+
+    .action-card h3 {
+
+        font-size: 14px;
+
+    }
+
+
+    .action-card p {
+
+        font-size: 11px;
+
+    }
+
+
+    .badges-container {
+
+        gap: 8px;
+
+    }
+
+
+    .badge-card {
+
+        padding: 14px 6px;
+
+    }
+
+
+    .badge-icon {
+
+        width: 50px;
+
+        height: 50px;
+
+    }
+
+
+    .badge-name {
+
+        font-size: 12px;
+
+    }
+
+}
+
+
+/* =========================
+   TRÈS PETITS ÉCRANS
+========================= */
+
+@media (max-width: 360px) {
+
+    .statistics-section {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .actions-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .badges-container {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .level-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .level-header span {
+
+        align-self: flex-start;
+
+    }
+
+}
+
+
+/* ==================================================
+   NOTIFICATION FLOTTANTE
+================================================== */
+
+.dashboard-notification {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    max-width: 380px;
+    padding: 16px 20px;
+
+    background: #FFFFFF;
+    border: 1px solid #F2F4F7;
+    border-radius: 14px;
+
+    box-shadow: 0 8px 30px rgba(13, 27, 42, 0.15);
+
+    color: #0D1B2A;
+    font-size: 0.95rem;
+    line-height: 1.4;
+
+    animation: notification-apparition 0.3s ease;
+}
+
+.dashboard-notification svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.dashboard-notification.success {
+    border-left: 5px solid #F4B400;
+}
+
+.dashboard-notification.success svg {
+    color: #1E3A8A;
+}
+
+.dashboard-notification.error {
+    border-left: 5px solid #0D1B2A;
+}
+
+.dashboard-notification.error svg {
+    color: #0D1B2A;
+}
+
+@keyframes notification-apparition {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-notification {
+        top: 15px;
+        left: 15px;
+        right: 15px;
+        max-width: none;
+    }
+
+}
+
+/* =========================================================
+   AVIS DASHBOARD - PARCOURS TERMINÉ
+   ========================================================= */
+
+.avis-dashboard-card {
+    width: min(94%, 980px);
+    margin: 28px auto 25px;
+
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    padding: 28px 30px;
+
+    background: #FFFFFF;
+    border-radius: 24px;
+
+    border: 1px solid rgba(244, 180, 0, 0.25);
+
+    box-shadow:
+        0 12px 35px rgba(13, 27, 42, 0.08);
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Petite touche décorative */
+
+.avis-dashboard-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -70px;
+    top: -70px;
+
+    border-radius: 50%;
+
+    background: #F4B400;
+
+    opacity: 0.08;
+
+    pointer-events: none;
+}
+
+
+.avis-dashboard-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 16px 40px rgba(13, 27, 42, 0.11);
+}
+
+
+/* =========================================================
+   ICÔNE
+   ========================================================= */
+
+.avis-dashboard-icon {
+    width: 68px;
+    height: 68px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #F4B400;
+
+    color: #0D1B2A;
+
+    box-shadow:
+        0 10px 25px rgba(244, 180, 0, 0.22);
+}
+
+
+.avis-dashboard-icon svg {
+    width: 31px;
+    height: 31px;
+
+    color: #0D1B2A;
+    stroke: #0D1B2A;
+
+    stroke-width: 2.2;
+}
+
+
+/* =========================================================
+   CONTENU
+   ========================================================= */
+
+.avis-dashboard-content {
+    flex: 1;
+
+    position: relative;
+    z-index: 1;
+}
+
+
+.avis-dashboard-content > span {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 6px 12px;
+
+    margin-bottom: 9px;
+
+    border-radius: 30px;
+
+    background: #F2F4F7;
+
+    color: #1E3A8A;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+}
+
+
+.avis-dashboard-content h2 {
+    margin: 0 0 8px;
+
+    color: #0D1B2A;
+
+    font-size: 24px;
+
+    font-weight: 750;
+}
+
+
+.avis-dashboard-content p {
+    margin: 0;
+
+    max-width: 620px;
+
+    color: #555555;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   BOUTON
+   ========================================================= */
+
+.avis-dashboard-content button {
+    margin-top: 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 13px 20px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(30, 58, 138, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.avis-dashboard-content button svg {
+    width: 18px;
+    height: 18px;
+
+    color: #FFFFFF;
+    stroke: #FFFFFF;
+}
+
+
+.avis-dashboard-content button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(30, 58, 138, 0.28);
+}
+
+
+.avis-dashboard-content button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .avis-dashboard-card {
+        width: calc(100% - 32px);
+
+        padding: 25px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .avis-dashboard-card {
+        width: calc(100% - 28px);
+
+        margin-top: 24px;
+
+        padding: 22px 18px;
+
+        border-radius: 20px;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        gap: 16px;
+    }
+
+
+    .avis-dashboard-icon {
+        width: 60px;
+        height: 60px;
+
+        border-radius: 18px;
+    }
+
+
+    .avis-dashboard-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+
+    .avis-dashboard-content {
+        width: 100%;
+    }
+
+
+    .avis-dashboard-content > span {
+        margin-bottom: 8px;
+
+        font-size: 10px;
+    }
+
+
+    .avis-dashboard-content h2 {
+        font-size: 21px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .avis-dashboard-content p {
+        font-size: 14px;
+
+        line-height: 1.7;
+    }
+
+
+    .avis-dashboard-content button {
+        width: 100%;
+
+        margin-top: 17px;
+
+        padding: 14px 18px;
+    }
+
+}

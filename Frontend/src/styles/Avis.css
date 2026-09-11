@@ -1,0 +1,1258 @@
+/* =========================================================
+   NEXTORI — AVIS V2
+   PREMIUM EXPERIENCE
+   ========================================================= */
+
+.nextori-avis-page,
+.nextori-avis-page * {
+    box-sizing: border-box;
+}
+
+.nextori-avis-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(244, 180, 0, 0.055),
+            transparent 34%
+        ),
+        #F2F4F7;
+
+    color: #0D1B2A;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.nextori-avis-header {
+    position: relative;
+
+    z-index: 10;
+
+    height: 82px;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    padding: 0 42px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    border-bottom: 1px solid rgba(13, 27, 42, 0.065);
+
+    box-shadow:
+        0 4px 20px rgba(13, 27, 42, 0.025);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* Retour */
+
+.nextori-avis-back {
+    justify-self: start;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 13px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: rgba(13, 27, 42, 0.68);
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nextori-avis-back:hover {
+    background: rgba(30, 58, 138, 0.055);
+
+    color: #1E3A8A;
+
+    transform: translateX(-2px);
+}
+
+.nextori-avis-back-icon {
+    font-size: 19px;
+
+    line-height: 1;
+}
+
+
+/* Marque */
+
+.nextori-avis-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0D1B2A;
+
+    font-size: 26px;
+    font-weight: 850;
+
+    letter-spacing: -1.1px;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.nextori-avis-main {
+    width: 100%;
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 78px 28px 100px;
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.nextori-avis-intro {
+    position: relative;
+
+    max-width: 760px;
+
+    margin: 0 auto 48px;
+
+    text-align: center;
+}
+
+
+/* Label */
+
+.nextori-avis-label {
+    display: inline-flex;
+    align-items: center;
+
+    margin-bottom: 18px;
+
+    color: #F4B400;
+
+    font-size: 11px;
+    font-weight: 850;
+
+    letter-spacing: 2.3px;
+
+    text-transform: uppercase;
+}
+
+.nextori-avis-label::before,
+.nextori-avis-label::after {
+    content: "";
+
+    width: 24px;
+    height: 2px;
+
+    margin: 0 10px;
+
+    border-radius: 999px;
+
+    background: #F4B400;
+}
+
+
+/* Grand titre */
+
+.nextori-avis-intro h1 {
+    margin: 0;
+
+    color: #0D1B2A;
+
+    font-size: clamp(40px, 6vw, 58px);
+
+    font-weight: 850;
+
+    line-height: 1.02;
+
+    letter-spacing: -2.7px;
+}
+
+
+/* Description */
+
+.nextori-avis-intro p {
+    max-width: 620px;
+
+    margin: 20px auto 0;
+
+    color: rgba(13, 27, 42, 0.59);
+
+    font-size: 16px;
+
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.nextori-avis-card {
+    position: relative;
+
+    overflow: hidden;
+
+    width: 100%;
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(13, 27, 42, 0.065);
+
+    border-radius: 28px;
+
+    padding: 48px;
+
+    box-shadow:
+        0 25px 70px rgba(13, 27, 42, 0.075),
+        0 4px 14px rgba(13, 27, 42, 0.025);
+}
+
+
+/* petite ligne supérieure */
+
+.nextori-avis-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 90px;
+    height: 3px;
+
+    transform: translateX(-50%);
+
+    background: #F4B400;
+
+    border-radius: 0 0 8px 8px;
+}
+
+
+/* =========================================================
+   SECTION HEADINGS
+   ========================================================= */
+
+.nextori-avis-section-heading {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 17px;
+}
+
+
+/* Numéro */
+
+.nextori-avis-step {
+    position: relative;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 14px;
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.4px;
+
+    box-shadow:
+        0 8px 18px rgba(13, 27, 42, 0.13);
+}
+
+
+/* Titre */
+
+.nextori-avis-section-heading h2 {
+    margin: 1px 0 5px;
+
+    color: #0D1B2A;
+
+    font-size: 20px;
+    font-weight: 780;
+
+    line-height: 1.3;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* Description */
+
+.nextori-avis-section-heading p {
+    margin: 0;
+
+    color: rgba(13, 27, 42, 0.50);
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   RATING
+   ========================================================= */
+
+.nextori-avis-stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-top: 38px;
+}
+
+
+/* Étoile */
+
+.nextori-avis-star {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 62px;
+    height: 62px;
+
+    padding: 0;
+
+    border: 1px solid rgba(13, 27, 42, 0.07);
+
+    border-radius: 17px;
+
+    background: #FFFFFF;
+
+    color: rgba(13, 27, 42, 0.15);
+
+    font-size: 29px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s cubic-bezier(.2,.8,.2,1),
+        color 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.nextori-avis-star:hover {
+    transform: translateY(-6px);
+
+    background: rgba(244, 180, 0, 0.07);
+
+    border-color: rgba(244, 180, 0, 0.35);
+
+    color: #F4B400;
+
+    box-shadow:
+        0 13px 25px rgba(244, 180, 0, 0.13);
+}
+
+
+.nextori-avis-star-active {
+    background: rgba(244, 180, 0, 0.10);
+
+    border-color: rgba(244, 180, 0, 0.38);
+
+    color: #F4B400;
+
+    box-shadow:
+        0 12px 26px rgba(244, 180, 0, 0.15);
+}
+
+
+.nextori-avis-star-active:hover {
+    background: rgba(244, 180, 0, 0.15);
+
+    transform: translateY(-7px) scale(1.03);
+}
+
+
+/* Message */
+
+.nextori-avis-rating-message {
+    min-height: 22px;
+
+    margin: 20px 0 0;
+
+    text-align: center;
+
+    color: rgba(13, 27, 42, 0.54);
+
+    font-size: 13px;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.nextori-avis-divider {
+    width: 100%;
+    height: 1px;
+
+    margin: 43px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(13, 27, 42, 0.09),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.nextori-avis-textarea-wrapper {
+    position: relative;
+
+    margin-top: 27px;
+}
+
+
+.nextori-avis-textarea-wrapper textarea {
+    display: block;
+
+    width: 100%;
+    min-height: 175px;
+
+    padding: 20px 20px 44px;
+
+    resize: vertical;
+
+    border: 1px solid rgba(13, 27, 42, 0.105);
+
+    border-radius: 16px;
+
+    outline: none;
+
+    background: #FFFFFF;
+
+    color: #0D1B2A;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.nextori-avis-textarea-wrapper textarea:hover {
+    border-color: rgba(30, 58, 138, 0.28);
+}
+
+
+.nextori-avis-textarea-wrapper textarea:focus {
+    border-color: #1E3A8A;
+
+    box-shadow:
+        0 0 0 4px rgba(30, 58, 138, 0.07),
+        0 12px 30px rgba(13, 27, 42, 0.035);
+}
+
+
+.nextori-avis-textarea-wrapper textarea::placeholder {
+    color: rgba(13, 27, 42, 0.34);
+}
+
+
+/* Compteur */
+
+.nextori-avis-counter {
+    position: absolute;
+
+    right: 17px;
+    bottom: 14px;
+
+    color: rgba(13, 27, 42, 0.36);
+
+    font-size: 11px;
+    font-weight: 650;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CONSENTEMENT
+   ========================================================= */
+
+.nextori-avis-consent {
+    margin-top: 26px;
+
+    padding: 18px 19px;
+
+    border: 1px solid rgba(30, 58, 138, 0.065);
+
+    border-radius: 15px;
+
+    background: rgba(30, 58, 138, 0.035);
+}
+
+
+.nextori-avis-consent-label {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 13px;
+
+    cursor: pointer;
+}
+
+
+/* Input invisible */
+
+.nextori-avis-consent-label input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* Checkbox */
+
+.nextori-avis-custom-checkbox {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 21px;
+    height: 21px;
+
+    margin-top: 1px;
+
+    border: 1.5px solid rgba(13, 27, 42, 0.22);
+
+    border-radius: 6px;
+
+    background: #FFFFFF;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.nextori-avis-custom-checkbox span {
+    width: 9px;
+    height: 5px;
+
+    border-left: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+
+    transform:
+        rotate(-45deg)
+        scale(0);
+
+    transition:
+        transform 0.18s ease;
+}
+
+
+.nextori-avis-consent-label:hover
+.nextori-avis-custom-checkbox {
+    border-color: #1E3A8A;
+}
+
+
+.nextori-avis-consent-label input:checked
++ .nextori-avis-custom-checkbox {
+    background: #1E3A8A;
+
+    border-color: #1E3A8A;
+
+    transform: scale(1.04);
+}
+
+
+.nextori-avis-consent-label input:checked
++ .nextori-avis-custom-checkbox span {
+    transform:
+        rotate(-45deg)
+        scale(1);
+}
+
+
+.nextori-avis-consent-label input:focus-visible
++ .nextori-avis-custom-checkbox {
+    box-shadow:
+        0 0 0 4px rgba(30, 58, 138, 0.10);
+}
+
+
+/* Texte */
+
+.nextori-avis-consent-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.nextori-avis-consent-text strong {
+    color: #0D1B2A;
+
+    font-size: 13px;
+    font-weight: 730;
+}
+
+
+.nextori-avis-consent-text small {
+    color: rgba(13, 27, 42, 0.50);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.nextori-avis-error {
+    margin-top: 20px;
+
+    padding: 14px 16px;
+
+    border: 1px solid rgba(244, 180, 0, 0.28);
+
+    border-radius: 12px;
+
+    background: rgba(244, 180, 0, 0.10);
+
+    color: #0D1B2A;
+
+    font-size: 13px;
+    font-weight: 650;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACTION
+   ========================================================= */
+
+.nextori-avis-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 32px;
+}
+
+
+/* CTA */
+
+.nextori-avis-submit {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 265px;
+    min-height: 58px;
+
+    padding: 0 22px;
+
+    overflow: hidden;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 14px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 13px 27px rgba(13, 27, 42, 0.17);
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.nextori-avis-submit::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    transform: skewX(-20deg);
+
+    transition: left 0.55s ease;
+}
+
+
+.nextori-avis-submit:hover:not(:disabled) {
+    background: #1E3A8A;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 17px 32px rgba(13, 27, 42, 0.20);
+}
+
+
+.nextori-avis-submit:hover:not(:disabled)::before {
+    left: 130%;
+}
+
+
+.nextori-avis-submit:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+.nextori-avis-submit:disabled {
+    opacity: 0.62;
+
+    cursor: not-allowed;
+
+    box-shadow: none;
+}
+
+
+/* Texte bouton */
+
+.nextori-avis-submit span {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* Flèche */
+
+.nextori-avis-submit-arrow {
+    margin-left: 18px;
+
+    color: #F4B400;
+
+    font-size: 21px;
+
+    line-height: 1;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.nextori-avis-submit:hover:not(:disabled)
+.nextori-avis-submit-arrow {
+    transform: translateX(5px);
+}
+
+
+/* Privacy */
+
+.nextori-avis-privacy {
+    margin: 14px 0 0;
+
+    color: rgba(13, 27, 42, 0.34);
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   SUCCESS
+   ========================================================= */
+
+.nextori-avis-success {
+    position: relative;
+
+    width: calc(100% - 56px);
+    max-width: 680px;
+
+    min-height: 500px;
+
+    margin: 75px auto;
+
+    padding: 65px 50px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(13, 27, 42, 0.065);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 25px 70px rgba(13, 27, 42, 0.075);
+}
+
+
+/* Ligne */
+
+.nextori-avis-success::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 90px;
+    height: 3px;
+
+    transform: translateX(-50%);
+
+    background: #F4B400;
+
+    border-radius: 0 0 8px 8px;
+}
+
+
+/* Icône */
+
+.nextori-avis-success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 84px;
+    height: 84px;
+
+    margin-bottom: 27px;
+
+    border: 1px solid rgba(244, 180, 0, 0.20);
+
+    border-radius: 25px;
+
+    background: rgba(244, 180, 0, 0.11);
+
+    color: #F4B400;
+
+    font-size: 34px;
+
+    box-shadow:
+        0 14px 30px rgba(244, 180, 0, 0.11);
+}
+
+
+/* Label */
+
+.nextori-avis-success-label {
+    margin-bottom: 12px;
+
+    color: #F4B400;
+
+    font-size: 11px;
+    font-weight: 850;
+
+    letter-spacing: 2px;
+}
+
+
+/* Titre */
+
+.nextori-avis-success h1 {
+    margin: 0;
+
+    color: #0D1B2A;
+
+    font-size: clamp(32px, 5vw, 44px);
+
+    font-weight: 850;
+
+    line-height: 1.08;
+
+    letter-spacing: -1.7px;
+}
+
+
+/* Texte */
+
+.nextori-avis-success p {
+    max-width: 520px;
+
+    margin: 19px auto 34px;
+
+    color: rgba(13, 27, 42, 0.57);
+
+    font-size: 15px;
+
+    line-height: 1.75;
+}
+
+
+/* Bouton */
+
+.nextori-avis-success-button {
+    min-height: 53px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 730;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 22px rgba(13, 27, 42, 0.15);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.nextori-avis-success-button:hover {
+    background: #1E3A8A;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 13px 25px rgba(13, 27, 42, 0.18);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .nextori-avis-header {
+        height: 72px;
+
+        padding: 0 20px;
+    }
+
+    .nextori-avis-main {
+        padding: 55px 20px 70px;
+    }
+
+    .nextori-avis-intro {
+        margin-bottom: 35px;
+    }
+
+    .nextori-avis-intro h1 {
+        font-size: 43px;
+    }
+
+    .nextori-avis-card {
+        padding: 34px 28px;
+
+        border-radius: 23px;
+    }
+
+    .nextori-avis-stars {
+        gap: 9px;
+    }
+
+    .nextori-avis-star {
+        width: 55px;
+        height: 55px;
+
+        border-radius: 15px;
+
+        font-size: 26px;
+    }
+
+    .nextori-avis-success {
+        margin-top: 50px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    .nextori-avis-header {
+        grid-template-columns: auto 1fr auto;
+
+        height: 68px;
+
+        padding: 0 13px;
+    }
+
+    .nextori-avis-back {
+        padding: 8px 5px;
+
+        font-size: 12px;
+    }
+
+    .nextori-avis-brand {
+        font-size: 23px;
+    }
+
+    .nextori-avis-main {
+        padding: 42px 14px 55px;
+    }
+
+    .nextori-avis-intro {
+        margin-bottom: 27px;
+    }
+
+    .nextori-avis-label {
+        margin-bottom: 15px;
+
+        font-size: 10px;
+
+        letter-spacing: 1.8px;
+    }
+
+    .nextori-avis-label::before,
+    .nextori-avis-label::after {
+        width: 14px;
+
+        margin: 0 6px;
+    }
+
+    .nextori-avis-intro h1 {
+        font-size: 36px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .nextori-avis-intro p {
+        margin-top: 15px;
+
+        font-size: 14px;
+
+        line-height: 1.65;
+    }
+
+    .nextori-avis-card {
+        padding: 27px 18px;
+
+        border-radius: 20px;
+    }
+
+    .nextori-avis-card::before {
+        width: 65px;
+    }
+
+    .nextori-avis-section-heading {
+        gap: 11px;
+    }
+
+    .nextori-avis-step {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 11px;
+
+        font-size: 10px;
+    }
+
+    .nextori-avis-section-heading h2 {
+        font-size: 17px;
+    }
+
+    .nextori-avis-section-heading p {
+        font-size: 12px;
+    }
+
+    .nextori-avis-stars {
+        gap: 5px;
+
+        margin-top: 28px;
+    }
+
+    .nextori-avis-star {
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+
+        font-size: 21px;
+    }
+
+    .nextori-avis-star:hover {
+        transform: translateY(-3px);
+    }
+
+    .nextori-avis-divider {
+        margin: 32px 0;
+    }
+
+    .nextori-avis-textarea-wrapper {
+        margin-top: 21px;
+    }
+
+    .nextori-avis-textarea-wrapper textarea {
+        min-height: 145px;
+
+        padding: 16px 15px 40px;
+
+        font-size: 13px;
+    }
+
+    .nextori-avis-consent {
+        margin-top: 21px;
+
+        padding: 15px;
+    }
+
+    .nextori-avis-consent-text strong {
+        font-size: 12px;
+    }
+
+    .nextori-avis-consent-text small {
+        font-size: 11px;
+    }
+
+    .nextori-avis-actions {
+        margin-top: 27px;
+    }
+
+    .nextori-avis-submit {
+        width: 100%;
+
+        min-width: 0;
+        min-height: 55px;
+    }
+
+    .nextori-avis-success {
+        width: calc(100% - 28px);
+
+        min-height: 430px;
+
+        margin: 35px auto;
+
+        padding: 45px 22px;
+
+        border-radius: 21px;
+    }
+
+    .nextori-avis-success-icon {
+        width: 72px;
+        height: 72px;
+
+        margin-bottom: 23px;
+
+        border-radius: 21px;
+
+        font-size: 29px;
+    }
+
+    .nextori-avis-success h1 {
+        font-size: 33px;
+    }
+
+    .nextori-avis-success p {
+        margin-top: 15px;
+
+        font-size: 14px;
+
+        line-height: 1.65;
+    }
+
+    .nextori-avis-success-button {
+        width: 100%;
+    }
+}

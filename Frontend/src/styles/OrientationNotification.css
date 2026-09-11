@@ -1,0 +1,434 @@
+/* ===============================
+   NOTIFICATION
+================================ */
+
+.orientation-notification {
+
+    position: fixed;
+
+    bottom: 90px;
+
+    right: 25px;
+
+    width: min(330px, calc(100vw - 40px));
+
+    background: #FFFFFF;
+
+    border-left: 5px solid #F4B400;
+
+    border-radius: 18px;
+
+    padding: 22px;
+
+    box-shadow: 0 12px 35px rgba(13, 27, 42, 0.15);
+
+    z-index: 1000;
+
+    animation: apparition 0.4s ease;
+
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+.notification-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding-right: 25px;
+
+    margin-bottom: 14px;
+
+}
+
+
+/* ===============================
+   ICÔNE
+================================ */
+
+.notification-icon {
+
+    width: 44px;
+
+    height: 44px;
+
+    min-width: 44px;
+
+    border-radius: 14px;
+
+    background: rgba(244, 180, 0, 0.10);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #F4B400;
+
+}
+
+
+/* Icône React */
+
+.notification-icon svg {
+
+    width: 23px;
+
+    height: 23px;
+
+    stroke-width: 2.2;
+
+}
+
+
+/* ===============================
+   TITRE
+================================ */
+
+.notification-header h3 {
+
+    color: #0D1B2A;
+
+    font-size: 18px;
+
+    line-height: 1.35;
+
+    margin: 0;
+
+    font-weight: 700;
+
+}
+
+
+/* ===============================
+   MESSAGE
+================================ */
+
+.orientation-notification p {
+
+    color: #555;
+
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    margin: 0;
+
+}
+
+
+/* ===============================
+   BOUTON FERMER
+================================ */
+
+.notification-close {
+
+    position: absolute;
+
+    top: 10px;
+
+    right: 10px;
+
+    width: 32px;
+
+    height: 32px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #6B7280;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+/* Icône X */
+
+.notification-close svg {
+
+    width: 18px;
+
+    height: 18px;
+
+    stroke-width: 2.3;
+
+}
+
+
+/* Hover */
+
+.notification-close:hover {
+
+    background: #F2F4F7;
+
+    color: #0D1B2A;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* ===============================
+   ANIMATION
+================================ */
+
+@keyframes apparition {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 600px) {
+
+    .orientation-notification {
+
+        width: calc(100vw - 32px);
+
+        right: 16px;
+
+        bottom: 85px;
+
+        padding: 18px;
+
+        border-left-width: 4px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .notification-header {
+
+        gap: 10px;
+
+        margin-bottom: 12px;
+
+    }
+
+
+    .notification-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .notification-icon svg {
+
+        width: 21px;
+
+        height: 21px;
+
+    }
+
+
+    .notification-header h3 {
+
+        font-size: 16px;
+
+    }
+
+
+    .orientation-notification p {
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+    }
+
+}
+
+
+/* ===============================
+   PETITS ÉCRANS
+================================ */
+
+@media (max-width: 380px) {
+
+    .orientation-notification {
+
+        width: calc(100vw - 24px);
+
+        right: 12px;
+
+        bottom: 80px;
+
+        padding: 16px;
+
+    }
+
+
+    .notification-icon {
+
+        width: 36px;
+
+        height: 36px;
+
+        min-width: 36px;
+
+    }
+
+
+    .notification-header h3 {
+
+        font-size: 15px;
+
+    }
+
+}
+
+
+/* =========================================================
+   AVIS - PARCOURS TERMINÉ
+========================================================= */
+
+.orientation-notification-avis {
+    border: 1px solid rgba(244, 180, 0, 0.35);
+    box-shadow:
+        0 12px 30px rgba(13, 27, 42, 0.10);
+}
+
+
+/* Icône spéciale de fin de parcours */
+
+.orientation-notification-avis .notification-icon {
+    background: #F4B400;
+    color: #0D1B2A;
+}
+
+
+.orientation-notification-avis .notification-icon svg {
+    color: #0D1B2A;
+    stroke: #0D1B2A;
+}
+
+
+/* Bouton Donner mon avis */
+
+.notification-avis-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 16px;
+
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(30, 58, 138, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.notification-avis-button svg {
+    width: 18px;
+    height: 18px;
+
+    color: #FFFFFF;
+    stroke: #FFFFFF;
+}
+
+
+.notification-avis-button svg:last-child {
+    width: 16px;
+    height: 16px;
+}
+
+
+.notification-avis-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(30, 58, 138, 0.28);
+}
+
+
+.notification-avis-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .orientation-notification-avis {
+        padding-bottom: 20px;
+    }
+
+
+    .notification-avis-button {
+        width: 100%;
+
+        padding: 14px 18px;
+    }
+
+}

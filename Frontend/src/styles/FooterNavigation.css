@@ -1,0 +1,304 @@
+/* ===========================
+   FOOTER NAVIGATION
+=========================== */
+
+.footer-navigation {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 75px;
+
+    background: #FFFFFF;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-top: 1px solid #F2F4F7;
+
+    box-shadow: 0 -5px 20px rgba(13,27,42,0.08);
+
+    z-index: 1000;
+
+    box-sizing: border-box;
+
+}
+
+
+/* ===========================
+   LIENS
+=========================== */
+
+.footer-navigation a {
+
+    text-decoration: none;
+
+    color: #0D1B2A;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 82px;
+
+    min-width: 0;
+
+    height: 100%;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.footer-navigation a:hover {
+
+    color: #1E3A8A;
+
+}
+
+
+.footer-navigation span {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    margin-bottom: 5px;
+
+}
+
+
+.footer-navigation span svg {
+
+    width: 23px;
+
+    height: 23px;
+
+}
+
+
+/* ===========================
+   TEXTE
+=========================== */
+
+.footer-navigation p {
+
+    margin: 0;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+}
+
+
+/* ===========================
+   PAGE ACTIVE
+=========================== */
+
+.footer-navigation a.active {
+
+    color: #1E3A8A;
+
+}
+
+
+.footer-navigation a.active span {
+
+    color: #F4B400;
+
+}
+
+
+/* ===========================
+   TABLETTE
+=========================== */
+
+@media (max-width: 768px) {
+
+    .footer-navigation {
+
+        height: 62px;
+
+        padding: 0 8px;
+
+    }
+
+
+    .footer-navigation a {
+
+        width: calc(100% / 7);
+
+        max-width: 82px;
+
+        font-size: 10.5px;
+
+    }
+
+
+    .footer-navigation span {
+
+        font-size: 21px;
+
+        margin-bottom: 3px;
+
+    }
+
+
+    .footer-navigation span svg {
+
+        width: 20px;
+
+        height: 20px;
+
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+
+    .footer-navigation {
+
+        height: 58px;
+
+        padding: 0 4px;
+
+    }
+
+
+    .footer-navigation a {
+
+        width: calc(100% / 7);
+
+        max-width: none;
+
+        font-size: 9.5px;
+
+    }
+
+
+    .footer-navigation span {
+
+        font-size: 19px;
+
+        margin-bottom: 3px;
+
+    }
+
+
+    .footer-navigation span svg {
+
+        width: 18px;
+
+        height: 18px;
+
+    }
+
+
+    .footer-navigation p {
+
+        line-height: 1;
+
+    }
+
+}
+
+
+/* ===========================
+   TRÈS PETITS ÉCRANS
+=========================== */
+
+@media (max-width: 380px) {
+
+    .footer-navigation {
+
+        height: 56px;
+
+        padding: 0 2px;
+
+    }
+
+
+    .footer-navigation a {
+
+        font-size: 8.5px;
+
+    }
+
+
+    .footer-navigation span {
+
+        margin-bottom: 2px;
+
+    }
+
+
+    .footer-navigation span svg {
+
+        width: 17px;
+
+        height: 17px;
+
+    }
+
+}
+
+
+/* ===========================
+   ÉCRANS TRÈS ÉTROITS
+=========================== */
+
+@media (max-width: 340px) {
+
+    .footer-navigation {
+
+        height: 54px;
+
+    }
+
+
+    .footer-navigation a {
+
+        font-size: 8px;
+
+    }
+
+
+    .footer-navigation span svg {
+
+        width: 16px;
+
+        height: 16px;
+
+    }
+
+}

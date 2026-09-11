@@ -1,0 +1,1743 @@
+/* =========================================================
+   NEXTORI — UNIVERSITÉS
+   Page des établissements proposant une formation
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.universites-page {
+
+    --deep-blue: #0D1B2A;
+    --blue: #1E3A8A;
+    --orange: #F4B400;
+    --light-gray: #F2F4F7;
+    --white: #FFFFFF;
+
+    min-height: 100vh;
+
+    padding: 30px 20px 70px;
+
+    background: var(--light-gray);
+
+    color: var(--deep-blue);
+
+    font-family: "Inter", Arial, sans-serif;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.universites-navigation {
+
+    max-width: 1100px;
+
+    margin: 0 auto 25px;
+}
+
+
+.universites-back-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 11px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--blue);
+
+    font-size: 0.92rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.universites-back-button:hover {
+
+    background: var(--white);
+
+    color: var(--deep-blue);
+
+    transform: translateX(-3px);
+}
+
+
+.universites-back-button svg {
+
+    font-size: 0.9rem;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.universites-header {
+
+    position: relative;
+
+    max-width: 1100px;
+
+    margin: 0 auto 25px;
+
+    padding: 45px 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    background: var(--deep-blue);
+
+    border-radius: 26px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 14px 35px rgba(13, 27, 42, 0.14);
+
+    animation:
+        universitesReveal 0.65s ease-out;
+}
+
+
+/*
+   Ligne orange décorative
+*/
+
+.universites-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 7px;
+    height: 100%;
+
+    background: var(--orange);
+}
+
+
+/*
+   Cercle décoratif
+*/
+
+.universites-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 240px;
+    height: 240px;
+
+    right: -110px;
+    top: -110px;
+
+    border: 1px solid rgba(244, 180, 0, 0.18);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ICÔNE HERO
+========================================================= */
+
+.universites-header-icon {
+
+    position: relative;
+
+    z-index: 1;
+
+    width: 76px;
+    height: 76px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: var(--orange);
+
+    color: var(--deep-blue);
+
+    font-size: 2rem;
+
+    box-shadow:
+        0 8px 20px rgba(244, 180, 0, 0.18);
+}
+
+
+/* =========================================================
+   CONTENU HERO
+========================================================= */
+
+.universites-header-content {
+
+    position: relative;
+
+    z-index: 1;
+
+    max-width: 800px;
+
+    min-width: 0;
+}
+
+
+.universites-eyebrow {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--orange);
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+.universites-header h1 {
+
+    margin: 0 0 14px;
+
+    color: var(--white);
+
+    font-size: 2.25rem;
+
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.5px;
+}
+
+
+.filiere-title {
+
+    color: var(--orange);
+
+    font-weight: 800;
+}
+
+
+.universites-header p {
+
+    max-width: 720px;
+
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: 1rem;
+
+    line-height: 1.7;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   FORMATION SÉLECTIONNÉE
+========================================================= */
+
+.filiere-context {
+
+    max-width: 1100px;
+
+    margin: 0 auto 45px;
+
+    padding: 18px 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: var(--white);
+
+    border: 1px solid var(--light-gray);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 6px 20px rgba(13, 27, 42, 0.05);
+
+    animation:
+        universitesReveal 0.7s ease-out;
+}
+
+
+.filiere-context-icon {
+
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.2rem;
+}
+
+
+.filiere-context-content {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.filiere-context-content span {
+
+    color: var(--blue);
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+.filiere-context-content strong {
+
+    color: var(--deep-blue);
+
+    font-size: 1rem;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   CONTENU PRINCIPAL
+========================================================= */
+
+.universites-content {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   EN-TÊTE DE SECTION
+========================================================= */
+
+.universites-section-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 28px;
+}
+
+
+.section-eyebrow {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--blue);
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+
+.universites-section-header h2 {
+
+    margin: 0 0 8px;
+
+    color: var(--deep-blue);
+
+    font-size: 1.8rem;
+
+    font-weight: 800;
+
+    line-height: 1.25;
+}
+
+
+.universites-section-header p {
+
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: 0.94rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   COMPTEUR
+========================================================= */
+
+.universites-count {
+
+    flex-shrink: 0;
+
+    min-width: 120px;
+
+    padding: 13px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    background: var(--white);
+
+    border: 1px solid var(--light-gray);
+
+    border-radius: 13px;
+
+    color: var(--blue);
+
+    box-shadow:
+        0 5px 16px rgba(13, 27, 42, 0.05);
+}
+
+
+.universites-count svg {
+
+    color: var(--orange);
+
+    font-size: 0.95rem;
+}
+
+
+.universites-count span {
+
+    color: var(--deep-blue);
+
+    font-size: 1.1rem;
+
+    font-weight: 800;
+}
+
+
+.universites-count small {
+
+    color: var(--blue);
+
+    font-size: 0.78rem;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LISTE DES UNIVERSITÉS
+========================================================= */
+
+.universites-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+
+/* =========================================================
+   CARTE UNIVERSITÉ
+========================================================= */
+
+.universite-card {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 28px;
+
+    background: var(--white);
+
+    border: 1px solid var(--light-gray);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(13, 27, 42, 0.06);
+
+    overflow: hidden;
+
+    animation:
+        universiteCardReveal 0.55s ease-out both;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Ligne supérieure orange */
+
+.universite-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background: var(--orange);
+}
+
+
+.universite-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 35px rgba(13, 27, 42, 0.10);
+}
+
+
+/* =========================================================
+   ANIMATION CARTES
+========================================================= */
+
+.universite-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.universite-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.universite-card:nth-child(4) {
+    animation-delay: 0.24s;
+}
+
+
+/* =========================================================
+   EN-TÊTE CARTE
+========================================================= */
+
+.universite-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 23px;
+
+    min-width: 0;
+}
+
+
+.universite-card-icon {
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.25rem;
+}
+
+
+.universite-card-title {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.universite-card-title > span {
+
+    color: var(--blue);
+
+    font-size: 0.66rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+}
+
+
+.universite-card-title h3 {
+
+    margin: 0;
+
+    color: var(--deep-blue);
+
+    font-size: 1.2rem;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   INFORMATIONS
+========================================================= */
+
+.universite-info {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+.universite-info-item {
+
+    min-width: 0;
+
+    padding: 14px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    background: var(--light-gray);
+
+    border-radius: 13px;
+}
+
+
+.universite-info-item > svg {
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    color: var(--blue);
+
+    font-size: 0.95rem;
+}
+
+
+.universite-info-item > div {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.universite-info-item span {
+
+    color: var(--blue);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+}
+
+
+.universite-info-item strong {
+
+    color: var(--deep-blue);
+
+    font-size: 0.84rem;
+
+    font-weight: 750;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.universite-description {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin: 0 0 24px;
+
+    padding: 15px 16px;
+
+    border-left: 3px solid var(--orange);
+
+    background: var(--light-gray);
+
+    border-radius: 0 12px 12px 0;
+}
+
+
+.universite-description > svg {
+
+    flex-shrink: 0;
+
+    margin-top: 4px;
+
+    color: var(--blue);
+
+    font-size: 0.9rem;
+}
+
+
+.universite-description p {
+
+    margin: 0;
+
+    color: var(--deep-blue);
+
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   ACTION CARTE
+========================================================= */
+
+.universite-card-action {
+
+    margin-top: auto;
+}
+
+
+.site-button {
+
+    width: 100%;
+
+    min-height: 49px;
+
+    padding: 13px 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: var(--orange);
+
+    color: var(--deep-blue);
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.site-button:hover {
+
+    background: var(--blue);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 16px rgba(13, 27, 42, 0.16);
+}
+
+
+.site-button svg {
+
+    font-size: 0.95rem;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.universites-footer {
+
+    max-width: 1100px;
+
+    margin: 45px auto 0;
+
+    padding-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-top: 1px solid rgba(13, 27, 42, 0.10);
+}
+
+
+.universites-footer-content {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.universites-footer-content > svg {
+
+    flex-shrink: 0;
+
+    color: var(--blue);
+
+    font-size: 1rem;
+}
+
+
+.universites-footer-content p {
+
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: 0.86rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ACTIONS FOOTER
+========================================================= */
+
+.universites-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BOUTONS FOOTER
+========================================================= */
+
+.back-formation-button,
+.home-button {
+
+    min-height: 46px;
+
+    padding: 11px 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 11px;
+
+    font-size: 0.88rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.back-formation-button {
+
+    border: 2px solid var(--deep-blue);
+
+    background: var(--white);
+
+    color: var(--deep-blue);
+}
+
+
+.back-formation-button:hover {
+
+    background: var(--deep-blue);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
+}
+
+
+.home-button {
+
+    border: 2px solid var(--blue);
+
+    background: var(--blue);
+
+    color: var(--white);
+}
+
+
+.home-button:hover {
+
+    background: var(--deep-blue);
+
+    border-color: var(--deep-blue);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 16px rgba(13, 27, 42, 0.16);
+}
+
+
+/* =========================================================
+   ÉTATS — COMMUN
+========================================================= */
+
+.universites-loading,
+.universites-error,
+.universites-empty {
+
+    max-width: 700px;
+
+    min-height: 320px;
+
+    margin: 40px auto;
+
+    padding: 45px 30px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background: var(--white);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(13, 27, 42, 0.06);
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.universites-loading-spinner {
+
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 18px;
+
+    border: 4px solid var(--light-gray);
+
+    border-top-color: var(--orange);
+
+    border-radius: 50%;
+
+    animation:
+        universitesSpin 0.8s linear infinite;
+}
+
+
+.universites-loading h2 {
+
+    margin: 0 0 9px;
+
+    color: var(--deep-blue);
+
+    font-size: 1.2rem;
+
+    font-weight: 800;
+}
+
+
+.universites-loading p {
+
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: 0.92rem;
+}
+
+
+/* =========================================================
+   ICÔNES DES ÉTATS
+========================================================= */
+
+.universites-empty-icon,
+.universites-state-icon {
+
+    width: 58px;
+    height: 58px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.35rem;
+}
+
+
+/* =========================================================
+   TITRES ET TEXTES DES ÉTATS
+========================================================= */
+
+.universites-empty h1,
+.universites-empty h2,
+.universites-error h2 {
+
+    margin: 0 0 10px;
+
+    color: var(--deep-blue);
+
+    font-size: 1.25rem;
+
+    font-weight: 800;
+}
+
+
+.universites-empty p,
+.universites-error p {
+
+    max-width: 520px;
+
+    margin: 0 0 22px;
+
+    color: var(--blue);
+
+    font-size: 0.92rem;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   BOUTON ÉTAT VIDE
+========================================================= */
+
+.empty-back-button {
+
+    min-height: 46px;
+
+    padding: 11px 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: var(--deep-blue);
+
+    color: var(--white);
+
+    font-size: 0.88rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.empty-back-button:hover {
+
+    background: var(--blue);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes universitesReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes universiteCardReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(18px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes universitesSpin {
+
+    from {
+
+        transform: rotate(0deg);
+    }
+
+    to {
+
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .universites-header {
+
+        padding: 38px 35px;
+    }
+
+
+    .universites-header h1 {
+
+        font-size: 2rem;
+    }
+
+
+    .universites-list {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .universite-card {
+
+        max-width: 700px;
+
+        width: 100%;
+
+        margin: 0 auto;
+    }
+
+
+    .universites-footer {
+
+        align-items: flex-start;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .universites-page {
+
+        padding: 20px 15px 45px;
+    }
+
+
+    /* Navigation */
+
+    .universites-navigation {
+
+        margin-bottom: 18px;
+    }
+
+
+    .universites-back-button {
+
+        padding: 9px 5px;
+
+        font-size: 0.88rem;
+    }
+
+
+    /* Hero */
+
+    .universites-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding: 32px 25px;
+
+        margin-bottom: 18px;
+
+        border-radius: 21px;
+    }
+
+
+    .universites-header::before {
+
+        width: 5px;
+    }
+
+
+    .universites-header-icon {
+
+        width: 58px;
+        height: 58px;
+
+        border-radius: 15px;
+
+        font-size: 1.55rem;
+    }
+
+
+    .universites-eyebrow {
+
+        font-size: 0.68rem;
+    }
+
+
+    .universites-header h1 {
+
+        font-size: 1.65rem;
+
+        line-height: 1.3;
+    }
+
+
+    .universites-header p {
+
+        font-size: 0.9rem;
+
+        line-height: 1.65;
+    }
+
+
+    /* Filière */
+
+    .filiere-context {
+
+        margin-bottom: 35px;
+
+        padding: 15px;
+
+        border-radius: 14px;
+    }
+
+
+    .filiere-context-icon {
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 1rem;
+    }
+
+
+    .filiere-context-content strong {
+
+        font-size: 0.92rem;
+    }
+
+
+    /* Section */
+
+    .universites-section-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        margin-bottom: 23px;
+    }
+
+
+    .universites-section-header h2 {
+
+        font-size: 1.5rem;
+    }
+
+
+    .universites-section-header p {
+
+        font-size: 0.88rem;
+    }
+
+
+    .universites-count {
+
+        min-width: auto;
+
+        align-self: flex-start;
+    }
+
+
+    /* Liste */
+
+    .universites-list {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    /* Carte */
+
+    .universite-card {
+
+        padding: 23px;
+
+        border-radius: 18px;
+    }
+
+
+    .universite-card-header {
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .universite-card-icon {
+
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+
+        font-size: 1.1rem;
+    }
+
+
+    .universite-card-title h3 {
+
+        font-size: 1.08rem;
+    }
+
+
+    /* Informations */
+
+    .universite-info {
+
+        grid-template-columns: 1fr;
+
+        gap: 9px;
+    }
+
+
+    .universite-info-item {
+
+        padding: 13px;
+    }
+
+
+    /* Description */
+
+    .universite-description {
+
+        padding: 13px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .universite-description p {
+
+        font-size: 0.86rem;
+    }
+
+
+    /* Site */
+
+    .site-button {
+
+        min-height: 48px;
+
+        padding: 12px 15px;
+
+        font-size: 0.88rem;
+    }
+
+
+    /* Footer */
+
+    .universites-footer {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        margin-top: 35px;
+    }
+
+
+    .universites-footer-content {
+
+        align-items: flex-start;
+    }
+
+
+    .universites-actions {
+
+        width: 100%;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .back-formation-button,
+    .home-button {
+
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS TÉLÉPHONES
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .universites-page {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+    }
+
+
+    .universites-header {
+
+        padding: 28px 21px;
+    }
+
+
+    .universites-header h1 {
+
+        font-size: 1.45rem;
+    }
+
+
+    .universite-card {
+
+        padding: 20px;
+    }
+
+
+    .universite-card-title h3 {
+
+        font-size: 1rem;
+    }
+
+
+    .universite-info-item strong {
+
+        font-size: 0.84rem;
+    }
+
+
+    .site-button {
+
+        font-size: 0.84rem;
+    }
+
+
+    /* Footer centré */
+
+    .universites-footer {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        gap: 18px;
+    }
+
+
+    .universites-footer-content {
+
+        width: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        gap: 10px;
+    }
+
+
+    .universites-footer-content > svg {
+
+        display: block;
+
+        margin: 0 auto;
+
+        flex-shrink: 0;
+    }
+
+
+    .universites-footer-content p {
+
+        width: 100%;
+
+        max-width: 360px;
+
+        margin: 0 auto;
+
+        text-align: center;
+    }
+
+
+    .universites-actions {
+
+        width: 100%;
+
+        align-items: center;
+    }
+
+
+    .universites-actions .back-formation-button,
+    .universites-actions .home-button {
+
+        width: 100%;
+
+        max-width: 360px;
+
+        margin: 0 auto;
+
+        justify-content: center;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,1473 @@
+/* =========================================================
+   NEXTORI
+   UNIVERSITE CATALOGUE
+   Design optimisé — conservation de l'identité existante
+
+   Palette officielle :
+   #0D1B2A  Bleu profond
+   #1E3A8A  Bleu principal
+   #F2F4F7  Gris clair
+   #F4B400  Orange
+   #FFFFFF  Blanc
+========================================================= */
+
+
+/* =========================================================
+   1. PAGE PRINCIPALE
+========================================================= */
+
+.no-universite-catalogue-page {
+
+    min-height: 100vh;
+
+    background: #F2F4F7;
+
+    padding-bottom: 110px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   2. HERO HEADER
+========================================================= */
+
+.no-universite-catalogue-header {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 64px 25px 52px;
+
+    background: linear-gradient(
+        135deg,
+        #0D1B2A 0%,
+        #1E3A8A 100%
+    );
+
+    color: #FFFFFF;
+
+    text-align: center;
+
+    border-bottom-left-radius: 35px;
+
+    border-bottom-right-radius: 35px;
+
+    box-shadow:
+        0 10px 28px #F2F4F7;
+
+}
+
+
+/* =========================================================
+   Décorations du hero
+========================================================= */
+
+.no-universite-catalogue-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+
+    height: 260px;
+
+    top: -125px;
+
+    right: -70px;
+
+    border-radius: 50%;
+
+    background: #FFFFFF;
+
+    opacity: 0.05;
+
+    animation:
+        floatCircle1 12s ease-in-out infinite;
+
+}
+
+
+.no-universite-catalogue-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    bottom: -95px;
+
+    left: -50px;
+
+    border-radius: 50%;
+
+    background: #F4B400;
+
+    opacity: 0.08;
+
+    animation:
+        floatCircle2 16s ease-in-out infinite;
+
+}
+
+
+/* =========================================================
+   3. ICÔNE DU HERO
+========================================================= */
+
+.catalogue-header-icon {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 62px;
+
+    height: 62px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 18px;
+
+    background: #F4B400;
+
+    color: #0D1B2A;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 8px 20px #0D1B2A;
+
+}
+
+
+/* =========================================================
+   4. TITRE HERO
+========================================================= */
+
+.no-universite-catalogue-header h1 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 0 0 12px;
+
+    color: #FFFFFF;
+
+    font-size: clamp(
+        1.8rem,
+        4vw,
+        2.25rem
+    );
+
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.02em;
+
+}
+
+
+.no-universite-catalogue-header p {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    color: #FFFFFF;
+
+    font-size: 0.98rem;
+
+    line-height: 1.75;
+
+    opacity: 0.92;
+
+}
+
+
+/* =========================================================
+   5. BARRE DE RECHERCHE + FILTRES
+========================================================= */
+
+.no-universite-catalogue-toolbar {
+
+    position: relative;
+
+    z-index: 10;
+
+    width: min(
+        1250px,
+        94%
+    );
+
+    margin: -28px auto 30px;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2F4F7;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 28px #F2F4F7;
+
+}
+
+
+/* =========================================================
+   6. CONTENEUR RECHERCHE
+========================================================= */
+
+.search-container {
+
+    position: relative;
+
+    flex: 1;
+
+    min-width: 300px;
+
+}
+
+
+/* =========================================================
+   Icône recherche
+========================================================= */
+
+.search-icon {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 17px;
+
+    transform: translateY(-50%);
+
+    color: #1E3A8A;
+
+    font-size: 15px;
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   7. CHAMP RECHERCHE
+========================================================= */
+
+.no-universite-catalogue-search {
+
+    width: 100%;
+
+    min-height: 50px;
+
+    padding: 13px 18px 13px 45px;
+
+    box-sizing: border-box;
+
+    border: 2px solid transparent;
+
+    outline: none;
+
+    border-radius: 14px;
+
+    background: #F2F4F7;
+
+    color: #0D1B2A;
+
+    font-family: inherit;
+
+    font-size: 0.92rem;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.no-universite-catalogue-search::placeholder {
+
+    color: #1E3A8A;
+
+    opacity: 0.65;
+
+}
+
+
+.no-universite-catalogue-search:hover {
+
+    background: #F2F4F7;
+
+}
+
+
+.no-universite-catalogue-search:focus {
+
+    background: #FFFFFF;
+
+    border-color: #1E3A8A;
+
+    box-shadow:
+        0 0 0 3px #F2F4F7;
+
+}
+
+
+/* =========================================================
+   8. CONTENEUR FILTRES
+========================================================= */
+
+.filter-container {
+
+    display: flex;
+
+    gap: 12px;
+
+}
+
+
+/* =========================================================
+   9. SELECTS
+========================================================= */
+
+.no-universite-catalogue-filter {
+
+    min-width: 175px;
+
+    min-height: 50px;
+
+    padding: 12px 15px;
+
+    box-sizing: border-box;
+
+    border: 2px solid transparent;
+
+    outline: none;
+
+    border-radius: 14px;
+
+    background: #F2F4F7;
+
+    color: #0D1B2A;
+
+    font-family: inherit;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.no-universite-catalogue-filter:hover {
+
+    background: #FFFFFF;
+
+    border-color: #F2F4F7;
+
+}
+
+
+.no-universite-catalogue-filter:focus {
+
+    background: #FFFFFF;
+
+    border-color: #1E3A8A;
+
+    box-shadow:
+        0 0 0 3px #F2F4F7;
+
+}
+
+
+/* =========================================================
+   10. COMPTEUR
+========================================================= */
+
+.no-universite-catalogue-counter {
+
+    width: min(
+        1200px,
+        92%
+    );
+
+    margin: 0 auto 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #1E3A8A;
+
+    font-size: 0.9rem;
+
+    font-weight: 700;
+
+}
+
+
+.no-universite-catalogue-counter svg {
+
+    color: #F4B400;
+
+    font-size: 16px;
+
+}
+
+
+/* =========================================================
+   11. GRILLE
+========================================================= */
+
+.no-universite-catalogue-grid {
+
+    width: min(
+        1250px,
+        94%
+    );
+
+    margin: 0 auto;
+
+    padding-bottom: 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(300px, 1fr)
+        );
+
+    gap: 24px;
+
+}
+
+
+/* =========================================================
+   12. CARTE UNIVERSITÉ
+========================================================= */
+
+.no-universite-catalogue-card {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2F4F7;
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 7px 20px #F2F4F7;
+
+    opacity: 0;
+
+    animation:
+        fadeCard 0.5s ease forwards;
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+
+}
+
+
+.no-universite-catalogue-card:hover {
+
+    transform: translateY(-5px);
+
+    border-color: #F4B400;
+
+    box-shadow:
+        0 14px 28px #F2F4F7;
+
+}
+
+
+/* =========================================================
+   Barre orange supérieure
+========================================================= */
+
+.no-universite-catalogue-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 5px;
+
+    background: #F4B400;
+
+}
+
+
+/* =========================================================
+   13. LOGO
+========================================================= */
+
+.no-universite-catalogue-logo {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 112px;
+
+    height: 112px;
+
+    margin: 2px auto 20px;
+
+    padding: 10px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    background: #FFFFFF;
+
+    border: 1px solid #F2F4F7;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 5px 14px #F2F4F7;
+
+}
+
+
+.no-universite-catalogue-logo img {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
+
+.no-universite-catalogue-logo > svg {
+
+    color: #1E3A8A;
+
+    font-size: 38px;
+
+}
+
+
+/* =========================================================
+   AUCUN RÉSULTAT
+========================================================= */
+
+.no-universite-catalogue-empty {
+
+  grid-column: 1 / -1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+
+  padding: 40px 20px;
+
+  background: #FFFFFF;
+
+  border-radius: 18px;
+
+  text-align: center;
+}
+
+
+.no-universite-catalogue-empty > svg {
+
+  font-size: 2.5rem;
+
+  color: #1E3A8A;
+
+  margin-bottom: 15px;
+}
+
+
+.no-universite-catalogue-empty h2 {
+
+  margin: 0 0 8px;
+
+  color: #0D1B2A;
+
+  font-size: 1.2rem;
+}
+
+
+.no-universite-catalogue-empty p {
+
+  margin: 0;
+
+  color: #1E3A8A;
+
+  font-size: .9rem;
+}
+
+
+/* =========================================================
+   CHARGEMENT DES UNIVERSITÉS
+========================================================= */
+
+.universites-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+    padding: 40px 20px;
+
+    background: #FFFFFF;
+    border-radius: 18px;
+
+    text-align: center;
+}
+
+
+/* Cercle de chargement */
+
+.universites-loading-spinner {
+    width: 42px;
+    height: 42px;
+
+    border: 4px solid #F2F4F7;
+    border-top-color: #F4B400;
+
+    border-radius: 50%;
+
+    animation: universites-spin 0.8s linear infinite;
+
+    margin-bottom: 18px;
+}
+
+
+/* Texte */
+
+.universites-loading h2 {
+    margin: 0 0 8px;
+
+    color: #0D1B2A;
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+
+.universites-loading p {
+    margin: 0;
+
+    color: #1E3A8A;
+
+    font-size: 0.9rem;
+}
+
+
+/* Animation */
+
+@keyframes universites-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* Accessibilité */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .universites-loading-spinner {
+        animation: none;
+    }
+
+}
+
+/* =========================================================
+   14. NOM UNIVERSITÉ
+========================================================= */
+
+.no-universite-catalogue-card h2 {
+
+    margin: 0 0 10px;
+
+    color: #0D1B2A;
+
+    font-size: 1.28rem;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    text-align: center;
+
+}
+
+
+/* =========================================================
+   15. DESCRIPTION
+========================================================= */
+
+.no-universite-catalogue-description {
+
+    min-height: 58px;
+
+    margin: 0 0 17px;
+
+    color: #0D1B2A;
+
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+
+    text-align: center;
+
+}
+
+
+/* =========================================================
+   16. BADGE TYPE
+========================================================= */
+
+.no-universite-catalogue-type {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: fit-content;
+
+    min-height: 34px;
+
+    margin: 0 auto 17px;
+
+    padding: 7px 15px;
+
+    box-sizing: border-box;
+
+    border-radius: 999px;
+
+    font-size: 0.76rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.35px;
+
+    text-transform: uppercase;
+
+}
+
+
+/* Publique */
+
+.no-universite-catalogue-type.publique {
+
+    background: #F2F4F7;
+
+    color: #1E3A8A;
+
+    border: 1px solid #1E3A8A;
+
+}
+
+
+/* Privée */
+
+.no-universite-catalogue-type.privee {
+
+    background: #F4B400;
+
+    color: #0D1B2A;
+
+    border: 1px solid #F4B400;
+
+}
+
+
+/* Parapublique */
+
+.no-universite-catalogue-type.parapublique {
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    border: 1px solid #0D1B2A;
+
+}
+
+
+/* =========================================================
+   17. LOCALISATION
+========================================================= */
+
+.no-universite-catalogue-localisation {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 46px;
+
+    margin-bottom: 20px;
+
+    padding: 10px 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    background: #F2F4F7;
+
+    color: #1E3A8A;
+
+    font-size: 0.84rem;
+
+    font-weight: 650;
+
+    text-align: center;
+
+}
+
+
+.no-universite-catalogue-localisation svg {
+
+    flex-shrink: 0;
+
+    color: #F4B400;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
+   18. BOUTON DÉTAILS
+========================================================= */
+
+.no-universite-catalogue-button {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    min-height: 50px;
+
+    margin-top: auto;
+
+    padding: 13px 18px;
+
+    box-sizing: border-box;
+
+    border: 2px solid #0D1B2A;
+
+    border-radius: 13px;
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 0.9rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    overflow: hidden;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.no-universite-catalogue-button svg {
+
+    font-size: 14px;
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.no-universite-catalogue-button:hover {
+
+    background: #F4B400;
+
+    border-color: #F4B400;
+
+    color: #0D1B2A;
+
+    transform: translateY(-2px);
+
+}
+
+
+.no-universite-catalogue-button:hover svg {
+
+    transform: translateX(4px);
+
+}
+
+
+/* =========================================================
+   19. ANIMATION DES CARTES
+========================================================= */
+
+.no-universite-catalogue-card:nth-child(1) {
+    animation-delay: 0.04s;
+}
+
+.no-universite-catalogue-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.no-universite-catalogue-card:nth-child(3) {
+    animation-delay: 0.12s;
+}
+
+.no-universite-catalogue-card:nth-child(4) {
+    animation-delay: 0.16s;
+}
+
+.no-universite-catalogue-card:nth-child(5) {
+    animation-delay: 0.20s;
+}
+
+.no-universite-catalogue-card:nth-child(6) {
+    animation-delay: 0.24s;
+}
+
+
+@keyframes fadeCard {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   20. ANIMATIONS HERO
+========================================================= */
+
+@keyframes floatCircle1 {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+
+    }
+
+    50% {
+
+        transform: translateY(16px);
+
+    }
+
+}
+
+
+@keyframes floatCircle2 {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+
+    }
+
+    50% {
+
+        transform: translateY(-14px);
+
+    }
+
+}
+
+
+/* =========================================================
+   21. ÉTAT DE CHARGEMENT
+========================================================= */
+
+.no-universite-catalogue-loading {
+
+    min-height: 70vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    background: #F2F4F7;
+
+    color: #1E3A8A;
+
+    font-size: 0.92rem;
+
+    font-weight: 650;
+
+}
+
+
+.no-universite-catalogue-loading .loading-icon {
+
+    color: #F4B400;
+
+    font-size: 40px;
+
+    animation:
+        loadingRotation 0.9s linear infinite;
+
+}
+
+
+@keyframes loadingRotation {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   22. TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .no-universite-catalogue-toolbar {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .search-container {
+
+        width: 100%;
+
+        min-width: 0;
+
+    }
+
+
+    .filter-container {
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        width: 100%;
+
+    }
+
+
+    .no-universite-catalogue-filter {
+
+        width: 100%;
+
+        min-width: 0;
+
+    }
+
+}
+
+
+/* =========================================================
+   23. MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .no-universite-catalogue-page {
+
+        padding-bottom: 100px;
+
+    }
+
+
+    /* Hero */
+
+    .no-universite-catalogue-header {
+
+        padding: 48px 18px 42px;
+
+        border-bottom-left-radius: 25px;
+
+        border-bottom-right-radius: 25px;
+
+    }
+
+
+    .catalogue-header-icon {
+
+        width: 54px;
+
+        height: 54px;
+
+        margin-bottom: 15px;
+
+        border-radius: 15px;
+
+        font-size: 23px;
+
+    }
+
+
+    .no-universite-catalogue-header h1 {
+
+        font-size: 1.65rem;
+
+    }
+
+
+    .no-universite-catalogue-header p {
+
+        font-size: 0.87rem;
+
+        line-height: 1.65;
+
+    }
+
+
+    /* Toolbar */
+
+    .no-universite-catalogue-toolbar {
+
+        width: calc(100% - 20px);
+
+        margin: -20px auto 23px;
+
+        padding: 14px;
+
+        gap: 10px;
+
+        border-radius: 17px;
+
+    }
+
+
+    .no-universite-catalogue-search {
+
+        min-height: 48px;
+
+        font-size: 0.86rem;
+
+    }
+
+
+    .filter-container {
+
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+
+    }
+
+
+    .no-universite-catalogue-filter {
+
+        min-height: 46px;
+
+        font-size: 0.84rem;
+
+    }
+
+
+    /* Compteur */
+
+    .no-universite-catalogue-counter {
+
+        width: calc(100% - 24px);
+
+        margin-bottom: 17px;
+
+        font-size: 0.84rem;
+
+    }
+
+
+    /* Grid */
+
+    .no-universite-catalogue-grid {
+
+        width: calc(100% - 20px);
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+    }
+
+
+    /* Cards */
+
+    .no-universite-catalogue-card {
+
+        padding: 23px 17px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .no-universite-catalogue-logo {
+
+        width: 88px;
+
+        height: 88px;
+
+        margin-bottom: 17px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .no-universite-catalogue-card h2 {
+
+        font-size: 1.12rem;
+
+    }
+
+
+    .no-universite-catalogue-description {
+
+        min-height: auto;
+
+        font-size: 0.85rem;
+
+        line-height: 1.6;
+
+    }
+
+
+    .no-universite-catalogue-type {
+
+        min-height: 32px;
+
+        padding: 6px 13px;
+
+        font-size: 0.7rem;
+
+    }
+
+
+    .no-universite-catalogue-localisation {
+
+        min-height: 43px;
+
+        font-size: 0.78rem;
+
+    }
+
+
+    .no-universite-catalogue-button {
+
+        min-height: 48px;
+
+        font-size: 0.86rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   24. TRÈS PETITS ÉCRANS
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .no-universite-catalogue-header h1 {
+
+        font-size: 1.48rem;
+
+    }
+
+
+    .no-universite-catalogue-card {
+
+        padding: 20px 14px;
+
+    }
+
+
+    .no-universite-catalogue-logo {
+
+        width: 78px;
+
+        height: 78px;
+
+    }
+
+}
+
+
+/* =========================================================
+   25. ACCESSIBILITÉ
+========================================================= */
+
+.no-universite-catalogue-search:focus-visible,
+.no-universite-catalogue-filter:focus-visible,
+.no-universite-catalogue-button:focus-visible {
+
+    outline: 3px solid #F4B400;
+
+    outline-offset: 3px;
+
+}
+
+
+/* =========================================================
+   26. RÉDUCTION DES ANIMATIONS
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .no-universite-catalogue-card,
+    .no-universite-catalogue-header::before,
+    .no-universite-catalogue-header::after,
+    .no-universite-catalogue-loading .loading-icon {
+
+        animation: none;
+
+        opacity: 1;
+
+    }
+
+
+    .no-universite-catalogue-card,
+    .no-universite-catalogue-button {
+
+        transition: none;
+
+    }
+
+}

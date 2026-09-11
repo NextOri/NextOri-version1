@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NextOri — Admin Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #0B1F4D;
+    --navy-light: #12295f;
+    --navy-lighter: #1c3a7a;
+    --gold: #F4C542;
+    --gold-dark: #e0af1f;
+    --gray-50: #f7f8fb;
+    --gray-100: #eef1f6;
+    --gray-200: #e3e7ee;
+    --gray-400: #9aa4b2;
+    --gray-500: #6b7688;
+    --gray-700: #384153;
+    --gray-800: #1c2433;
+    --green: #16a34a;
+    --red: #e0433f;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+  }
+
+  /* ===== Layout ===== */
+  .app { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, var(--navy) 0%, #081538 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    padding: 22px 16px;
+    overflow-y: auto;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 24px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: var(--navy);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 0.2px;
+  }
+  .brand-sub {
+    font-size: 10.5px;
+    color: #9db1e6;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .nav-group { margin-top: 18px; display: flex; flex-direction: column; gap: 2px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #c3cde6;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .nav-item.active {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .nav-item .ic { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+
+  .nav-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 14px 4px; }
+
+  .logout-item {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Main */
+  .main {
+    margin-left: 264px;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Topbar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .search-box {
+    flex: 1;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    padding: 9px 16px;
+  }
+  .search-box input {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 13.5px;
+    flex: 1;
+    color: var(--gray-700);
+  }
+  .search-box input::placeholder { color: var(--gray-400); }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .topbar-date {
+    font-size: 13px;
+    color: var(--gray-500);
+    font-weight: 600;
+  }
+
+  .bell-wrap { position: relative; cursor: pointer; }
+  .bell-badge {
+    position: absolute;
+    top: -3px; right: -3px;
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--red);
+    border: 2px solid #fff;
+  }
+
+  .admin-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    background: var(--gray-100);
+    cursor: pointer;
+  }
+  .admin-chip img { width: 32px; height: 32px; border-radius: 999px; }
+  .admin-chip .name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .admin-chip .role { font-size: 11px; color: var(--gray-500); }
+
+  /* Content */
+  .content { padding: 26px 28px 50px; }
+
+  .page-title { font-size: 22px; font-weight: 800; color: var(--gray-800); margin: 0 0 2px; }
+  .page-sub { font-size: 13.5px; color: var(--gray-500); margin: 0 0 22px; }
+
+  /* Stat cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    padding: 18px;
+    box-shadow: 0 1px 3px rgba(11,31,77,0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stat-top { display: flex; align-items: center; justify-content: space-between; }
+
+  .stat-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+  }
+
+  .stat-trend {
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .trend-up { background: #dcfce7; color: var(--green); }
+  .trend-down { background: #fee2e2; color: var(--red); }
+  .trend-neutral { background: var(--gray-100); color: var(--gray-500); }
+
+  .stat-value { font-size: 24px; font-weight: 800; color: var(--gray-800); }
+  .stat-label { font-size: 12.5px; color: var(--gray-500); font-weight: 600; }
+
+  /* Charts */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .charts-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .panel {
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(11,31,77,0.04);
+  }
+
+  .panel-title { font-size: 15px; font-weight: 800; color: var(--gray-800); margin: 0 0 2px; }
+  .panel-sub { font-size: 12px; color: var(--gray-500); margin: 0 0 14px; }
+
+  .chart-box { position: relative; height: 260px; }
+  .chart-box-sm { position: relative; height: 220px; }
+
+  /* Legend for pie */
+  .riasec-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; justify-content: center; }
+  .riasec-legend span {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 700; color: var(--gray-700);
+  }
+  .riasec-legend .dot { width: 9px; height: 9px; border-radius: 999px; }
+
+  /* Lists */
+  .lists-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--gray-500);
+    padding: 0 10px 10px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  tbody td {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .user-cell { display: flex; align-items: center; gap: 10px; }
+  .user-cell img { width: 32px; height: 32px; border-radius: 999px; }
+  .user-cell .u-name { font-weight: 700; color: var(--gray-800); font-size: 13px; }
+  .user-cell .u-sub { font-size: 11.5px; color: var(--gray-500); }
+
+  .status-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .status-active { background: #dcfce7; color: var(--green); }
+  .status-pending { background: #fef3c7; color: #b45309; }
+  .status-blocked { background: #fee2e2; color: var(--red); }
+  .status-new { background: #dbeafe; color: #1d4ed8; }
+
+  .btn-link {
+    border: none;
+    background: var(--gray-100);
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn-link:hover { background: var(--gray-200); }
+
+  /* Reviews list */
+  .review-item {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .review-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .review-item img { width: 34px; height: 34px; border-radius: 999px; flex-shrink: 0; }
+  .review-name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .review-stars { color: var(--gold-dark); font-size: 12px; margin: 2px 0 4px; }
+  .review-text { font-size: 12.5px; color: var(--gray-600, #57606f); line-height: 1.4; }
+  .review-date { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+
+  /* Appointments */
+  .appt-actions { display: flex; gap: 6px; }
+  .btn-accept, .btn-refuse {
+    border: none;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn-accept { background: #dcfce7; color: var(--green); }
+  .btn-refuse { background: #fee2e2; color: var(--red); }
+
+  /* Users management page */
+  .page-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .filter-select {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--gray-700);
+    background: #fff;
+  }
+  .btn-primary {
+    margin-left: auto;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--navy-lighter); }
+
+  .actions-row { display: flex; gap: 6px; }
+  .icon-btn {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    background: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-btn:hover { background: var(--gray-100); }
+  .icon-btn.danger:hover { background: #fee2e2; }
+
+  .view { display: none; }
+  .view.active {
+    display: block;
+    animation: fadeSlideIn 0.45s ease;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-item { transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease; }
+  .nav-item:active { transform: scale(0.97); }
+
+  .stat-card, .panel { transition: box-shadow 0.2s ease, transform 0.2s ease; }
+  .stat-card:hover, .panel:hover { box-shadow: 0 8px 24px rgba(11,31,77,0.08); transform: translateY(-2px); }
+
+  .btn-primary, .btn-link, .btn-accept, .btn-refuse, .icon-btn { transition: all 0.15s ease; }
+  .btn-primary:active { transform: scale(0.96); }
+
+  tbody tr { transition: background 0.15s ease; }
+  tbody tr:hover { background: var(--gray-50); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--gray-100);
+    padding: 4px;
+    border-radius: 12px;
+    width: fit-content;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    border: none;
+    background: none;
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tab-btn.active { background: #fff; color: var(--navy); box-shadow: 0 1px 4px rgba(11,31,77,0.12); }
+  .tab-panel { display: none; animation: fadeSlideIn 0.35s ease; }
+  .tab-panel.active { display: block; }
+
+  /* Cards grid (établissements / métiers / formations / conseillers) */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
+  }
+
+  .entity-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(11,31,77,0.04);
+  }
+
+  .entity-cover {
+    height: 110px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 10px;
+    position: relative;
+  }
+  .entity-cover.photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,31,77,0.15) 0%, rgba(11,31,77,0.55) 100%);
+  }
+  .entity-cover.photo > * { position: relative; z-index: 1; }
+
+  .entity-body { padding: 14px 16px 16px; }
+  .entity-name { font-size: 14.5px; font-weight: 800; color: var(--gray-800); margin-bottom: 2px; }
+  .entity-sub { font-size: 12px; color: var(--gray-500); margin-bottom: 10px; }
+  .entity-meta { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--gray-500); margin-bottom: 10px; flex-wrap: wrap; }
+
+  .tag-chip {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .entity-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--gray-100); }
+  .entity-actions button { flex: 1; }
+
+  .btn-outline {
+    border: 1px solid var(--gray-200);
+    background: #fff;
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn-outline:hover { background: var(--gray-50); }
+  .btn-danger-outline {
+    border: 1px solid #fecaca;
+    background: #fff;
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .btn-danger-outline:hover { background: #fef2f2; }
+
+  /* Calendar */
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+  }
+  .cal-head {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    padding-bottom: 6px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--gray-700);
+    position: relative;
+    cursor: pointer;
+  }
+  .cal-day:hover { background: var(--gray-100); }
+  .cal-day.today { background: var(--navy); color: #fff; }
+  .cal-day.has-events::after {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 999px;
+    background: var(--gold);
+    position: absolute;
+    bottom: 6px;
+  }
+  .cal-day.empty { background: none; border: none; cursor: default; }
+
+  /* Toggle switch */
+  .toggle {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: var(--gray-200);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    left: 3px; top: 3px;
+    background: #fff;
+    border-radius: 999px;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle input:checked + .toggle-slider { background: var(--gold); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+  /* Settings form */
+  .settings-section { margin-bottom: 22px; }
+  .settings-section-title { font-size: 15px; font-weight: 800; color: var(--gray-800); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .settings-section-sub { font-size: 12.5px; color: var(--gray-500); margin-bottom: 16px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 12.5px; font-weight: 700; color: var(--gray-700); margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--gray-800);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+
+  .logo-uploader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo-uploader .preview {
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    background: var(--navy);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 22px;
+  }
+
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-row-label { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .toggle-row-sub { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; }
+
+  /* Notification list */
+  .notif-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-icon { width: 38px; height: 38px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .notif-title { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .notif-text { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+  .notif-time { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+  .notif-item.unread { background: #fffbeb; margin: 0 -10px; padding: 14px 10px; border-radius: 10px; }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+
+  @media (max-width: 1200px) {
+    .stats-grid, .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid, .charts-grid-2, .lists-grid, .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ===== New modules CSS ===== */
+  .locked-panel { position:relative; opacity:0.6; pointer-events:none; filter:grayscale(0.3); }
+  .locked-badge { display:inline-flex; align-items:center; gap:6px; background:var(--gray-100); color:var(--gray-500); font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; margin-left:8px; }
+  .dist-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .dist-bar-label { width:76px; flex-shrink:0; font-size:12px; font-weight:700; color:var(--gray-700); }
+  .dist-bar-track { flex:1; background:var(--gray-100); border-radius:999px; height:11px; overflow:hidden; }
+  .dist-bar-fill { height:100%; border-radius:999px; transition:width 1s ease; }
+  .dist-bar-pct { width:44px; text-align:right; font-size:12px; font-weight:800; color:var(--gray-800); }
+  .rank-list-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--gray-100); }
+  .rank-list-item:last-child { border-bottom:none; }
+  .rank-num { width:26px; height:26px; border-radius:999px; background:var(--gray-100); color:var(--gray-700); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+  .rank-num.top3 { background:var(--gold); color:var(--navy); }
+  .rank-info { flex:1; }
+  .rank-name { font-size:13px; font-weight:700; color:var(--gray-800); }
+  .rank-sub { font-size:11px; color:var(--gray-500); }
+  .activity-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--gray-100); }
+  .activity-item:last-child { border-bottom:none; }
+  .activity-dot { width:8px; height:8px; border-radius:999px; background:var(--navy); margin-top:6px; flex-shrink:0; }
+  .activity-text { font-size:13px; color:var(--gray-800); }
+  .activity-text strong { color:var(--navy); }
+  .activity-time { font-size:11px; color:var(--gray-400); margin-top:2px; }
+  .global-search-results { position:absolute; top:calc(100% + 8px); left:0; right:0; background:#fff; border-radius:14px; box-shadow:0 12px 30px rgba(11,31,77,0.15); padding:8px; z-index:30; display:none; max-height:340px; overflow-y:auto; }
+  .global-search-results.show { display:block; }
+  .gsr-cat { font-size:10px; font-weight:800; color:var(--gray-400); text-transform:uppercase; padding:8px 12px 2px; }
+  .gsr-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; cursor:pointer; font-size:12.5px; color:var(--gray-700); }
+  .gsr-item:hover { background:var(--gray-50); }
+  .status-online { background:#dcfce7; color:var(--green); }
+  .status-warning { background:#fef3c7; color:#b45309; }
+  .server-status-row { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--gray-100); font-size:13px; color:var(--gray-700); }
+  .server-status-row:last-child { border-bottom:none; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">N</div>
+      <div>
+        <div class="brand-name">NextOri</div>
+        <div class="brand-sub">Admin Panel</div>
+      </div>
+    </div>
+
+    <nav class="nav-group">
+      <button class="nav-item active" data-view="dashboard"><span class="ic">🏠</span>Tableau de bord</button>
+      <button class="nav-item" data-view="users"><span class="ic">👥</span>Utilisateurs</button>
+      <button class="nav-item" data-view="riasec"><span class="ic">🧠</span>Tests RIASEC</button>
+      <button class="nav-item" data-view="avis"><span class="ic">⭐</span>Avis utilisateurs</button>
+      <button class="nav-item" data-view="etablissements"><span class="ic">🏫</span>Établissements</button>
+      <button class="nav-item" data-view="metiers"><span class="ic">💼</span>Métiers</button>
+      <button class="nav-item" data-view="formations"><span class="ic">📚</span>Formations</button>
+      <button class="nav-item" data-view="conseillers"><span class="ic">👨‍🏫</span>Conseillers</button>
+      <button class="nav-item" data-view="rendezvous"><span class="ic">📅</span>Rendez-vous</button>
+      <button class="nav-item" data-view="annonces"><span class="ic">📢</span>Annonces</button>
+      <button class="nav-item" data-view="notifications"><span class="ic">🔔</span>Notifications</button>
+      <button class="nav-item" data-view="riasec"><span class="ic">📈</span>Statistiques</button>
+      <button class="nav-item" data-view="parametres"><span class="ic">⚙️</span>Paramètres</button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" data-view="concours"><span class="ic">🏆</span>Concours</button>
+      <button class="nav-item" data-view="successscore"><span class="ic">🎯</span>Success Score</button>
+      <button class="nav-item" data-view="parrainage"><span class="ic">🎁</span>Parrainage</button>
+      <button class="nav-item" data-view="alertes"><span class="ic">📡</span>Alertes automatiques</button>
+      <button class="nav-item" data-view="analyseutilisateurs"><span class="ic">🧬</span>Analyse utilisateurs</button>
+      <button class="nav-item" data-view="statsconcours"><span class="ic">📊</span>Stats des concours</button>
+      <button class="nav-item" data-view="contenus"><span class="ic">📰</span>Contenus</button>
+      <button class="nav-item" data-view="signalements"><span class="ic">🚩</span>Signalements</button>
+      <button class="nav-item" data-view="journal"><span class="ic">🕓</span>Journal d'activité</button>
+      <button class="nav-item" data-view="financier"><span class="ic">💰</span>Financier <span class="locked-badge">V2</span></button>
+      <button class="nav-item" data-view="securite"><span class="ic">🛡️</span>Sauvegarde &amp; Sécurité</button>
+    </nav>
+
+    <div class="logout-item">
+      <button class="nav-item"><span class="ic">🚪</span>Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="search-box" style="position:relative;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa4b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="globalSearchInput" placeholder="Rechercher un utilisateur, un concours, un établissement, un métier, une formation, un rendez-vous..." />
+        <div class="global-search-results" id="globalSearchResults"></div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="topbar-date" id="topDate">Lundi 12 Juillet 2026</div>
+        <div class="bell-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#384153" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="bell-badge"></span>
+        </div>
+        <div class="admin-chip">
+          <img src="https://ui-avatars.com/api/?name=Ndeye+Awa+Niane&background=F4C542&color=0B1F4D&bold=true" alt="Admin" />
+          <div>
+            <div class="name">Ndeye Awa Niane</div>
+            <div class="role">Administratrice</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DASHBOARD VIEW ===================== -->
+    <div class="content view active" id="view-dashboard">
+      <h1 class="page-title">Tableau de bord</h1>
+      <p class="page-sub">Vue d'ensemble de l'activité de la plateforme NextOri</p>
+
+      <!-- Stat cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#eef2ff;">👥</div>
+            <span class="stat-trend trend-up">+8,2%</span>
+          </div>
+          <div class="stat-value">12 480</div>
+          <div class="stat-label">Utilisateurs totaux</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#dcfce7;">🟢</div>
+            <span class="stat-trend trend-up">+3,1%</span>
+          </div>
+          <div class="stat-value">1 926</div>
+          <div class="stat-label">Utilisateurs actifs aujourd'hui</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#fef3c7;">✨</div>
+            <span class="stat-trend trend-up">+124</span>
+          </div>
+          <div class="stat-value">312</div>
+          <div class="stat-label">Nouveaux utilisateurs (7j)</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#ede9fe;">🧠</div>
+            <span class="stat-trend trend-up">+5,6%</span>
+          </div>
+          <div class="stat-value">8 764</div>
+          <div class="stat-label">Tests RIASEC réalisés</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#e0f2fe;">📝</div>
+            <span class="stat-trend trend-neutral">Aujourd'hui</span>
+          </div>
+          <div class="stat-value">146</div>
+          <div class="stat-label">Tests réalisés aujourd'hui</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#fff7ed;">⭐</div>
+            <span class="stat-trend trend-up">+42</span>
+          </div>
+          <div class="stat-value">2 190</div>
+          <div class="stat-label">Avis reçus</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#fdf4ff;">📅</div>
+            <span class="stat-trend trend-neutral">18 en attente</span>
+          </div>
+          <div class="stat-value">964</div>
+          <div class="stat-label">Rendez-vous</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#ecfdf5;">📚</div>
+            <span class="stat-trend trend-up">+6</span>
+          </div>
+          <div class="stat-value">57</div>
+          <div class="stat-label">Formations</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#fef2f2;">💼</div>
+            <span class="stat-trend trend-neutral">Stable</span>
+          </div>
+          <div class="stat-value">184</div>
+          <div class="stat-label">Métiers référencés</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#eff6ff;">🏫</div>
+            <span class="stat-trend trend-up">+2</span>
+          </div>
+          <div class="stat-value">23</div>
+          <div class="stat-label">Établissements</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#f0fdfa;">👨‍🏫</div>
+            <span class="stat-trend trend-neutral">Actifs</span>
+          </div>
+          <div class="stat-value">14</div>
+          <div class="stat-label">Conseillers</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" style="background:#fffbeb;">💛</div>
+            <span class="stat-trend trend-up">+1,4%</span>
+          </div>
+          <div class="stat-value">94%</div>
+          <div class="stat-label">Taux de satisfaction</div>
+        </div>
+      </div>
+
+      <!-- Charts row 1 -->
+      <div class="charts-grid">
+        <div class="panel">
+          <div class="panel-title">Évolution des inscriptions</div>
+          <div class="panel-sub">Nombre de nouveaux utilisateurs par mois</div>
+          <div class="chart-box"><canvas id="chartInscriptions"></canvas></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Répartition des profils RIASEC</div>
+          <div class="panel-sub">Résultats cumulés des tests</div>
+          <div class="chart-box-sm"><canvas id="chartRiasec"></canvas></div>
+          <div class="riasec-legend">
+            <span><span class="dot" style="background:#0B1F4D;"></span>R — Réaliste</span>
+            <span><span class="dot" style="background:#F4C542;"></span>I — Investigateur</span>
+            <span><span class="dot" style="background:#3b82f6;"></span>A — Artistique</span>
+            <span><span class="dot" style="background:#16a34a;"></span>S — Social</span>
+            <span><span class="dot" style="background:#e0433f;"></span>E — Entreprenant</span>
+            <span><span class="dot" style="background:#8b5cf6;"></span>C — Conventionnel</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts row 2 -->
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">Tests RIASEC par mois</div>
+          <div class="panel-sub">Nombre total de tests complétés</div>
+          <div class="chart-box"><canvas id="chartTests"></canvas></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Évolution des avis utilisateurs</div>
+          <div class="panel-sub">Avis publiés au fil des mois</div>
+          <div class="chart-box"><canvas id="chartAvis"></canvas></div>
+        </div>
+      </div>
+
+      <div class="charts-grid-2" style="grid-template-columns:1fr;">
+        <div class="panel">
+          <div class="panel-title">Utilisateurs actifs par semaine</div>
+          <div class="panel-sub">Activité hebdomadaire sur les 8 dernières semaines</div>
+          <div class="chart-box"><canvas id="chartActifs"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Lists -->
+      <div class="lists-grid">
+        <div class="panel">
+          <div class="panel-title">Derniers utilisateurs inscrits</div>
+          <div class="panel-sub">Nouveaux comptes créés récemment</div>
+          <table>
+            <thead>
+              <tr><th>Utilisateur</th><th>Date</th><th>Statut</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <img src="https://ui-avatars.com/api/?name=Awa+Ndiaye&background=0B1F4D&color=fff" />
+                    <div><div class="u-name">Awa Ndiaye</div><div class="u-sub">awa.ndiaye@gmail.com</div></div>
+                  </div>
+                </td>
+                <td>12 Juil. 2026</td>
+                <td><span class="status-pill status-new">Nouveau</span></td>
+                <td><button class="btn-link">Voir</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <img src="https://ui-avatars.com/api/?name=Moussa+Diop&background=0B1F4D&color=fff" />
+                    <div><div class="u-name">Moussa Diop</div><div class="u-sub">moussa.diop@yahoo.fr</div></div>
+                  </div>
+                </td>
+                <td>11 Juil. 2026</td>
+                <td><span class="status-pill status-active">Actif</span></td>
+                <td><button class="btn-link">Voir</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <img src="https://ui-avatars.com/api/?name=Fatou+Sarr&background=0B1F4D&color=fff" />
+                    <div><div class="u-name">Fatou Sarr</div><div class="u-sub">fatou.sarr@outlook.com</div></div>
+                  </div>
+                </td>
+                <td>11 Juil. 2026</td>
+                <td><span class="status-pill status-active">Actif</span></td>
+                <td><button class="btn-link">Voir</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <img src="https://ui-avatars.com/api/?name=Ibrahima+Fall&background=0B1F4D&color=fff" />
+                    <div><div class="u-name">Ibrahima Fall</div><div class="u-sub">ibrahima.fall@gmail.com</div></div>
+                  </div>
+                </td>
+                <td>10 Juil. 2026</td>
+                <td><span class="status-pill status-pending">En attente</span></td>
+                <td><button class="btn-link">Voir</button></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="user-cell">
+                    <img src="https://ui-avatars.com/api/?name=Khady+Ba&background=0B1F4D&color=fff" />
+                    <div><div class="u-name">Khady Ba</div><div class="u-sub">khady.ba@gmail.com</div></div>
+                  </div>
+                </td>
+                <td>9 Juil. 2026</td>
+                <td><span class="status-pill status-active">Actif</span></td>
+                <td><button class="btn-link">Voir</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Derniers avis utilisateurs</div>
+          <div class="panel-sub">Retours récents sur la plateforme</div>
+
+          <div class="review-item">
+            <img src="https://ui-avatars.com/api/?name=Aissatou+Diallo&background=F4C542&color=0B1F4D" />
+            <div>
+              <div class="review-name">Aïssatou Diallo</div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">Le test RIASEC m'a vraiment aidée à comprendre mon profil.</div>
+              <div class="review-date">Il y a 2 heures</div>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <img src="https://ui-avatars.com/api/?name=Cheikh+Gueye&background=F4C542&color=0B1F4D" />
+            <div>
+              <div class="review-name">Cheikh Gueye</div>
+              <div class="review-stars">★★★★☆</div>
+              <div class="review-text">Très bonne plateforme, j'aimerais plus d'établissements privés.</div>
+              <div class="review-date">Il y a 5 heures</div>
+            </div>
+          </div>
+
+          <div class="review-item">
+            <img src="https://ui-avatars.com/api/?name=Mariama+Sy&background=F4C542&color=0B1F4D" />
+            <div>
+              <div class="review-name">Mariama Sy</div>
+              <div class="review-stars">★★★★★</div>
+              <div class="review-text">Interface claire, recommandations pertinentes. Bravo !</div>
+              <div class="review-date">Hier</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Appointments -->
+      <div class="panel">
+        <div class="panel-title">Dernières demandes de rendez-vous</div>
+        <div class="panel-sub">Demandes de coaching en attente de validation</div>
+        <table>
+          <thead>
+            <tr><th>Utilisateur</th><th>Conseiller demandé</th><th>Date</th><th>Heure</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Awa Ndiaye</td>
+              <td>M. Cheikh Sow</td>
+              <td>15 Juil. 2026</td>
+              <td>10:00</td>
+              <td><span class="status-pill status-pending">En attente</span></td>
+              <td>
+                <div class="appt-actions">
+                  <button class="btn-accept">Accepter</button>
+                  <button class="btn-refuse">Refuser</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Moussa Diop</td>
+              <td>Mme Ndèye Fall</td>
+              <td>16 Juil. 2026</td>
+              <td>14:30</td>
+              <td><span class="status-pill status-pending">En attente</span></td>
+              <td>
+                <div class="appt-actions">
+                  <button class="btn-accept">Accepter</button>
+                  <button class="btn-refuse">Refuser</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Fatou Sarr</td>
+              <td>M. Cheikh Sow</td>
+              <td>17 Juil. 2026</td>
+              <td>09:00</td>
+              <td><span class="status-pill status-active">Confirmé</span></td>
+              <td>
+                <div class="appt-actions">
+                  <button class="btn-accept">Accepter</button>
+                  <button class="btn-refuse">Refuser</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- ===================== USERS MANAGEMENT VIEW ===================== -->
+    <div class="content view" id="view-users">
+      <h1 class="page-title">Gestion des utilisateurs</h1>
+      <p class="page-sub">12 480 utilisateurs enregistrés sur la plateforme</p>
+
+      <div class="page-toolbar">
+        <select class="filter-select"><option>Toutes les régions</option><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option></select>
+        <select class="filter-select"><option>Tous les statuts</option><option>Actif</option><option>En attente</option><option>Bloqué</option></select>
+        <select class="filter-select"><option>Toutes les professions</option><option>Élève</option><option>Étudiant</option><option>Diplômé</option></select>
+        <button class="btn-primary">+ Ajouter un utilisateur</button>
+      </div>
+
+      <div class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Utilisateur</th>
+              <th>Email</th>
+              <th>Téléphone</th>
+              <th>Région</th>
+              <th>Profession</th>
+              <th>Inscrit le</th>
+              <th>Dernière connexion</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Awa+Ndiaye&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Awa Ndiaye</div></div>
+                </div>
+              </td>
+              <td>awa.ndiaye@gmail.com</td>
+              <td>+221 77 123 45 67</td>
+              <td>Dakar</td>
+              <td>Élève</td>
+              <td>12 Juil. 2026</td>
+              <td>Il y a 1h</td>
+              <td><span class="status-pill status-new">Nouveau</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Moussa+Diop&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Moussa Diop</div></div>
+                </div>
+              </td>
+              <td>moussa.diop@yahoo.fr</td>
+              <td>+221 76 234 56 78</td>
+              <td>Thiès</td>
+              <td>Étudiant</td>
+              <td>11 Juil. 2026</td>
+              <td>Il y a 3h</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Fatou+Sarr&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Fatou Sarr</div></div>
+                </div>
+              </td>
+              <td>fatou.sarr@outlook.com</td>
+              <td>+221 70 345 67 89</td>
+              <td>Saint-Louis</td>
+              <td>Diplômée</td>
+              <td>11 Juil. 2026</td>
+              <td>Hier</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Ibrahima+Fall&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Ibrahima Fall</div></div>
+                </div>
+              </td>
+              <td>ibrahima.fall@gmail.com</td>
+              <td>+221 78 456 78 90</td>
+              <td>Kaolack</td>
+              <td>Élève</td>
+              <td>10 Juil. 2026</td>
+              <td>Il y a 2j</td>
+              <td><span class="status-pill status-pending">En attente</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Khady+Ba&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Khady Ba</div></div>
+                </div>
+              </td>
+              <td>khady.ba@gmail.com</td>
+              <td>+221 77 567 89 01</td>
+              <td>Ziguinchor</td>
+              <td>Étudiante</td>
+              <td>9 Juil. 2026</td>
+              <td>Il y a 3j</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Ousmane+Kane&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Ousmane Kane</div></div>
+                </div>
+              </td>
+              <td>ousmane.kane@gmail.com</td>
+              <td>+221 76 678 90 12</td>
+              <td>Dakar</td>
+              <td>Diplômé</td>
+              <td>7 Juil. 2026</td>
+              <td>Il y a 5j</td>
+              <td><span class="status-pill status-blocked">Bloqué</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Aissatou+Diallo&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Aïssatou Diallo</div></div>
+                </div>
+              </td>
+              <td>aissatou.diallo@gmail.com</td>
+              <td>+221 78 789 01 23</td>
+              <td>Thiès</td>
+              <td>Élève</td>
+              <td>6 Juil. 2026</td>
+              <td>Il y a 6j</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Cheikh+Gueye&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Cheikh Gueye</div></div>
+                </div>
+              </td>
+              <td>cheikh.gueye@gmail.com</td>
+              <td>+221 77 890 12 34</td>
+              <td>Kaolack</td>
+              <td>Étudiant</td>
+              <td>5 Juil. 2026</td>
+              <td>Il y a 1 semaine</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Mariama+Sy&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Mariama Sy</div></div>
+                </div>
+              </td>
+              <td>mariama.sy@gmail.com</td>
+              <td>+221 70 901 23 45</td>
+              <td>Ziguinchor</td>
+              <td>Diplômée</td>
+              <td>3 Juil. 2026</td>
+              <td>Il y a 9j</td>
+              <td><span class="status-pill status-active">Actif</span></td>
+              <td>
+                <div class="actions-row">
+                  <button class="icon-btn" title="Voir">👁️</button>
+                  <button class="icon-btn" title="Modifier">✏️</button>
+                  <button class="icon-btn" title="Bloquer">🚫</button>
+                  <button class="icon-btn danger" title="Supprimer">🗑️</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== RIASEC STATS VIEW ===================== -->
+    <div class="content view" id="view-riasec">
+      <h1 class="page-title">Statistiques RIASEC</h1>
+      <p class="page-sub">Analyse des résultats du test d'orientation RIASEC</p>
+
+      <div class="page-toolbar">
+        <span></span>
+        <button class="btn-outline" style="margin-left:auto;">📄 Télécharger en PDF</button>
+        <button class="btn-primary" style="margin-left:0;">📊 Exporter Excel</button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#ede9fe;">🧠</div><span class="stat-trend trend-up">+5,6%</span></div>
+          <div class="stat-value">8 764</div>
+          <div class="stat-label">Nombre total de tests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#e0f2fe;">⏱️</div><span class="stat-trend trend-neutral">Stable</span></div>
+          <div class="stat-value">6 min 40s</div>
+          <div class="stat-label">Temps moyen du test</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">🏆</div><span class="stat-trend trend-up">Top</span></div>
+          <div class="stat-value">Investigateur</div>
+          <div class="stat-label">Profil dominant</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">✅</div><span class="stat-trend trend-up">+2,1%</span></div>
+          <div class="stat-value">96,4%</div>
+          <div class="stat-label">Taux de complétion</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="panel">
+          <div class="panel-title">Évolution mensuelle des tests</div>
+          <div class="panel-sub">Nombre de tests RIASEC réalisés par mois</div>
+          <div class="chart-box"><canvas id="chartRiasecEvol"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Répartition R I A S E C</div>
+          <div class="panel-sub">Profils obtenus (cumulés)</div>
+          <div class="chart-box-sm"><canvas id="chartRiasecPie"></canvas></div>
+          <div class="riasec-legend">
+            <span><span class="dot" style="background:#0B1F4D;"></span>R</span>
+            <span><span class="dot" style="background:#F4C542;"></span>I</span>
+            <span><span class="dot" style="background:#3b82f6;"></span>A</span>
+            <span><span class="dot" style="background:#16a34a;"></span>S</span>
+            <span><span class="dot" style="background:#e0433f;"></span>E</span>
+            <span><span class="dot" style="background:#8b5cf6;"></span>C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Top profils</div>
+        <div class="panel-sub">Profils RIASEC les plus fréquents chez les utilisateurs</div>
+        <table>
+          <thead><tr><th>Rang</th><th>Profil</th><th>Description</th><th>Nombre d'utilisateurs</th><th>Part</th></tr></thead>
+          <tbody>
+            <tr><td>🥇 1</td><td><strong>I — Investigateur</strong></td><td>Aime analyser, chercher, comprendre</td><td>1 928</td><td><span class="status-pill status-active">22%</span></td></tr>
+            <tr><td>🥈 2</td><td><strong>S — Social</strong></td><td>Aime aider, accompagner, enseigner</td><td>1 753</td><td><span class="status-pill status-new">20%</span></td></tr>
+            <tr><td>🥉 3</td><td><strong>R — Réaliste</strong></td><td>Aime pratiquer, construire, manipuler</td><td>1 578</td><td><span class="status-pill status-pending">18%</span></td></tr>
+            <tr><td>4</td><td><strong>E — Entreprenant</strong></td><td>Aime diriger, convaincre, développer des projets</td><td>1 315</td><td><span class="status-pill status-pending">15%</span></td></tr>
+            <tr><td>5</td><td><strong>A — Artistique</strong></td><td>Aime créer, imaginer, innover</td><td>1 227</td><td><span class="status-pill status-pending">14%</span></td></tr>
+            <tr><td>6</td><td><strong>C — Conventionnel</strong></td><td>Aime organiser, gérer, structurer</td><td>963</td><td><span class="status-pill status-pending">11%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== AVIS UTILISATEURS VIEW ===================== -->
+    <div class="content view" id="view-avis">
+      <h1 class="page-title">Avis utilisateurs</h1>
+      <p class="page-sub">Gérez les retours et évaluations laissés par les utilisateurs</p>
+
+      <div class="page-toolbar">
+        <select class="filter-select"><option>Toutes les notes</option><option>5 étoiles</option><option>4 étoiles</option><option>3 étoiles et moins</option></select>
+        <select class="filter-select"><option>Toutes les périodes</option><option>Cette semaine</option><option>Ce mois</option></select>
+        <button class="btn-outline">🔎 Filtrer</button>
+        <button class="btn-primary">📤 Exporter</button>
+      </div>
+
+      <div class="kpi-row">
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">⭐</div><span class="stat-trend trend-up">+0,2</span></div>
+          <div class="stat-value">4,6 / 5</div>
+          <div class="stat-label">Note moyenne</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#fff7ed;">💬</div><span class="stat-trend trend-up">+42</span></div>
+          <div class="stat-value">2 190</div>
+          <div class="stat-label">Nombre d'avis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">👍</div><span class="stat-trend trend-up">91%</span></div>
+          <div class="stat-value">1 993</div>
+          <div class="stat-label">Avis positifs (4-5★)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top"><div class="stat-icon" style="background:#fee2e2;">⚠️</div><span class="stat-trend trend-down">9%</span></div>
+          <div class="stat-value">197</div>
+          <div class="stat-label">Avis à traiter</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Commentaires récents</div>
+        <div class="panel-sub">Répondez ou modérez les avis des utilisateurs</div>
+
+        <div class="review-item">
+          <img src="https://ui-avatars.com/api/?name=Aissatou+Diallo&background=F4C542&color=0B1F4D" />
+          <div style="flex:1;">
+            <div class="review-name">Aïssatou Diallo</div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">Le test RIASEC m'a vraiment aidée à comprendre mon profil et à choisir ma filière.</div>
+            <div class="review-date">Il y a 2 heures</div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn-outline">💬 Répondre</button>
+              <button class="btn-danger-outline">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <img src="https://ui-avatars.com/api/?name=Cheikh+Gueye&background=F4C542&color=0B1F4D" />
+          <div style="flex:1;">
+            <div class="review-name">Cheikh Gueye</div>
+            <div class="review-stars">★★★★☆</div>
+            <div class="review-text">Très bonne plateforme, j'aimerais voir plus d'établissements privés référencés.</div>
+            <div class="review-date">Il y a 5 heures</div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn-outline">💬 Répondre</button>
+              <button class="btn-danger-outline">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <img src="https://ui-avatars.com/api/?name=Mariama+Sy&background=F4C542&color=0B1F4D" />
+          <div style="flex:1;">
+            <div class="review-name">Mariama Sy</div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-text">Interface claire, recommandations pertinentes. Bravo à toute l'équipe NextOri !</div>
+            <div class="review-date">Hier</div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn-outline">💬 Répondre</button>
+              <button class="btn-danger-outline">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <img src="https://ui-avatars.com/api/?name=Modou+Diagne&background=F4C542&color=0B1F4D" />
+          <div style="flex:1;">
+            <div class="review-name">Modou Diagne</div>
+            <div class="review-stars">★★★☆☆</div>
+            <div class="review-text">Bonne idée mais l'application a buggé pendant mon test, à corriger rapidement.</div>
+            <div class="review-date">Il y a 2 jours</div>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <button class="btn-outline">💬 Répondre</button>
+              <button class="btn-danger-outline">🗑️ Supprimer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== ÉTABLISSEMENTS VIEW ===================== -->
+    <div class="content view" id="view-etablissements">
+      <h1 class="page-title">Gestion des établissements</h1>
+      <p class="page-sub">23 établissements référencés sur la plateforme</p>
+
+      <div class="page-toolbar">
+        <div class="search-box" style="max-width:300px; background:var(--gray-100);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9aa4b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Rechercher un établissement..." />
+        </div>
+        <select class="filter-select"><option>Tous les types</option><option>Public</option><option>Privé</option></select>
+        <select class="filter-select"><option>Tous les statuts</option><option>Publié</option><option>Brouillon</option></select>
+        <button class="btn-primary">+ Ajouter un établissement</button>
+      </div>
+
+      <div class="card-grid">
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/ucad/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">UCAD — Université Cheikh Anta Diop</div>
+            <div class="entity-sub">📍 Dakar</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 1957</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/ugb/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">UGB — Université Gaston Berger</div>
+            <div class="entity-sub">📍 Saint-Louis</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 1990</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/ism/400/220');"><span class="status-pill status-pending">Brouillon</span></div>
+          <div class="entity-body">
+            <div class="entity-name">ISM — Institut Supérieur de Management</div>
+            <div class="entity-sub">📍 Dakar</div>
+            <div class="entity-meta"><span class="tag-chip">Privé</span><span class="tag-chip">Depuis 1992</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/esp/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">ESP — École Supérieure Polytechnique</div>
+            <div class="entity-sub">📍 Dakar</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 1994</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/uidt/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">UIDT — Université Iba Der Thiam</div>
+            <div class="entity-sub">📍 Thiès</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 2007</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/uadb/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">UADB — Université Alioune Diop</div>
+            <div class="entity-sub">📍 Bambey</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 2007</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/uasz/400/220');"><span class="status-pill status-active">Publié</span></div>
+          <div class="entity-body">
+            <div class="entity-name">UASZ — Université Assane Seck</div>
+            <div class="entity-sub">📍 Ziguinchor</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 2007</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/uss/400/220');"><span class="status-pill status-new">Nouveau</span></div>
+          <div class="entity-body">
+            <div class="entity-name">USS — Université du Sine Saloum</div>
+            <div class="entity-sub">📍 Kaolack</div>
+            <div class="entity-meta"><span class="tag-chip">Public</span><span class="tag-chip">Depuis 2020</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== MÉTIERS VIEW ===================== -->
+    <div class="content view" id="view-metiers">
+      <h1 class="page-title">Gestion des métiers</h1>
+      <p class="page-sub">184 métiers référencés dans la base NextOri</p>
+
+      <div class="page-toolbar">
+        <div class="search-box" style="max-width:300px; background:var(--gray-100);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9aa4b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Rechercher un métier..." />
+        </div>
+        <select class="filter-select"><option>Tous les secteurs</option><option>Tech</option><option>Santé</option><option>Droit</option></select>
+        <button class="btn-primary">+ Ajouter un métier</button>
+      </div>
+
+      <div class="card-grid">
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/datascientist/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">💻 Data Scientist</div>
+            <div class="entity-sub">Analyse et exploitation des données pour orienter la décision.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 850 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">Python</span><span class="tag-chip">Statistiques</span><span class="tag-chip">Machine Learning</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/medecin/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">🩺 Médecin généraliste</div>
+            <div class="entity-sub">Diagnostic, soins et suivi médical des patients.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 1 200 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">Empathie</span><span class="tag-chip">Rigueur</span><span class="tag-chip">Sciences</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/juriste/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">⚖️ Juriste d'entreprise</div>
+            <div class="entity-sub">Conseil juridique et gestion des contrats de l'entreprise.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 650 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">Droit</span><span class="tag-chip">Négociation</span><span class="tag-chip">Rédaction</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/designer/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">🎨 Designer UI/UX</div>
+            <div class="entity-sub">Conception d'interfaces numériques centrées utilisateur.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 500 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">Figma</span><span class="tag-chip">Créativité</span><span class="tag-chip">UX Research</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/ingenieur/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">⚙️ Ingénieur logiciel</div>
+            <div class="entity-sub">Conception et développement d'applications et de systèmes.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 900 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">JavaScript</span><span class="tag-chip">Algorithmique</span><span class="tag-chip">Cloud</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-cover photo" style="background-image:url('https://picsum.photos/seed/enseignant/400/220');"></div>
+          <div class="entity-body">
+            <div class="entity-name">📖 Enseignant</div>
+            <div class="entity-sub">Transmission du savoir et accompagnement pédagogique des élèves.</div>
+            <div class="entity-meta"><span class="tag-chip">💰 400 000 FCFA/mois</span></div>
+            <div class="entity-meta"><span class="tag-chip">Pédagogie</span><span class="tag-chip">Communication</span><span class="tag-chip">Patience</span></div>
+            <div class="entity-actions"><button class="btn-outline">✏️ Modifier</button><button class="btn-danger-outline">🗑️ Supprimer</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ===================== FORMATIONS VIEW ===================== -->
+    <div class="content view" id="view-formations">
+      <h1 class="page-title">Gestion des formations</h1>
+      <p class="page-sub">57 formations disponibles via NextOri Academy</p>
+
+      <div class="page-toolbar">
+        <select class="filter-select"><option>Toutes les catégories</option><option>Entrepreneuriat</option><option>Numérique</option><option>Communication</option></select>
+        <select class="filter-select"><option>Tous les formateurs</option></select>
+        <button class="btn-primary">+ Ajouter une formation</button>
+      </div>
+
+      <div class="panel">
+        <table>
+          <thead>
+            <tr><th>Formation</th><th>Catégorie</th><th>Formateur</th><th>Durée</th><th>Prix</th><th>Statut</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Créer son business plan</strong></td>
+              <td><span class="tag-chip">Entrepreneuriat</span></td>
+              <td>M. Laurent Massoya</td>
+              <td>4 semaines</td>
+              <td>25 000 FCFA</td>
+              <td><span class="status-pill status-active">Publiée</span></td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Initiation à la programmation</strong></td>
+              <td><span class="tag-chip">Numérique</span></td>
+              <td>Mme Aïda Sow</td>
+              <td>6 semaines</td>
+              <td>35 000 FCFA</td>
+              <td><span class="status-pill status-active">Publiée</span></td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Prise de parole en public</strong></td>
+              <td><span class="tag-chip">Communication</span></td>
+              <td>M. Oumar Ndir</td>
+              <td>2 semaines</td>
+              <td>15 000 FCFA</td>
+              <td><span class="status-pill status-pending">Brouillon</span></td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Gestion de projet agile</strong></td>
+              <td><span class="tag-chip">Communication</span></td>
+              <td>Mme Ndèye Fall</td>
+              <td>3 semaines</td>
+              <td>20 000 FCFA</td>
+              <td><span class="status-pill status-active">Publiée</span></td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ===================== CONSEILLERS VIEW ===================== -->
+    <div class="content view" id="view-conseillers">
+      <h1 class="page-title">Gestion des conseillers</h1>
+      <p class="page-sub">14 conseillers actifs sur la plateforme</p>
+
+      <div class="page-toolbar">
+        <select class="filter-select"><option>Toutes les spécialités</option><option>Orientation scolaire</option><option>Coaching carrière</option></select>
+        <button class="btn-primary">+ Ajouter un conseiller</button>
+      </div>
+
+      <div class="panel">
+        <table>
+          <thead>
+            <tr><th>Conseiller</th><th>Spécialité</th><th>Disponibilité</th><th>Rendez-vous</th><th>Évaluation</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Cheikh+Sow&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">M. Cheikh Sow</div></div>
+                </div>
+              </td>
+              <td>Orientation scolaire</td>
+              <td><span class="status-pill status-active">Disponible</span></td>
+              <td>142</td>
+              <td>⭐ 4,8</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Ndeye+Fall&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">Mme Ndèye Fall</div></div>
+                </div>
+              </td>
+              <td>Coaching carrière</td>
+              <td><span class="status-pill status-pending">Occupée</span></td>
+              <td>98</td>
+              <td>⭐ 4,6</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="https://ui-avatars.com/api/?name=Oumar+Ndir&background=0B1F4D&color=fff" />
+                  <div><div class="u-name">M. Oumar Ndir</div></div>
+                </div>
+              </td>
+              <td>Entretiens & CV</td>
+              <td><span class="status-pill status-active">Disponible</span></td>
+              <td>76</td>
+              <td>⭐ 4,9</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ===================== RENDEZ-VOUS VIEW ===================== -->
+    <div class="content view" id="view-rendezvous">
+      <h1 class="page-title">Gestion des rendez-vous</h1>
+      <p class="page-sub">964 rendez-vous au total, 18 en attente de validation</p>
+
+      <div class="tabs" id="rdvTabs">
+        <button class="tab-btn active" data-tab="calendrier">📅 Calendrier</button>
+        <button class="tab-btn" data-tab="liste">📋 Liste</button>
+        <button class="tab-btn" data-tab="historique">🕓 Historique</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-calendrier">
+        <div class="panel">
+          <div class="panel-title">Juillet 2026</div>
+          <div class="panel-sub">Cliquez sur un jour pour voir les rendez-vous prévus</div>
+          <div class="calendar-grid">
+            <div class="cal-head">Lun</div><div class="cal-head">Mar</div><div class="cal-head">Mer</div><div class="cal-head">Jeu</div><div class="cal-head">Ven</div><div class="cal-head">Sam</div><div class="cal-head">Dim</div>
+            <div class="cal-day empty"></div><div class="cal-day empty"></div>
+            <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day has-events">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+            <div class="cal-day">6</div><div class="cal-day has-events">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day has-events">10</div><div class="cal-day">11</div>
+            <div class="cal-day today">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day has-events">15</div><div class="cal-day has-events">16</div><div class="cal-day has-events">17</div><div class="cal-day">18</div>
+            <div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div>
+            <div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-liste">
+        <div class="panel">
+          <table>
+            <thead><tr><th>Utilisateur</th><th>Conseiller</th><th>Date</th><th>Heure</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Awa Ndiaye</td><td>M. Cheikh Sow</td><td>15 Juil. 2026</td><td>10:00</td>
+                <td><span class="status-pill status-pending">En attente</span></td>
+                <td><div class="appt-actions"><button class="btn-accept">Valider</button><button class="btn-outline">Reporter</button><button class="btn-refuse">Annuler</button></div></td>
+              </tr>
+              <tr>
+                <td>Moussa Diop</td><td>Mme Ndèye Fall</td><td>16 Juil. 2026</td><td>14:30</td>
+                <td><span class="status-pill status-pending">En attente</span></td>
+                <td><div class="appt-actions"><button class="btn-accept">Valider</button><button class="btn-outline">Reporter</button><button class="btn-refuse">Annuler</button></div></td>
+              </tr>
+              <tr>
+                <td>Fatou Sarr</td><td>M. Cheikh Sow</td><td>17 Juil. 2026</td><td>09:00</td>
+                <td><span class="status-pill status-active">Confirmé</span></td>
+                <td><div class="appt-actions"><button class="btn-accept">Valider</button><button class="btn-outline">Reporter</button><button class="btn-refuse">Annuler</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-historique">
+        <div class="panel">
+          <table>
+            <thead><tr><th>Utilisateur</th><th>Conseiller</th><th>Date</th><th>Statut final</th></tr></thead>
+            <tbody>
+              <tr><td>Khady Ba</td><td>M. Oumar Ndir</td><td>3 Juil. 2026</td><td><span class="status-pill status-active">Terminé</span></td></tr>
+              <tr><td>Ibrahima Fall</td><td>M. Cheikh Sow</td><td>1 Juil. 2026</td><td><span class="status-pill status-blocked">Annulé</span></td></tr>
+              <tr><td>Aïssatou Diallo</td><td>Mme Ndèye Fall</td><td>28 Juin 2026</td><td><span class="status-pill status-active">Terminé</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== ANNONCES VIEW ===================== -->
+    <div class="content view" id="view-annonces">
+      <h1 class="page-title">Gestion des annonces</h1>
+      <p class="page-sub">Publiez des annonces et notifications visibles par les utilisateurs</p>
+
+      <div class="page-toolbar">
+        <button class="btn-primary" style="margin-left:0;">+ Créer une annonce</button>
+        <button class="btn-outline">🗓️ Planifier une publication</button>
+        <button class="btn-outline" style="margin-left:auto;">🔔 Envoyer une notification</button>
+      </div>
+
+      <div class="panel" style="margin-bottom:16px;">
+        <table>
+          <thead><tr><th>Annonce</th><th>Statut</th><th>Date de publication</th><th>Portée</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Journées portes ouvertes UCAD</strong><div class="entity-sub">Campus de Dakar-Fann, 15 Janvier 2026</div></td>
+              <td><span class="status-pill status-active">Publiée</span></td>
+              <td>10 Juil. 2026</td>
+              <td>Tous les utilisateurs</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Nouvelle bourse d'excellence ESP</strong><div class="entity-sub">Candidatures ouvertes jusqu'au 30 Août</div></td>
+              <td><span class="status-pill status-pending">Planifiée</span></td>
+              <td>20 Juil. 2026</td>
+              <td>Élèves & étudiants</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>Maintenance programmée de la plateforme</strong><div class="entity-sub">Indisponibilité prévue de 2h à 4h du matin</div></td>
+              <td><span class="status-pill status-blocked">Brouillon</span></td>
+              <td>—</td>
+              <td>Tous les utilisateurs</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ===================== NOTIFICATIONS VIEW ===================== -->
+    <div class="content view" id="view-notifications">
+      <h1 class="page-title">Notifications</h1>
+      <p class="page-sub">Centre de notifications de la plateforme NextOri</p>
+
+      <div class="tabs" id="notifTabs">
+        <button class="tab-btn active" data-tab="toutes">Toutes</button>
+        <button class="tab-btn" data-tab="systeme">Messages système</button>
+        <button class="tab-btn" data-tab="alertes">Alertes</button>
+        <button class="tab-btn" data-tab="signalements">Signalements</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-toutes">
+        <div class="panel">
+          <div class="notif-item unread">
+            <div class="notif-icon" style="background:#fee2e2;">🚩</div>
+            <div>
+              <div class="notif-title">Signalement d'un avis inapproprié</div>
+              <div class="notif-text">Un utilisateur a signalé un commentaire sur la fiche de l'ISM.</div>
+              <div class="notif-time">Il y a 20 minutes</div>
+            </div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon" style="background:#dbeafe;">🆕</div>
+            <div>
+              <div class="notif-title">312 nouveaux utilisateurs cette semaine</div>
+              <div class="notif-text">Croissance de +8,2% par rapport à la semaine précédente.</div>
+              <div class="notif-time">Il y a 2 heures</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:#fef3c7;">⚙️</div>
+            <div>
+              <div class="notif-title">Mise à jour système effectuée</div>
+              <div class="notif-text">La plateforme a été mise à jour vers la version 2.4.1.</div>
+              <div class="notif-time">Hier</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon" style="background:#dcfce7;">📅</div>
+            <div>
+              <div class="notif-title">18 nouvelles demandes de rendez-vous</div>
+              <div class="notif-text">Des utilisateurs attendent la validation de leur créneau.</div>
+              <div class="notif-time">Hier</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-systeme">
+        <div class="panel">
+          <div class="notif-item"><div class="notif-icon" style="background:#fef3c7;">⚙️</div><div><div class="notif-title">Mise à jour système effectuée</div><div class="notif-text">La plateforme a été mise à jour vers la version 2.4.1.</div><div class="notif-time">Hier</div></div></div>
+          <div class="notif-item"><div class="notif-icon" style="background:#fef3c7;">💾</div><div><div class="notif-title">Sauvegarde automatique réussie</div><div class="notif-text">La base de données a été sauvegardée avec succès.</div><div class="notif-time">Il y a 2 jours</div></div></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-alertes">
+        <div class="panel">
+          <div class="notif-item unread"><div class="notif-icon" style="background:#fee2e2;">⚠️</div><div><div class="notif-title">Pic de trafic inhabituel détecté</div><div class="notif-text">Le nombre de connexions simultanées dépasse la moyenne.</div><div class="notif-time">Il y a 3 heures</div></div></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-signalements">
+        <div class="panel">
+          <div class="notif-item unread"><div class="notif-icon" style="background:#fee2e2;">🚩</div><div><div class="notif-title">Signalement d'un avis inapproprié</div><div class="notif-text">Un utilisateur a signalé un commentaire sur la fiche de l'ISM.</div><div class="notif-time">Il y a 20 minutes</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== PARAMÈTRES VIEW ===================== -->
+    <div class="content view" id="view-parametres">
+      <h1 class="page-title">Paramètres</h1>
+      <p class="page-sub">Configuration générale de la plateforme NextOri</p>
+
+      <div class="panel settings-section">
+        <div class="settings-section-title">🏷️ Identité de la plateforme</div>
+        <div class="settings-section-sub">Logo, nom et informations générales de NextOri</div>
+
+        <div class="logo-uploader" style="margin-bottom:18px;">
+          <div class="preview">N</div>
+          <button class="btn-outline">📤 Changer le logo</button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group"><label>Nom de la plateforme</label><input type="text" value="NextOri" /></div>
+          <div class="form-group"><label>Slogan</label><input type="text" value="Des choix éclairés pour un avenir meilleur." /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email de contact</label><input type="email" value="contact@nextori.sn" /></div>
+          <div class="form-group"><label>Téléphone</label><input type="text" value="+221 77 000 00 00" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Facebook / Instagram / TikTok</label><input type="text" placeholder="@nextori" /></div>
+          <div class="form-group"><label>LinkedIn</label><input type="text" placeholder="linkedin.com/company/nextori" /></div>
+        </div>
+      </div>
+
+      <div class="panel settings-section">
+        <div class="settings-section-title">📄 Documents légaux</div>
+        <div class="settings-section-sub">Politique de confidentialité et conditions d'utilisation</div>
+        <div class="form-group" style="margin-bottom:14px;"><label>Politique de confidentialité</label><textarea rows="3" placeholder="Modifier le contenu de la politique de confidentialité..."></textarea></div>
+        <div class="form-group"><label>Conditions d'utilisation</label><textarea rows="3" placeholder="Modifier le contenu des conditions d'utilisation..."></textarea></div>
+      </div>
+
+      <div class="panel settings-section">
+        <div class="settings-section-title">🔒 Sécurité et sauvegarde</div>
+        <div class="settings-section-sub">Gérez la sécurité du compte et la sauvegarde des données</div>
+
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Sauvegarde automatique quotidienne</div><div class="toggle-row-sub">Sauvegarde la base de données chaque nuit à 2h00</div></div>
+          <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Authentification à deux facteurs</div><div class="toggle-row-sub">Renforce la sécurité de la connexion administrateur</div></div>
+          <label class="toggle"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-row-label">Alertes de connexion suspecte</div><div class="toggle-row-sub">Recevoir un email en cas de connexion inhabituelle</div></div>
+          <label class="toggle"><input type="checkbox" /><span class="toggle-slider"></span></label>
+        </div>
+
+        <div class="form-row" style="margin-top:16px;">
+          <div class="form-group"><label>Mot de passe actuel</label><input type="password" placeholder="••••••••" /></div>
+          <div class="form-group"><label>Nouveau mot de passe</label><input type="password" placeholder="••••••••" /></div>
+        </div>
+        <button class="btn-primary" style="margin-left:0;">Changer le mot de passe</button>
+      </div>
+
+      <div class="panel settings-section">
+        <div class="settings-section-title">👥 Gestion des administrateurs</div>
+        <div class="settings-section-sub">Ajoutez ou gérez les comptes administrateurs de la plateforme</div>
+        <table>
+          <thead><tr><th>Administrateur</th><th>Rôle</th><th>Dernière connexion</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Ndeye+Awa+Niane&background=F4C542&color=0B1F4D" /><div><div class="u-name">Ndeye Awa Niane</div></div></div></td>
+              <td>Fondatrice — Super Admin</td>
+              <td>En ligne</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Laurent+Massoya&background=F4C542&color=0B1F4D" /><div><div class="u-name">Laurent Denbin Massoya</div></div></div></td>
+              <td>Co-fondateur — Admin technique</td>
+              <td>Il y a 1 heure</td>
+              <td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn-primary" style="margin-top:16px; margin-left:0;">+ Ajouter un administrateur</button>
+      </div>
+    </div>
+    <!-- ===================== 1. GESTION DES CONCOURS ===================== -->
+    <div class="content view" id="view-concours">
+      <h1 class="page-title">Gestion des concours</h1>
+      <p class="page-sub">13 concours référencés sur la plateforme</p>
+      <div class="page-toolbar">
+        <select class="filter-select"><option>Tous les statuts</option><option>Actif</option><option>Désactivé</option></select>
+        <select class="filter-select"><option>Toutes les catégories</option><option>Public</option><option>Défense &amp; Sécurité</option><option>Privé</option></select>
+        <button class="btn-primary">+ Ajouter un concours</button>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Concours</th><th>Statut</th><th>Intéressés</th><th>Clics</th><th>Ouvertures</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Concours ESP</strong><div class="entity-sub">École Supérieure Polytechnique</div></td><td><span class="status-pill status-active">Actif</span></td><td>1 928</td><td>4 210</td><td>3 640</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn">🔁</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+            <tr><td><strong>Concours Police Nationale</strong><div class="entity-sub">Police Nationale du Sénégal</div></td><td><span class="status-pill status-active">Actif</span></td><td>3 402</td><td>6 890</td><td>5 910</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn">🔁</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+            <tr><td><strong>Concours ENA</strong><div class="entity-sub">École Nationale d'Administration</div></td><td><span class="status-pill status-active">Actif</span></td><td>1 540</td><td>3 120</td><td>2 705</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn">🔁</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+            <tr><td><strong>Concours Gendarmerie</strong><div class="entity-sub">Gendarmerie Nationale</div></td><td><span class="status-pill status-pending">Bientôt</span></td><td>980</td><td>1 860</td><td>1 420</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn">🔁</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+            <tr><td><strong>Concours Douanes</strong><div class="entity-sub">Direction Générale des Douanes</div></td><td><span class="status-pill status-blocked">Désactivé</span></td><td>612</td><td>1 105</td><td>890</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn">🔁</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 2. NEXTORI SUCCESS SCORE (stats) ===================== -->
+    <div class="content view" id="view-successscore">
+      <h1 class="page-title">NextOri Success Score</h1>
+      <p class="page-sub">Statistiques globales des analyses de profil</p>
+      <div class="kpi-row">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#ede9fe;">🎯</div><span class="stat-trend trend-up">+9,4%</span></div><div class="stat-value">6 214</div><div class="stat-label">Success Score réalisés</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">📊</div><span class="stat-trend trend-up">+2 pts</span></div><div class="stat-value">71 / 100</div><div class="stat-label">Score moyen</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">🏆</div><span class="stat-trend trend-up">18%</span></div><div class="stat-value">1 118</div><div class="stat-label">Scores &gt; 90/100</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#e0f2fe;">🔁</div><span class="stat-trend trend-neutral">Stable</span></div><div class="stat-value">34%</div><div class="stat-label">Ont refait l'analyse</div></div>
+      </div>
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">Répartition des scores</div>
+          <div class="panel-sub">Nombre de candidats par tranche de score</div>
+          <div class="dist-bar-row"><div class="dist-bar-label">0 – 40</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:8%; background:#e0433f;"></div></div><div class="dist-bar-pct">8%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">41 – 60</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:22%; background:#f97316;"></div></div><div class="dist-bar-pct">22%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">61 – 80</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:37%; background:#2563eb;"></div></div><div class="dist-bar-pct">37%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">81 – 100</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:33%; background:#16a34a;"></div></div><div class="dist-bar-pct">33%</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Concours les plus analysés</div>
+          <div class="panel-sub">Nombre de Success Score par concours</div>
+          <div class="rank-list-item"><div class="rank-num top3">1</div><div class="rank-info"><div class="rank-name">Concours ESP</div><div class="rank-sub">1 820 analyses · taux de réussite estimé 74%</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">2</div><div class="rank-info"><div class="rank-name">Concours Police Nationale</div><div class="rank-sub">1 460 analyses · taux de réussite estimé 61%</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">3</div><div class="rank-info"><div class="rank-name">Concours ENA</div><div class="rank-sub">980 analyses · taux de réussite estimé 58%</div></div></div>
+          <div class="rank-list-item"><div class="rank-num">4</div><div class="rank-info"><div class="rank-name">Concours ISEP</div><div class="rank-sub">705 analyses · taux de réussite estimé 69%</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 3. PARRAINAGE ===================== -->
+    <div class="content view" id="view-parrainage">
+      <h1 class="page-title">Parrainage</h1>
+      <p class="page-sub">Suivi du programme "Invite 5 amis, débloque un conseiller"</p>
+      <div class="kpi-row">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#eff6ff;">📨</div><span class="stat-trend trend-up">+340</span></div><div class="stat-value">4 870</div><div class="stat-label">Invitations envoyées</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">✅</div><span class="stat-trend trend-up">27%</span></div><div class="stat-value">1 315</div><div class="stat-label">Inscriptions obtenues</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">🎁</div><span class="stat-trend trend-up">+18</span></div><div class="stat-value">142</div><div class="stat-label">Accompagnements gratuits gagnés</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#ede9fe;">📈</div><span class="stat-trend trend-neutral">Stable</span></div><div class="stat-value">27%</div><div class="stat-label">Taux de conversion</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">🏆 Top 20 des meilleurs parrains</div>
+        <div class="panel-sub">Classement par nombre d'inscriptions obtenues</div>
+        <table>
+          <thead><tr><th>Rang</th><th>Utilisateur</th><th>Invitations envoyées</th><th>Inscriptions obtenues</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>🥇 1</td><td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Awa+Ndiaye&background=0B1F4D&color=fff"/><div class="u-name">Awa Ndiaye</div></div></td><td>18</td><td>9</td><td><span class="status-pill status-active">Conseiller débloqué</span></td></tr>
+            <tr><td>🥈 2</td><td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Moussa+Diop&background=0B1F4D&color=fff"/><div class="u-name">Moussa Diop</div></div></td><td>14</td><td>7</td><td><span class="status-pill status-active">Conseiller débloqué</span></td></tr>
+            <tr><td>🥉 3</td><td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Fatou+Sarr&background=0B1F4D&color=fff"/><div class="u-name">Fatou Sarr</div></div></td><td>11</td><td>6</td><td><span class="status-pill status-active">Conseiller débloqué</span></td></tr>
+            <tr><td>4</td><td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Ibrahima+Fall&background=0B1F4D&color=fff"/><div class="u-name">Ibrahima Fall</div></div></td><td>9</td><td>4</td><td><span class="status-pill status-pending">1 invitation restante</span></td></tr>
+            <tr><td>5</td><td><div class="user-cell"><img src="https://ui-avatars.com/api/?name=Khady+Ba&background=0B1F4D&color=fff"/><div class="u-name">Khady Ba</div></div></td><td>7</td><td>3</td><td><span class="status-pill status-pending">2 invitations restantes</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ===================== 4. ALERTES AUTOMATIQUES ===================== -->
+    <div class="content view" id="view-alertes">
+      <h1 class="page-title">Alertes automatiques</h1>
+      <p class="page-sub">Centre de suivi des envois SMS, WhatsApp, appels et notifications push</p>
+      <div class="kpi-row">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">💬</div><span class="stat-trend trend-up">+412</span></div><div class="stat-value">8 940</div><div class="stat-label">SMS envoyés</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">🟢</div><span class="stat-trend trend-up">+280</span></div><div class="stat-value">6 512</div><div class="stat-label">WhatsApp envoyés</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#eff6ff;">📞</div><span class="stat-trend trend-neutral">Stable</span></div><div class="stat-value">64</div><div class="stat-label">Appels programmés</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">🔔</div><span class="stat-trend trend-up">+1 240</span></div><div class="stat-value">14 380</div><div class="stat-label">Notifications Push envoyées</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">⚠️ Notifications échouées récentes</div>
+        <div class="panel-sub">128 échecs au total ce mois-ci — vérifier les numéros ou l'état du service</div>
+        <table>
+          <thead><tr><th>Canal</th><th>Destinataire</th><th>Concours concerné</th><th>Raison</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td>💬 SMS</td><td>+221 77 *** 45 67</td><td>Concours ESP</td><td>Numéro invalide</td><td>12 Juil. 2026</td></tr>
+            <tr><td>🟢 WhatsApp</td><td>+221 76 *** 89 01</td><td>Concours Police</td><td>Compte introuvable</td><td>11 Juil. 2026</td></tr>
+            <tr><td>🔔 Push</td><td>Appareil Android</td><td>Concours ENA</td><td>Token expiré</td><td>10 Juil. 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 5. ANALYSE DES UTILISATEURS ===================== -->
+    <div class="content view" id="view-analyseutilisateurs">
+      <h1 class="page-title">Analyse des utilisateurs</h1>
+      <p class="page-sub">Profil démographique et comportemental de la communauté NextOri</p>
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">Répartition par sexe</div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Féminin</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:54%; background:#db2777;"></div></div><div class="dist-bar-pct">54%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Masculin</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:46%; background:#2563eb;"></div></div><div class="dist-bar-pct">46%</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Répartition par âge</div>
+          <div class="dist-bar-row"><div class="dist-bar-label">15 – 18 ans</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:38%; background:#F4C542;"></div></div><div class="dist-bar-pct">38%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">19 – 22 ans</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:41%; background:#2563eb;"></div></div><div class="dist-bar-pct">41%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">23 – 27 ans</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:15%; background:#16a34a;"></div></div><div class="dist-bar-pct">15%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">28 ans +</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:6%; background:#e0433f;"></div></div><div class="dist-bar-pct">6%</div></div>
+        </div>
+      </div>
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">Répartition par région</div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Dakar</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:58%; background:#0B1F4D;"></div></div><div class="dist-bar-pct">58%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Thiès</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:14%; background:#0B1F4D;"></div></div><div class="dist-bar-pct">14%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Saint-Louis</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:11%; background:#0B1F4D;"></div></div><div class="dist-bar-pct">11%</div></div>
+          <div class="dist-bar-row"><div class="dist-bar-label">Autres</div><div class="dist-bar-track"><div class="dist-bar-fill" style="width:17%; background:#0B1F4D;"></div></div><div class="dist-bar-pct">17%</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Niveau d'étude &amp; série du Bac</div>
+          <div class="rank-list-item"><div class="rank-info"><div class="rank-name">Terminale / Baccalauréat</div><div class="rank-sub">Série S2 majoritaire (44%)</div></div><div class="dist-bar-pct">41%</div></div>
+          <div class="rank-list-item"><div class="rank-info"><div class="rank-name">Bac+1 à Bac+3</div><div class="rank-sub">Licence majoritairement</div></div><div class="dist-bar-pct">37%</div></div>
+          <div class="rank-list-item"><div class="rank-info"><div class="rank-name">Bac+4 et plus</div><div class="rank-sub">Master, diplômés</div></div><div class="dist-bar-pct">22%</div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Filières &amp; métiers recherchés</div>
+        <div class="panel-sub">Temps moyen passé sur l'application : <strong>14 min / session</strong></div>
+        <table>
+          <thead><tr><th>Filière actuelle</th><th>Métier le plus recherché</th><th>Part des utilisateurs</th></tr></thead>
+          <tbody>
+            <tr><td>Sciences &amp; Tech</td><td>Ingénieur informatique</td><td>29%</td></tr>
+            <tr><td>Économie &amp; Gestion</td><td>Cadre en gestion / Finance</td><td>21%</td></tr>
+            <tr><td>Lettres &amp; Sciences Humaines</td><td>Enseignant</td><td>17%</td></tr>
+            <tr><td>Santé</td><td>Sage-femme / Infirmier</td><td>12%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================== 6. STATISTIQUES DES CONCOURS ===================== -->
+    <div class="content view" id="view-statsconcours">
+      <h1 class="page-title">Statistiques des concours</h1>
+      <p class="page-sub">Popularité et performance de chaque concours sur la plateforme</p>
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">👁️ Les plus consultés</div>
+          <div class="rank-list-item"><div class="rank-num top3">1</div><div class="rank-info"><div class="rank-name">Concours Police Nationale</div><div class="rank-sub">6 890 consultations</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">2</div><div class="rank-info"><div class="rank-name">Concours ESP</div><div class="rank-sub">4 210 consultations</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">3</div><div class="rank-info"><div class="rank-name">Concours ENA</div><div class="rank-sub">3 120 consultations</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">❤️ Les plus enregistrés en favoris</div>
+          <div class="rank-list-item"><div class="rank-num top3">1</div><div class="rank-info"><div class="rank-name">Concours ESP</div><div class="rank-sub">1 240 favoris</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">2</div><div class="rank-info"><div class="rank-name">Concours Police Nationale</div><div class="rank-sub">980 favoris</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">3</div><div class="rank-info"><div class="rank-name">Concours ISM</div><div class="rank-sub">610 favoris</div></div></div>
+        </div>
+      </div>
+      <div class="charts-grid-2">
+        <div class="panel">
+          <div class="panel-title">🔗 Les plus partagés</div>
+          <div class="rank-list-item"><div class="rank-num top3">1</div><div class="rank-info"><div class="rank-name">Concours ESP</div><div class="rank-sub">842 partages (WhatsApp majoritaire)</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">2</div><div class="rank-info"><div class="rank-name">Concours Police Nationale</div><div class="rank-sub">690 partages</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">3</div><div class="rank-info"><div class="rank-name">Concours ENS</div><div class="rank-sub">415 partages</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">🏆 Meilleur taux de réussite estimé (Success Score)</div>
+          <div class="rank-list-item"><div class="rank-num top3">1</div><div class="rank-info"><div class="rank-name">Concours ISEP</div><div class="rank-sub">Taux de réussite estimé : 69%</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">2</div><div class="rank-info"><div class="rank-name">Concours ESP</div><div class="rank-sub">Taux de réussite estimé : 74%</div></div></div>
+          <div class="rank-list-item"><div class="rank-num top3">3</div><div class="rank-info"><div class="rank-name">Concours UGB</div><div class="rank-sub">Taux de réussite estimé : 81%</div></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- ===================== 7. GESTION DES CONTENUS ===================== -->
+    <div class="content view" id="view-contenus">
+      <h1 class="page-title">Gestion des contenus</h1>
+      <p class="page-sub">Articles, guides, actualités, vidéos et ressources pédagogiques</p>
+      <div class="tabs" id="contenusTabs">
+        <button class="tab-btn active" data-tab="articles">📰 Articles</button>
+        <button class="tab-btn" data-tab="guides">📘 Guides PDF</button>
+        <button class="tab-btn" data-tab="actus">📢 Actualités</button>
+        <button class="tab-btn" data-tab="videos">🎥 Vidéos</button>
+        <button class="tab-btn" data-tab="ressources">📚 Ressources</button>
+      </div>
+      <div class="page-toolbar"><button class="btn-primary" style="margin-left:0;">+ Ajouter un contenu</button></div>
+      <div class="tab-panel active" id="tab-articles">
+        <div class="panel"><table><thead><tr><th>Titre</th><th>Auteur</th><th>Statut</th><th>Vues</th><th>Actions</th></tr></thead><tbody>
+          <tr><td>5 erreurs à éviter après le Bac</td><td>Équipe NextOri</td><td><span class="status-pill status-active">Publié</span></td><td>3 210</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+          <tr><td>Comment choisir sa filière ?</td><td>Ndeye Awa Niane</td><td><span class="status-pill status-pending">Brouillon</span></td><td>—</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-guides">
+        <div class="panel"><table><thead><tr><th>Guide</th><th>Format</th><th>Téléchargements</th><th>Actions</th></tr></thead><tbody>
+          <tr><td>Guide complet du concours ESP</td><td>PDF · 2,4 Mo</td><td>1 840</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-actus">
+        <div class="panel"><table><thead><tr><th>Actualité</th><th>Date</th><th>Statut</th><th>Actions</th></tr></thead><tbody>
+          <tr><td>Ouverture des inscriptions Bac 2026</td><td>10 Juil. 2026</td><td><span class="status-pill status-active">Publiée</span></td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-videos">
+        <div class="panel"><table><thead><tr><th>Vidéo</th><th>Durée</th><th>Vues</th><th>Actions</th></tr></thead><tbody>
+          <tr><td>Témoignage : réussir l'ESP</td><td>6 min 40</td><td>2 105</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-ressources">
+        <div class="panel"><table><thead><tr><th>Ressource</th><th>Type</th><th>Actions</th></tr></thead><tbody>
+          <tr><td>Fiches de révision Mathématiques</td><td>Document</td><td><div class="actions-row"><button class="icon-btn">✏️</button><button class="icon-btn danger">🗑️</button></div></td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ===================== 8. SIGNALEMENTS ===================== -->
+    <div class="content view" id="view-signalements">
+      <h1 class="page-title">Signalements</h1>
+      <p class="page-sub">Bugs, suggestions, commentaires et réclamations des utilisateurs</p>
+      <div class="tabs" id="signalTabs">
+        <button class="tab-btn active" data-tab="bugs">🐞 Bugs</button>
+        <button class="tab-btn" data-tab="suggestions">💡 Suggestions</button>
+        <button class="tab-btn" data-tab="commentaires">💬 Commentaires</button>
+        <button class="tab-btn" data-tab="reclamations">⚠️ Réclamations</button>
+      </div>
+      <div class="tab-panel active" id="tab-bugs">
+        <div class="panel"><table><thead><tr><th>Description</th><th>Utilisateur</th><th>Page concernée</th><th>Statut</th><th>Date</th></tr></thead><tbody>
+          <tr><td>La date limite affichée n'est plus la bonne</td><td>Cheikh Gueye</td><td>Concours ESP</td><td><span class="status-pill status-pending">À traiter</span></td><td>12 Juil. 2026</td></tr>
+          <tr><td>L'application se ferme pendant le test RIASEC</td><td>Fatou Sarr</td><td>Test RIASEC</td><td><span class="status-pill status-active">Résolu</span></td><td>9 Juil. 2026</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-suggestions">
+        <div class="panel"><table><thead><tr><th>Suggestion</th><th>Utilisateur</th><th>Votes</th><th>Statut</th></tr></thead><tbody>
+          <tr><td>Ajouter un mode sombre</td><td>Ibrahima Fall</td><td>34</td><td><span class="status-pill status-pending">En étude</span></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-commentaires">
+        <div class="panel"><table><thead><tr><th>Commentaire</th><th>Utilisateur</th><th>Contexte</th><th>Date</th></tr></thead><tbody>
+          <tr><td>"Super plateforme, merci !"</td><td>Khady Ba</td><td>Avis général</td><td>11 Juil. 2026</td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="tab-panel" id="tab-reclamations">
+        <div class="panel"><table><thead><tr><th>Réclamation</th><th>Utilisateur</th><th>Statut</th><th>Date</th></tr></thead><tbody>
+          <tr><td>Paiement du coaching non confirmé</td><td>Ousmane Kane</td><td><span class="status-pill status-blocked">Urgent</span></td><td>12 Juil. 2026</td></tr>
+        </tbody></table></div>
+      </div>
+    </div>
+    <!-- ===================== 9. JOURNAL D'ACTIVITÉ ===================== -->
+    <div class="content view" id="view-journal">
+      <h1 class="page-title">Journal d'activité</h1>
+      <p class="page-sub">Historique des actions effectuées par les administrateurs</p>
+      <div class="panel">
+        <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text"><strong>Ndeye Awa Niane</strong> s'est connectée à l'espace administrateur</div><div class="activity-time">Aujourd'hui, 09:12</div></div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text"><strong>Laurent Denbin Massoya</strong> a modifié le concours <strong>ESP</strong> (date limite mise à jour)</div><div class="activity-time">Aujourd'hui, 08:47</div></div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text"><strong>Ndeye Awa Niane</strong> a supprimé un avis signalé sur la fiche <strong>ISM</strong></div><div class="activity-time">Hier, 17:23</div></div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text"><strong>Laurent Denbin Massoya</strong> s'est connecté à l'espace administrateur</div><div class="activity-time">Hier, 14:02</div></div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text"><strong>Ndeye Awa Niane</strong> a publié une nouvelle annonce : "Journées portes ouvertes UCAD"</div><div class="activity-time">10 Juil. 2026, 11:15</div></div></div>
+      </div>
+    </div>
+
+    <!-- ===================== 11. TABLEAU FINANCIER (V2 - désactivé) ===================== -->
+    <div class="content view" id="view-financier">
+      <h1 class="page-title">Tableau financier <span class="locked-badge">🔒 Prévu pour la V2</span></h1>
+      <p class="page-sub">Cet espace sera activé lors du lancement des fonctionnalités payantes de NextOri</p>
+      <div class="kpi-row locked-panel">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">💵</div></div><div class="stat-value">—</div><div class="stat-label">Revenus totaux</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#eff6ff;">⭐</div></div><div class="stat-value">—</div><div class="stat-label">Abonnements Premium</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">🎓</div></div><div class="stat-value">—</div><div class="stat-label">Accompagnements vendus</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#ede9fe;">💳</div></div><div class="stat-value">—</div><div class="stat-label">Paiements &amp; commissions</div></div>
+      </div>
+      <div class="panel"><p class="panel-sub" style="margin:0;">📌 Ce module affichera les revenus de coaching (chat, appel, vidéo), les abonnements NextOri Academy et les commissions de partenariat, dès l'activation du modèle économique payant décrit dans le business plan.</p></div>
+    </div>
+
+    <!-- ===================== 12. SAUVEGARDE & SÉCURITÉ ===================== -->
+    <div class="content view" id="view-securite">
+      <h1 class="page-title">Sauvegarde &amp; Sécurité</h1>
+      <p class="page-sub">État technique de la plateforme NextOri</p>
+      <div class="kpi-row">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">💾</div><span class="stat-trend trend-up">OK</span></div><div class="stat-value">02:00</div><div class="stat-label">Dernière sauvegarde</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">🖥️</div><span class="stat-trend trend-up">En ligne</span></div><div class="stat-value">99,98%</div><div class="stat-label">Disponibilité des serveurs</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#dcfce7;">🗄️</div><span class="stat-trend trend-up">Sain</span></div><div class="stat-value">OK</div><div class="stat-label">État base de données</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon" style="background:#fef3c7;">🚨</div><span class="stat-trend trend-neutral">1 alerte</span></div><div class="stat-value">1</div><div class="stat-label">Alertes de sécurité (7j)</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">État des services</div>
+        <div class="server-status-row">Serveur principal (API) <span class="status-pill status-online">🟢 En ligne</span></div>
+        <div class="server-status-row">Base de données <span class="status-pill status-online">🟢 En ligne</span></div>
+        <div class="server-status-row">Service de notifications (SMS/WhatsApp) <span class="status-pill status-online">🟢 En ligne</span></div>
+        <div class="server-status-row">Sauvegarde automatique <span class="status-pill status-online">🟢 Active</span></div>
+        <div class="server-status-row">Tentative de connexion suspecte détectée (IP inconnue) <span class="status-pill status-warning">🟠 À vérifier</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Sidebar view switching
+  const chartRegistry = [];
+  const navItems = document.querySelectorAll('.nav-item[data-view]');
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const view = item.dataset.view;
+
+      // Move the active (gold) highlight to the clicked item only
+      navItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      // Show only the matching page
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById('view-' + view);
+      if (target) target.classList.add('active');
+
+      // Charts inside a display:none container render at 0x0 — force them
+      // to recompute their size now that their page is visible again.
+      requestAnimationFrame(() => {
+        chartRegistry.forEach(chart => { try { chart.resize(); } catch (e) {} });
+      });
+    });
+  });
+
+  // Live date
+  const d = new Date();
+  document.getElementById('topDate').textContent = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Chart.js global defaults
+  Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+  Chart.defaults.color = '#6b7688';
+  Chart.defaults.plugins.legend.display = false;
+
+  const months = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+
+  // Line: Inscriptions
+  chartRegistry.push(new Chart(document.getElementById('chartInscriptions'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Inscriptions',
+        data: [420, 480, 610, 590, 700, 820, 910, 860, 990, 1050, 1180, 1310],
+        borderColor: '#0B1F4D',
+        backgroundColor: 'rgba(11,31,77,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#F4C542',
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { y: { grid: { color: '#eef1f6' }, beginAtZero: true }, x: { grid: { display: false } } }
+    }
+  }));
+
+  // Doughnut: RIASEC
+  chartRegistry.push(new Chart(document.getElementById('chartRiasec'), {
+    type: 'doughnut',
+    data: {
+      labels: ['R','I','A','S','E','C'],
+      datasets: [{
+        data: [18, 22, 14, 20, 15, 11],
+        backgroundColor: ['#0B1F4D','#F4C542','#3b82f6','#16a34a','#e0433f','#8b5cf6'],
+        borderWidth: 3,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: { legend: { display: false } }
+    }
+  }));
+
+  // Bar: Tests RIASEC par mois
+  chartRegistry.push(new Chart(document.getElementById('chartTests'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Tests',
+        data: [310, 340, 420, 460, 500, 610, 690, 640, 700, 760, 820, 910],
+        backgroundColor: '#F4C542',
+        borderRadius: 6,
+        maxBarThickness: 26
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { y: { grid: { color: '#eef1f6' }, beginAtZero: true }, x: { grid: { display: false } } }
+    }
+  }));
+
+  // Line: Avis
+  chartRegistry.push(new Chart(document.getElementById('chartAvis'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Avis',
+        data: [60, 75, 90, 88, 110, 130, 150, 142, 165, 180, 200, 225],
+        borderColor: '#e0433f',
+        backgroundColor: 'rgba(224,67,63,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3,
+        pointBackgroundColor: '#e0433f',
+        borderWidth: 2.5
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { y: { grid: { color: '#eef1f6' }, beginAtZero: true }, x: { grid: { display: false } } }
+    }
+  }));
+  // Bar: Utilisateurs actifs par semaine
+  chartRegistry.push(new Chart(document.getElementById('chartActifs'), {
+    type: 'bar',
+    data: {
+      labels: ['S1','S2','S3','S4','S5','S6','S7','S8'],
+      datasets: [{
+        label: 'Utilisateurs actifs',
+        data: [1200, 1350, 1280, 1460, 1600, 1550, 1780, 1926],
+        backgroundColor: '#0B1F4D',
+        borderRadius: 6,
+        maxBarThickness: 40
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { y: { grid: { color: '#eef1f6' }, beginAtZero: true }, x: { grid: { display: false } } }
+    }
+  }));
+
+  // RIASEC stats page charts
+  chartRegistry.push(new Chart(document.getElementById('chartRiasecEvol'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Tests',
+        data: [310, 340, 420, 460, 500, 610, 690, 640, 700, 760, 820, 910],
+        borderColor: '#0B1F4D',
+        backgroundColor: 'rgba(11,31,77,0.08)',
+        fill: true, tension: 0.4, pointRadius: 3, pointBackgroundColor: '#F4C542', borderWidth: 2.5
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { grid: { color: '#eef1f6' }, beginAtZero: true }, x: { grid: { display: false } } } }
+  }));
+
+  chartRegistry.push(new Chart(document.getElementById('chartRiasecPie'), {
+    type: 'doughnut',
+    data: {
+      labels: ['R','I','A','S','E','C'],
+      datasets: [{
+        data: [18, 22, 14, 20, 15, 11],
+        backgroundColor: ['#0B1F4D','#F4C542','#3b82f6','#16a34a','#e0433f','#8b5cf6'],
+        borderWidth: 3, borderColor: '#fff'
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } }
+  }));
+
+  // Generic tabs system (Rendez-vous, Notifications)
+  document.querySelectorAll('.tabs').forEach(tabGroup => {
+    const buttons = tabGroup.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.tab;
+        // find sibling panels within the same page section
+        const panels = tabGroup.parentElement.querySelectorAll('.tab-panel');
+        panels.forEach(p => p.classList.remove('active'));
+        const activePanel = tabGroup.parentElement.querySelector('#tab-' + target);
+        if (activePanel) activePanel.classList.add('active');
+      });
+    });
+  });
+
+  // ===== Module 9 : Recherche globale =====
+  const GLOBAL_SEARCH_INDEX = [
+    { cat:'Utilisateurs', label:'Awa Ndiaye', view:'users' }, { cat:'Utilisateurs', label:'Moussa Diop', view:'users' }, { cat:'Utilisateurs', label:'Fatou Sarr', view:'users' },
+    { cat:'Concours', label:'Concours ESP', view:'concours' }, { cat:'Concours', label:'Concours Police Nationale', view:'concours' }, { cat:'Concours', label:'Concours ENA', view:'concours' }, { cat:'Concours', label:'Concours Gendarmerie', view:'concours' }, { cat:'Concours', label:'Concours Douanes', view:'concours' },
+    { cat:'Établissements', label:'UCAD — Université Cheikh Anta Diop', view:'etablissements' }, { cat:'Établissements', label:'UGB — Université Gaston Berger', view:'etablissements' }, { cat:'Établissements', label:'ISM', view:'etablissements' },
+    { cat:'Métiers', label:'Data Scientist', view:'metiers' }, { cat:'Métiers', label:'Médecin généraliste', view:'metiers' }, { cat:'Métiers', label:'Ingénieur logiciel', view:'metiers' },
+    { cat:'Formations', label:'Créer son business plan', view:'formations' }, { cat:'Formations', label:'Initiation à la programmation', view:'formations' },
+    { cat:'Rendez-vous', label:'Awa Ndiaye — M. Cheikh Sow', view:'rendezvous' }, { cat:'Rendez-vous', label:'Moussa Diop — Mme Ndèye Fall', view:'rendezvous' }
+  ];
+  const gsInput = document.getElementById('globalSearchInput');
+  const gsResults = document.getElementById('globalSearchResults');
+  gsInput.addEventListener('input', () => {
+    const q = gsInput.value.trim().toLowerCase();
+    if (!q) { gsResults.classList.remove('show'); return; }
+    const matches = GLOBAL_SEARCH_INDEX.filter(item => item.label.toLowerCase().includes(q));
+    if (!matches.length) {
+      gsResults.innerHTML = '<div class="gsr-item">Aucun résultat pour "' + gsInput.value + '"</div>';
+    } else {
+      const byCat = {};
+      matches.forEach(m => { (byCat[m.cat] = byCat[m.cat] || []).push(m); });
+      gsResults.innerHTML = Object.keys(byCat).map(cat =>
+        '<div class="gsr-cat">' + cat + '</div>' +
+        byCat[cat].map(m => `<div class="gsr-item" data-goto="${m.view}">${m.label}</div>`).join('')
+      ).join('');
+    }
+    gsResults.classList.add('show');
+  });
+  gsResults.addEventListener('click', e => {
+    const item = e.target.closest('[data-goto]');
+    if (!item) return;
+    const targetView = item.dataset.goto;
+    const navBtn = document.querySelector(`.nav-item[data-view="${targetView}"]`);
+    if (navBtn) navBtn.click();
+    gsResults.classList.remove('show');
+    gsInput.value = '';
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-box')) gsResults.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>

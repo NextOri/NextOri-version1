@@ -1,0 +1,1571 @@
+/* =========================================================
+   NEXTORI — FORMATIONS
+   Page parcours de formation
+========================================================= */
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+.formations-page {
+
+    --deep-blue: #0D1B2A;
+    --blue: #1E3A8A;
+    --orange: #F4B400;
+    --light-gray: #F2F4F7;
+    --white: #FFFFFF;
+
+    min-height: 100vh;
+
+    background: var(--light-gray);
+
+    color: var(--deep-blue);
+
+    font-family: "Inter", Arial, sans-serif;
+
+    padding: 30px 20px 70px;
+}
+
+
+/* =========================================================
+   NAVIGATION HAUT DE PAGE
+========================================================= */
+
+.formations-navigation {
+
+    max-width: 1100px;
+
+    margin: 0 auto 25px;
+}
+
+
+.formations-back-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 11px 18px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--blue);
+
+    font-size: 0.92rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.formations-back-button:hover {
+
+    background: var(--white);
+
+    color: var(--deep-blue);
+
+    transform: translateX(-3px);
+}
+
+
+.formations-back-button svg {
+
+    font-size: 0.9rem;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.formations-header {
+
+    position: relative;
+
+    max-width: 1100px;
+
+    margin: 0 auto 25px;
+
+    padding: 45px 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+    background: var(--deep-blue);
+
+    border-radius: 26px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 14px 35px rgba(13, 27, 42, 0.14);
+}
+
+
+/*
+   Ligne décorative orange
+*/
+
+.formations-header::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 7px;
+    height: 100%;
+
+    background: var(--orange);
+}
+
+
+/*
+   Élément décoratif discret
+*/
+
+.formations-header::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -100px;
+    top: -100px;
+
+    border: 1px solid rgba(244, 180, 0, 0.18);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ICONE HERO
+========================================================= */
+
+.formations-header-icon {
+
+    flex-shrink: 0;
+
+    width: 76px;
+    height: 76px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: var(--orange);
+
+    color: var(--deep-blue);
+
+    font-size: 2rem;
+
+    box-shadow:
+        0 8px 20px rgba(244, 180, 0, 0.18);
+}
+
+
+/* =========================================================
+   CONTENU HERO
+========================================================= */
+
+.formations-header-content {
+
+    position: relative;
+
+    z-index: 1;
+
+    max-width: 780px;
+}
+
+
+.formations-eyebrow {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--orange);
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+.formations-header h1 {
+
+    margin: 0 0 14px;
+
+    color: var(--white);
+
+    font-size: 2.25rem;
+
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.5px;
+}
+
+
+.metier-title {
+
+    display: inline;
+
+    color: var(--orange);
+
+    font-weight: 800;
+}
+
+
+.formations-header p {
+
+    max-width: 700px;
+
+    margin: 0;
+
+    color: var(--white);
+
+    font-size: 1rem;
+
+    line-height: 1.7;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   METIER SELECTIONNE
+========================================================= */
+
+.metier-context {
+
+    max-width: 1100px;
+
+    margin: 0 auto 45px;
+
+    padding: 18px 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: var(--white);
+
+    border-radius: 16px;
+
+    border: 1px solid var(--light-gray);
+
+    box-shadow:
+        0 6px 20px rgba(13, 27, 42, 0.05);
+}
+
+
+.metier-context-icon {
+
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.2rem;
+}¨
+
+
+
+
+.metier-context-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.metier-context-content span {
+
+    color: var(--blue);
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+
+.metier-context-content strong {
+
+    color: var(--deep-blue);
+
+    font-size: 1rem;
+
+    font-weight: 800;
+
+    display: block;
+
+    margin-top: 6px;
+}
+
+
+/* =========================================================
+   CONTENU PRINCIPAL
+========================================================= */
+
+.formations-content {
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   EN-TETE SECTION
+========================================================= */
+
+.formations-section-header {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-bottom: 28px;
+}
+
+
+.section-eyebrow {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--blue);
+
+    font-size: 0.72rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.3px;
+}
+
+
+.formations-section-header h2 {
+
+    margin: 0 0 8px;
+
+    color: var(--deep-blue);
+
+    font-size: 1.8rem;
+
+    font-weight: 800;
+
+    line-height: 1.25;
+}
+
+
+.formations-section-header p {
+
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: 0.94rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   COMPTEUR FORMATIONS
+========================================================= */
+
+.formations-count {
+
+    flex-shrink: 0;
+
+    min-width: 100px;
+
+    padding: 13px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    background: var(--white);
+
+    border-radius: 13px;
+
+    border: 1px solid var(--light-gray);
+
+    color: var(--blue);
+
+    box-shadow:
+        0 5px 16px rgba(13, 27, 42, 0.05);
+}
+
+
+.formations-count svg {
+
+    color: var(--orange);
+
+    font-size: 0.95rem;
+}
+
+
+.formations-count span {
+
+    color: var(--deep-blue);
+
+    font-size: 1.1rem;
+
+    font-weight: 800;
+}
+
+
+.formations-count small {
+
+    color: var(--blue);
+
+    font-size: 0.78rem;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LISTE FORMATIONS
+========================================================= */
+
+.formations-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+
+/* =========================================================
+   CARTE FORMATION
+========================================================= */
+
+.formation-card {
+
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+
+    padding: 28px;
+
+    background: var(--white);
+
+    border-radius: 20px;
+
+    border: 1px solid var(--light-gray);
+
+    box-shadow:
+        0 8px 25px rgba(13, 27, 42, 0.06);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.formation-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background: var(--orange);
+}
+
+
+.formation-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 35px rgba(13, 27, 42, 0.10);
+}
+
+
+/* =========================================================
+   EN-TETE CARTE
+========================================================= */
+
+.formation-card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 23px;
+}
+
+
+.formation-card-icon {
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.25rem;
+}
+
+
+.formation-card-title {
+
+    min-width: 0;
+}
+
+
+.formation-card-title > span {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--blue);
+
+    font-size: 0.66rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1.1px;
+}
+
+
+.formation-card-title h3 {
+
+    margin: 0;
+
+    color: var(--deep-blue);
+
+    font-size: 1.2rem;
+
+    font-weight: 800;
+
+    line-height: 1.35;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   INFORMATIONS FORMATION
+========================================================= */
+
+.formation-info {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+
+.formation-info-item {
+
+    min-width: 0;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    background: var(--light-gray);
+
+    border-radius: 13px;
+}
+
+
+.formation-info-item > svg {
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    color: var(--blue);
+
+    font-size: 1rem;
+}
+
+
+.formation-info-item > div {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.formation-info-item span {
+
+    color: var(--blue);
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+}
+
+
+.formation-info-item strong {
+
+    color: var(--deep-blue);
+
+    font-size: 0.88rem;
+
+    font-weight: 750;
+
+    line-height: 1.4;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.formation-description {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 24px;
+
+    padding: 15px 16px;
+
+    border-left: 3px solid var(--orange);
+
+    background: var(--light-gray);
+
+    border-radius: 0 12px 12px 0;
+}
+
+
+.formation-description-icon {
+
+    flex-shrink: 0;
+
+    color: var(--blue);
+
+    font-size: 0.9rem;
+
+    margin-top: 4px;
+}
+
+
+.formation-description p {
+
+    margin: 0;
+
+    color: var(--deep-blue);
+
+    font-size: 0.9rem;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   ACTION CARTE
+========================================================= */
+
+.formation-card-action {
+
+    margin-top: auto;
+}
+
+
+.university-button {
+
+    width: 100%;
+
+    min-height: 49px;
+
+    padding: 13px 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: var(--deep-blue);
+
+    color: var(--white);
+
+    font-size: 0.9rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.university-button:hover {
+
+    background: var(--blue);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 16px rgba(13, 27, 42, 0.16);
+}
+
+
+.university-button svg:first-child {
+
+    font-size: 0.95rem;
+}
+
+
+.university-button svg:last-child {
+
+    font-size: 0.78rem;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.university-button:hover svg:last-child {
+
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   ETATS : BASE
+========================================================= */
+
+.formations-state {
+
+    max-width: 700px;
+
+    margin: 20px auto;
+
+    padding: 45px 30px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background: var(--white);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(13, 27, 42, 0.06);
+}
+
+
+.formations-state h3 {
+
+    margin: 0 0 9px;
+
+    color: var(--deep-blue);
+
+    font-size: 1.2rem;
+
+    font-weight: 800;
+}
+
+
+.formations-state p {
+
+    max-width: 500px;
+
+    margin: 0 0 22px;
+
+    color: var(--blue);
+
+    font-size: 0.92rem;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.formations-loading-spinner {
+
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 18px;
+
+    border: 4px solid var(--light-gray);
+
+    border-top-color: var(--orange);
+
+    border-radius: 50%;
+
+    animation:
+        formations-spin 0.8s linear infinite;
+}
+
+
+@keyframes formations-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   ICONES ETATS
+========================================================= */
+
+.formations-state-icon {
+
+    width: 55px;
+    height: 55px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--light-gray);
+
+    color: var(--blue);
+
+    font-size: 1.35rem;
+}
+
+
+/* =========================================================
+   ERREUR
+========================================================= */
+
+.formations-error {
+
+    border-top: 4px solid var(--orange);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.formations-footer {
+
+    max-width: 1100px;
+
+    margin: 45px auto 0;
+
+    padding-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    border-top: 1px solid rgba(13, 27, 42, 0.10);
+}
+
+
+.formations-footer-content {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 0;
+}
+
+
+.formations-footer-content > svg {
+
+    flex-shrink: 0;
+
+    color: var(--blue);
+
+    font-size: 1rem;
+}
+
+
+.formations-footer-content p {
+
+    margin: 0;
+
+    color: var(--blue);
+
+    font-size: 0.86rem;
+
+    line-height: 1.5;
+}
+
+
+.formations-footer .back-result-button {
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px 20px;
+
+    border: 2px solid var(--deep-blue);
+
+    border-radius: 11px;
+
+    background: var(--white);
+
+    color: var(--deep-blue);
+
+    font-size: 0.88rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.formations-footer .back-result-button:hover {
+
+    background: var(--deep-blue);
+
+    color: var(--white);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+.formations-header {
+
+    animation:
+        formationsReveal 0.65s ease-out;
+}
+
+
+.metier-context {
+
+    animation:
+        formationsReveal 0.7s ease-out;
+}
+
+
+.formation-card {
+
+    animation:
+        cardReveal 0.55s ease-out both;
+}
+
+
+.formation-card:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+
+.formation-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+
+.formation-card:nth-child(4) {
+    animation-delay: 0.24s;
+}
+
+
+@keyframes formationsReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(20px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes cardReveal {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(18px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   TABLETTE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .formations-header {
+
+        padding: 38px 35px;
+    }
+
+
+    .formations-header h1 {
+
+        font-size: 2rem;
+    }
+
+
+    .formations-list {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .formation-card {
+
+        max-width: 700px;
+
+        width: 100%;
+
+        margin: 0 auto;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .formations-page {
+
+        padding: 20px 15px 45px;
+    }
+
+
+    /* Navigation */
+
+    .formations-navigation {
+
+        margin-bottom: 18px;
+    }
+
+
+    .formations-back-button {
+
+        padding: 9px 5px;
+
+        font-size: 0.88rem;
+    }
+
+
+    /* Hero */
+
+    .formations-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding: 32px 25px;
+
+        margin-bottom: 18px;
+
+        border-radius: 21px;
+    }
+
+
+    .formations-header::before {
+
+        width: 5px;
+    }
+
+
+    .formations-header-icon {
+
+        width: 58px;
+        height: 58px;
+
+        border-radius: 15px;
+
+        font-size: 1.55rem;
+    }
+
+
+    .formations-eyebrow {
+
+        font-size: 0.68rem;
+    }
+
+
+    .formations-header h1 {
+
+        font-size: 1.65rem;
+
+        line-height: 1.3;
+    }
+
+
+    .formations-header p {
+
+        font-size: 0.9rem;
+
+        line-height: 1.65;
+    }
+
+
+    /* Métier */
+
+    .metier-context {
+
+        margin-bottom: 35px;
+
+        padding: 15px;
+
+        border-radius: 14px;
+    }
+
+
+    .metier-context-icon {
+
+        width: 42px;
+        height: 42px;
+
+        font-size: 1rem;
+    }
+
+
+    .metier-context-content strong {
+
+        font-size: 0.92rem;
+    }
+
+
+    /* Section */
+
+    .formations-section-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        margin-bottom: 23px;
+    }
+
+
+    .formations-section-header h2 {
+
+        font-size: 1.5rem;
+    }
+
+
+    .formations-section-header p {
+
+        font-size: 0.88rem;
+    }
+
+
+    .formations-count {
+
+        min-width: auto;
+
+        align-self: flex-start;
+    }
+
+
+    /* Liste */
+
+    .formations-list {
+
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    /* Carte */
+
+    .formation-card {
+
+        padding: 23px;
+
+        border-radius: 18px;
+    }
+
+
+    .formation-card-header {
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .formation-card-icon {
+
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+
+        font-size: 1.1rem;
+    }
+
+
+    .formation-card-title h3 {
+
+        font-size: 1.08rem;
+    }
+
+
+    /* Informations */
+
+    .formation-info {
+
+        grid-template-columns: 1fr;
+
+        gap: 9px;
+    }
+
+
+    .formation-info-item {
+
+        padding: 13px;
+    }
+
+
+    /* Description */
+
+    .formation-description {
+
+        padding: 13px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .formation-description p {
+
+        font-size: 0.86rem;
+    }
+
+
+    /* Bouton */
+
+    .university-button {
+
+        min-height: 48px;
+
+        padding: 12px 15px;
+
+        font-size: 0.88rem;
+    }
+
+
+    /* Footer */
+
+    .formations-footer {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        margin-top: 35px;
+    }
+
+
+    .formations-footer-content {
+
+        align-items: flex-start;
+    }
+
+
+    .formations-footer .back-result-button {
+
+        width: 100%;
+    }
+
+
+    /* Etats */
+
+    .formations-state {
+
+        padding: 35px 20px;
+    }
+}
+
+
+/* =========================================================
+   PETITS TELEPHONES
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .formations-page {
+
+        padding-left: 12px;
+
+        padding-right: 12px;
+    }
+
+
+    .formations-header {
+
+        padding: 28px 21px;
+    }
+
+
+    .formations-header h1 {
+
+        font-size: 1.45rem;
+    }
+
+
+    .formation-card {
+
+        padding: 20px;
+    }
+
+
+    .formation-card-title h3 {
+
+        font-size: 1rem;
+    }
+
+
+    .formation-info-item strong {
+
+        font-size: 0.84rem;
+    }
+
+
+    .university-button {
+
+        font-size: 0.84rem;
+    }
+
+    .formations-footer {
+    width: 100%;
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 18px;
+}
+
+.formations-footer-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+}
+
+.formations-footer-content > svg {
+    display: block;
+    margin: 0 auto;
+    flex-shrink: 0;
+}
+
+.formations-footer-content p {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.formations-footer .back-result-button {
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+    margin: 0 auto;
+}
+}
+
+
+/* =========================================================
+   ACCESSIBILITE
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+}

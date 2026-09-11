@@ -1,0 +1,1143 @@
+/* =========================================================
+NEXTORI
+PAGE : DÉTAIL D'UNE FILIÈRE
+Design system officiel
+Bleu profond  : #0D1B2A
+Bleu          : #1E3A8A
+Gris clair    : #F2F4F7
+Orange        : #F4B400
+Blanc         : #FFFFFF
+========================================================= */
+
+/* =========================================================
+
+1. PAGE
+   ========================================================= */
+
+.filiere-detail-page {
+
+width: 100%;
+max-width: 1120px;
+
+min-height: 100vh;
+
+margin: 0 auto;
+
+padding: 28px 24px 120px;
+
+box-sizing: border-box;
+
+background: #F2F4F7;
+
+}
+
+/* =========================================================
+2. HEADER — HERO
+========================================================= */
+
+.filiere-detail-header {
+
+position: relative;
+
+overflow: hidden;
+
+margin-bottom: 24px;
+
+padding: 42px 32px;
+
+border-radius: 24px;
+
+background: linear-gradient(
+    135deg,
+    #0D1B2A 0%,
+    #1E3A8A 100%
+);
+
+color: #FFFFFF;
+
+text-align: center;
+
+box-shadow: 0 10px 30px #F2F4F7;
+
+}
+
+/*
+Décoration discrète.
+Elle utilise uniquement l'orange NextOri.
+*/
+
+.filiere-detail-header::before {
+
+content: "";
+
+position: absolute;
+
+width: 210px;
+height: 210px;
+
+top: -130px;
+right: -70px;
+
+border-radius: 50%;
+
+background: #F4B400;
+
+opacity: 0.10;
+
+}
+
+.filiere-detail-header::after {
+
+content: "";
+
+position: absolute;
+
+width: 130px;
+height: 130px;
+
+bottom: -90px;
+left: -45px;
+
+border-radius: 50%;
+
+background: #F4B400;
+
+opacity: 0.08;
+
+}
+
+/* =========================================================
+3. TITRE DE LA FILIÈRE
+========================================================= */
+
+.filiere-title-container {
+
+position: relative;
+
+z-index: 2;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 14px;
+
+margin-bottom: 26px;
+
+}
+
+.filiere-main-icon {
+
+flex-shrink: 0;
+
+font-size: 38px;
+
+color: #F4B400;
+
+}
+
+.filiere-detail-header h1 {
+
+margin: 0;
+
+color: #FFFFFF;
+
+font-size: clamp(1.65rem, 4vw, 2.3rem);
+
+font-weight: 800;
+
+line-height: 1.2;
+
+letter-spacing: -0.02em;
+
+}
+
+/* =========================================================
+4. INFORMATIONS DE LA FILIÈRE
+========================================================= */
+
+.header-infos {
+
+position: relative;
+
+z-index: 2;
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+flex-wrap: wrap;
+
+gap: 12px;
+
+}
+
+.header-infos span {
+
+display: inline-flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 8px;
+
+min-height: 42px;
+
+padding: 9px 17px;
+
+box-sizing: border-box;
+
+border: 1px solid #FFFFFF;
+
+border-radius: 30px;
+
+background: #1E3A8A;
+
+color: #FFFFFF;
+
+font-size: 0.9rem;
+
+font-weight: 650;
+
+}
+
+.header-infos svg {
+
+flex-shrink: 0;
+
+color: #F4B400;
+
+font-size: 15px;
+
+}
+
+/* =========================================================
+5. BLOCS DE CONTENU
+========================================================= */
+
+.detail-section {
+
+margin-bottom: 20px;
+
+padding: 28px;
+
+box-sizing: border-box;
+
+background: #FFFFFF;
+
+border: 1px solid #F2F4F7;
+
+border-radius: 20px;
+
+box-shadow: 0 5px 18px #F2F4F7;
+
+}
+
+/* =========================================================
+6. TITRES DES BLOCS
+========================================================= */
+
+.detail-section h2 {
+
+display: flex;
+
+align-items: center;
+
+gap: 11px;
+
+margin: 0 0 20px;
+
+padding-bottom: 15px;
+
+border-bottom: 2px solid #F2F4F7;
+
+color: #0D1B2A;
+
+font-size: 1.2rem;
+
+font-weight: 750;
+
+line-height: 1.4;
+
+}
+
+.detail-section h2::before {
+
+content: "";
+
+width: 4px;
+
+height: 24px;
+
+flex-shrink: 0;
+
+border-radius: 5px;
+
+background: #F4B400;
+
+}
+
+.detail-section h2 svg {
+
+flex-shrink: 0;
+
+color: #1E3A8A;
+
+font-size: 19px;
+
+}
+
+/* =========================================================
+7. PRÉSENTATION
+========================================================= */
+
+.detail-section p {
+
+margin: 0;
+
+color: #0D1B2A;
+
+font-size: 0.97rem;
+
+line-height: 1.85;
+
+}
+
+/* =========================================================
+8. COMPÉTENCES
+========================================================= */
+
+.competences-container {
+
+display: flex;
+
+flex-wrap: wrap;
+
+gap: 10px;
+
+}
+
+.competence-badge {
+
+display: inline-flex;
+
+align-items: center;
+
+min-height: 38px;
+
+padding: 7px 14px;
+
+box-sizing: border-box;
+
+border: 1px solid #1E3A8A;
+
+border-radius: 30px;
+
+background: #F2F4F7;
+
+color: #1E3A8A;
+
+font-size: 0.86rem;
+
+font-weight: 650;
+
+line-height: 1.3;
+
+transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+.competence-badge:hover {
+
+transform: translateY(-2px);
+
+background: #F4B400;
+
+border-color: #F4B400;
+
+color: #0D1B2A;
+
+}
+
+/* =========================================================
+9. MÉTIERS
+========================================================= */
+
+.filiere-metiers-container {
+
+display: grid;
+
+grid-template-columns:
+    repeat(auto-fill, minmax(220px, 1fr));
+
+gap: 13px;
+
+}
+
+/*
+Les métiers sont des boutons :
+on indique donc clairement leur caractère interactif.
+*/
+
+.filiere-metier-card {
+
+position: relative;
+
+display: flex;
+
+align-items: center;
+
+gap: 12px;
+
+width: 100%;
+
+min-height: 64px;
+
+padding: 14px 17px;
+
+box-sizing: border-box;
+
+border: 1px solid #F2F4F7;
+
+border-left: 4px solid #F4B400;
+
+border-radius: 14px;
+
+background: #FFFFFF;
+
+color: #0D1B2A;
+
+font-family: inherit;
+
+font-size: 0.92rem;
+
+font-weight: 650;
+
+line-height: 1.4;
+
+text-align: left;
+
+cursor: pointer;
+
+transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+.filiere-metier-card svg {
+
+flex-shrink: 0;
+
+color: #1E3A8A;
+
+font-size: 18px;
+
+transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+.filiere-metier-card::after {
+
+content: "›";
+
+margin-left: auto;
+
+color: #1E3A8A;
+
+font-size: 22px;
+
+font-weight: 400;
+
+transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+
+}
+
+.filiere-metier-card:hover {
+
+transform: translateY(-3px);
+
+background: #F2F4F7;
+
+border-color: #F4B400;
+
+}
+
+.filiere-metier-card:hover svg {
+
+color: #F4B400;
+
+transform: scale(1.08);
+
+}
+
+.filiere-metier-card:hover::after {
+
+color: #F4B400;
+
+transform: translateX(3px);
+
+}
+
+/* =========================================================
+10. UNIVERSITÉS
+========================================================= */
+
+.filiere-universites-container {
+
+display: grid;
+
+grid-template-columns:
+    repeat(auto-fill, minmax(290px, 1fr));
+
+gap: 15px;
+
+}
+
+.filiere-universite-card {
+
+display: flex;
+
+align-items: center;
+
+gap: 15px;
+
+width: 100%;
+
+min-height: 88px;
+
+padding: 15px;
+
+box-sizing: border-box;
+
+border: 1px solid #F2F4F7;
+
+border-radius: 16px;
+
+background: #FFFFFF;
+
+color: #0D1B2A;
+
+font-family: inherit;
+
+text-align: left;
+
+cursor: pointer;
+
+transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+.filiere-universite-card:hover {
+
+transform: translateY(-3px);
+
+background: #F2F4F7;
+
+border-color: #1E3A8A;
+
+}
+
+/* =========================================================
+11. ICÔNE UNIVERSITÉ
+========================================================= */
+
+.universite-icon-container {
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+width: 52px;
+
+height: 52px;
+
+min-width: 52px;
+
+border-radius: 14px;
+
+background: #0D1B2A;
+
+color: #F4B400;
+
+font-size: 22px;
+
+transition:
+    background 0.2s ease,
+    color 0.2s ease;
+
+}
+
+.filiere-universite-card:hover
+.universite-icon-container {
+
+background: #F4B400;
+
+color: #0D1B2A;
+
+}
+
+/* =========================================================
+12. INFORMATIONS UNIVERSITÉ
+========================================================= */
+
+.universite-info {
+
+min-width: 0;
+
+flex: 1;
+
+}
+
+.universite-info h3 {
+
+margin: 0 0 5px;
+
+color: #0D1B2A;
+
+font-size: 0.98rem;
+
+font-weight: 750;
+
+line-height: 1.35;
+
+}
+
+.universite-info span {
+
+display: block;
+
+color: #1E3A8A;
+
+font-size: 0.84rem;
+
+font-weight: 600;
+
+}
+
+/* Flèche de navigation */
+
+.filiere-universite-card::after {
+
+content: "›";
+
+flex-shrink: 0;
+
+color: #1E3A8A;
+
+font-size: 23px;
+
+font-weight: 400;
+
+transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+
+}
+
+.filiere-universite-card:hover::after {
+
+color: #F4B400;
+
+transform: translateX(3px);
+
+}
+
+/* =========================================================
+13. MESSAGES VIDES
+========================================================= */
+
+.empty-message {
+
+padding: 15px 16px !important;
+
+border-radius: 12px;
+
+background: #F2F4F7;
+
+color: #1E3A8A !important;
+
+font-size: 0.9rem !important;
+
+line-height: 1.5 !important;
+
+text-align: center !important;
+
+}
+
+/* =========================================================
+14. BOUTON RETOUR
+========================================================= */
+
+.retour-btn {
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 10px;
+
+width: 100%;
+
+min-height: 54px;
+
+margin: 6px 0 25px;
+
+padding: 14px 20px;
+
+box-sizing: border-box;
+
+border: 2px solid #0D1B2A;
+
+border-radius: 14px;
+
+background: #0D1B2A;
+
+color: #FFFFFF;
+
+font-family: inherit;
+
+font-size: 0.95rem;
+
+font-weight: 700;
+
+cursor: pointer;
+
+transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+.retour-btn svg {
+
+font-size: 16px;
+
+}
+
+.retour-btn:hover {
+
+background: #F4B400;
+
+border-color: #F4B400;
+
+color: #0D1B2A;
+
+transform: translateY(-2px);
+
+}
+
+/* =========================================================
+15. ÉTAT DE CHARGEMENT
+========================================================= */
+
+.loading-container {
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+min-height: 70vh;
+
+padding: 25px;
+
+box-sizing: border-box;
+
+background: #F2F4F7;
+
+color: #0D1B2A;
+
+}
+
+.loading-spinner {
+
+width: 46px;
+
+height: 46px;
+
+margin-bottom: 16px;
+
+border: 5px solid #FFFFFF;
+
+border-top-color: #F4B400;
+
+border-right-color: #1E3A8A;
+
+border-radius: 50%;
+
+animation: rotation 0.9s linear infinite;
+
+}
+
+.loading-container p {
+
+margin: 0;
+
+color: #1E3A8A;
+
+font-size: 0.92rem;
+
+font-weight: 650;
+
+}
+
+@keyframes rotation {
+
+from {
+
+    transform: rotate(0deg);
+
+}
+
+to {
+
+    transform: rotate(360deg);
+
+}
+
+}
+
+/* =========================================================
+16. FILIÈRE INTROUVABLE
+========================================================= */
+
+.filiere-introuvable {
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+min-height: 70vh;
+
+padding: 30px 20px;
+
+box-sizing: border-box;
+
+background: #F2F4F7;
+
+text-align: center;
+
+}
+
+.introuvable-icon {
+
+margin-bottom: 16px;
+
+color: #F4B400;
+
+font-size: 54px;
+
+}
+
+.filiere-introuvable h2 {
+
+margin: 0 0 10px;
+
+color: #0D1B2A;
+
+font-size: 1.35rem;
+
+}
+
+.filiere-introuvable p {
+
+max-width: 450px;
+
+margin: 0 0 25px;
+
+color: #1E3A8A;
+
+font-size: 0.92rem;
+
+line-height: 1.6;
+
+}
+
+/* =========================================================
+17. ESPACE FOOTER
+========================================================= */
+
+.footer-spacing {
+
+height: 90px;
+
+}
+
+/* =========================================================
+18. TABLETTE
+========================================================= */
+
+@media (max-width: 768px) {
+
+.filiere-detail-page {
+
+    padding: 20px 16px 110px;
+
+}
+
+.filiere-detail-header {
+
+    padding: 34px 22px;
+
+    border-radius: 20px;
+
+}
+
+.detail-section {
+
+    padding: 23px 20px;
+
+    border-radius: 17px;
+
+}
+
+.filiere-metiers-container {
+
+    grid-template-columns: repeat(
+        2,
+        minmax(0, 1fr)
+    );
+
+}
+
+.filiere-universites-container {
+
+    grid-template-columns: 1fr;
+
+}
+
+}
+
+/* =========================================================
+19. MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+.filiere-detail-page {
+
+    padding: 12px 10px 105px;
+
+}
+
+.filiere-detail-header {
+
+    padding: 28px 15px;
+
+    margin-bottom: 15px;
+
+    border-radius: 18px;
+
+}
+
+.filiere-title-container {
+
+    gap: 9px;
+
+    margin-bottom: 20px;
+
+}
+
+.filiere-main-icon {
+
+    font-size: 28px;
+
+}
+
+.filiere-detail-header h1 {
+
+    font-size: 1.4rem;
+
+}
+
+.header-infos {
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+.header-infos span {
+
+    width: 100%;
+
+    min-height: 40px;
+
+    padding: 8px 12px;
+
+    font-size: 0.82rem;
+
+}
+
+.detail-section {
+
+    padding: 20px 15px;
+
+    margin-bottom: 14px;
+
+    border-radius: 15px;
+
+}
+
+.detail-section h2 {
+
+    gap: 8px;
+
+    margin-bottom: 17px;
+
+    padding-bottom: 13px;
+
+    font-size: 1rem;
+
+}
+
+.detail-section h2::before {
+
+    width: 3px;
+
+    height: 21px;
+
+}
+
+.detail-section h2 svg {
+
+    font-size: 17px;
+
+}
+
+.detail-section p {
+
+    font-size: 0.9rem;
+
+    line-height: 1.75;
+
+}
+
+.competences-container {
+
+    gap: 7px;
+
+}
+
+.competence-badge {
+
+    min-height: 34px;
+
+    padding: 6px 11px;
+
+    font-size: 0.78rem;
+
+}
+
+.filiere-metiers-container {
+
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+}
+
+.filiere-metier-card {
+
+    min-height: 57px;
+
+    padding: 12px 13px;
+
+    font-size: 0.88rem;
+
+}
+
+.filiere-universites-container {
+
+    gap: 10px;
+
+}
+
+.filiere-universite-card {
+
+    min-height: 78px;
+
+    padding: 13px;
+
+}
+
+.universite-icon-container {
+
+    width: 44px;
+
+    height: 44px;
+
+    min-width: 44px;
+
+    border-radius: 12px;
+
+    font-size: 19px;
+
+}
+
+.universite-info h3 {
+
+    font-size: 0.88rem;
+
+}
+
+.universite-info span {
+
+    font-size: 0.77rem;
+
+}
+
+.retour-btn {
+
+    min-height: 50px;
+
+    font-size: 0.88rem;
+
+}
+
+}
+
+/* =========================================================
+20. ACCESSIBILITÉ — CLAVIER
+========================================================= */
+
+.filiere-metier-card:focus-visible,
+.filiere-universite-card:focus-visible,
+.retour-btn:focus-visible {
+
+outline: 3px solid #F4B400;
+
+outline-offset: 3px;
+
+}

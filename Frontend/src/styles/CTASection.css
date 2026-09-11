@@ -1,0 +1,435 @@
+/* =========================
+   CTA SECTION
+========================= */
+
+.cta-section {
+
+    background: #F2F4F7;
+
+    padding: 90px 30px;
+
+}
+
+
+.cta-container {
+
+    position: relative;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+
+    padding: 75px 70px;
+
+    text-align: center;
+
+    background: #FFFFFF;
+
+    border-radius: 28px;
+
+    border: 1px solid rgba(13, 27, 42, 0.06);
+
+    box-shadow:
+        0 20px 60px rgba(13, 27, 42, 0.08);
+
+    overflow: hidden;
+
+}
+
+
+/* =========================
+   ÉLÉMENTS DÉCORATIFS
+========================= */
+
+.cta-container::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    top: -150px;
+    right: -100px;
+
+    background: rgba(244, 180, 0, 0.12);
+
+    border-radius: 50%;
+
+}
+
+
+.cta-container::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 200px;
+    height: 200px;
+
+    bottom: -130px;
+    left: -80px;
+
+    background: rgba(30, 58, 138, 0.07);
+
+    border-radius: 50%;
+
+}
+
+
+/* =========================
+   CONTENU
+========================= */
+
+.cta-container > * {
+
+    position: relative;
+
+    z-index: 1;
+
+}
+
+
+/* =========================
+   ICÔNE
+========================= */
+
+.cta-icon {
+
+    width: 64px;
+
+    height: 64px;
+
+    margin: 0 auto 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: #1E3A8A;
+
+    color: #F4B400;
+
+}
+
+
+.cta-icon svg {
+
+    width: 30px;
+
+    height: 30px;
+
+    stroke-width: 1.8;
+
+}
+
+
+/* =========================
+   PETIT LABEL
+========================= */
+
+.cta-label {
+
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: #1E3A8A;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+
+}
+
+
+/* =========================
+   TITRE
+========================= */
+
+.cta-container h2 {
+
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    color: #0D1B2A;
+
+    font-size: clamp(38px, 5vw, 56px);
+
+    line-height: 1.12;
+
+    letter-spacing: -1.5px;
+
+}
+
+
+.cta-container h2 span {
+
+    color: #1E3A8A;
+
+}
+
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.cta-container p {
+
+    max-width: 650px;
+
+    margin: 24px auto 35px;
+
+    color: #555F6D;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================
+   BOUTONS
+========================= */
+
+.cta-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.cta-primary-button,
+.cta-secondary-button {
+
+    min-height: 52px;
+
+    padding: 0 25px;
+
+    border-radius: 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+/* =========================
+   BOUTON PRINCIPAL
+========================= */
+
+.cta-primary-button {
+
+    border: none;
+
+    background: #F4B400;
+
+    color: #0D1B2A;
+
+    box-shadow:
+        0 8px 20px rgba(244, 180, 0, 0.20);
+
+}
+
+
+.cta-primary-button svg {
+
+    width: 18px;
+
+    height: 18px;
+
+}
+
+
+.cta-primary-button:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(244, 180, 0, 0.28);
+
+}
+
+
+/* =========================
+   BOUTON SECONDAIRE
+========================= */
+
+.cta-secondary-button {
+
+    border: 1px solid #D7DDE5;
+
+    background: #FFFFFF;
+
+    color: #1E3A8A;
+
+}
+
+
+.cta-secondary-button:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #1E3A8A;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+}
+
+
+/* =========================
+   TABLETTE
+========================= */
+
+@media (max-width: 800px) {
+
+    .cta-section {
+
+        padding: 70px 25px;
+
+    }
+
+
+    .cta-container {
+
+        padding: 60px 45px;
+
+    }
+
+
+    .cta-container h2 {
+
+        font-size: 42px;
+
+    }
+
+
+    .cta-container p {
+
+        font-size: 16px;
+
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 550px) {
+
+    .cta-section {
+
+        padding: 55px 16px;
+
+    }
+
+
+    .cta-container {
+
+        padding: 50px 22px;
+
+        border-radius: 22px;
+
+    }
+
+
+    .cta-container h2 {
+
+        font-size: 32px;
+
+        letter-spacing: -0.8px;
+
+    }
+
+
+    .cta-container p {
+
+        margin-top: 20px;
+
+        margin-bottom: 28px;
+
+        font-size: 15px;
+
+        line-height: 1.65;
+
+    }
+
+
+    .cta-icon {
+
+        width: 56px;
+
+        height: 56px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .cta-icon svg {
+
+        width: 26px;
+
+        height: 26px;
+
+    }
+
+
+    .cta-actions {
+
+        width: 100%;
+
+        flex-direction: column;
+
+    }
+
+
+    .cta-primary-button,
+    .cta-secondary-button {
+
+        width: 100%;
+
+    }
+
+}

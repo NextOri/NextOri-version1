@@ -1,0 +1,20 @@
+{
+  "name": "nextori",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "Frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=Frontend",
+    "build": "npm run build --workspace=Frontend",
+    "lint": "npm run lint --workspace=Frontend",
+    "preview": "npm run preview --workspace=Frontend"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "bcryptjs": "^3.0.3",
+    "cookie": "^2.0.1",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

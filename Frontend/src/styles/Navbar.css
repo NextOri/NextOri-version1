@@ -1,0 +1,422 @@
+/* =========================================================
+   NEXTORI — NAVBAR
+   ========================================================= */
+
+.navbar {
+
+    position: relative;
+
+    width: 100%;
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 34px;
+
+    background: #0D1B2A;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-sizing: border-box;
+
+    z-index: 1000;
+
+}
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.navbar-logo {
+
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    flex-shrink: 0;
+
+    text-decoration: none;
+
+}
+
+
+.navbar-logo img {
+
+    display: block;
+
+    width: auto;
+    
+    height: 90px;
+
+    max-width: 180px;
+
+    object-fit: contain;
+
+}
+
+
+/* =========================================================
+   ZONE DROITE
+   ========================================================= */
+
+.navbar-actions {
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-left: auto;
+
+}
+
+
+/* =========================================================
+   LIENS
+   ========================================================= */
+
+.navbar-links {
+
+    display: flex;
+    align-items: center;
+
+    gap: 4px;
+
+}
+
+
+.navbar-link {
+
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 42px;
+
+    padding: 0 15px;
+
+    color: #F2F4F7;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 10px;
+
+    white-space: nowrap;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
+
+}
+
+
+.navbar-link:hover {
+
+    color: #FFFFFF;
+
+    background: rgba(255, 255, 255, 0.07);
+
+}
+
+
+.navbar-link.active {
+
+    color: #FFFFFF;
+
+    background: rgba(244, 180, 0, 0.12);
+
+}
+
+
+/* Petite ligne jaune sous le lien actif */
+
+.navbar-link.active::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 15px;
+    right: 15px;
+    bottom: 5px;
+
+    height: 2px;
+
+    background: #F4B400;
+
+    border-radius: 999px;
+
+}
+
+
+/* =========================================================
+   DÉCONNEXION
+   ========================================================= */
+
+.navbar-logout {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    height: 42px;
+
+    padding: 0 17px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.navbar-logout:hover {
+
+    background: #F4B400;
+
+    border-color: #F4B400;
+
+    color: #0D1B2A;
+
+    transform: translateY(-1px);
+
+}
+
+
+.navbar-logout:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* =========================================================
+   TABLETTE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+
+        height: 72px;
+
+        padding: 0 22px;
+
+    }
+
+
+    .navbar-logo img {
+
+        height: 43px;
+
+        max-width: 155px;
+
+    }
+
+
+    .navbar-actions {
+
+        gap: 10px;
+
+    }
+
+
+    .navbar-links {
+
+        gap: 2px;
+
+    }
+
+
+    .navbar-link {
+
+        height: 40px;
+
+        padding: 0 11px;
+
+        font-size: 13px;
+
+    }
+
+
+    .navbar-link.active::after {
+
+        left: 11px;
+        right: 11px;
+
+    }
+
+
+    .navbar-logout {
+
+        height: 40px;
+
+        padding: 0 13px;
+
+        font-size: 12px;
+
+    }
+
+}
+
+
+/* =========================================================
+   TÉLÉPHONE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .navbar {
+
+        height: 68px;
+
+        padding: 0 14px;
+
+    }
+
+
+    .navbar-logo img {
+
+        height: 38px;
+
+        max-width: 125px;
+
+    }
+
+
+    .navbar-actions {
+
+        gap: 5px;
+
+    }
+
+
+    .navbar-links {
+
+        gap: 0;
+
+    }
+
+
+    .navbar-link {
+
+        height: 38px;
+
+        padding: 0 7px;
+
+        font-size: 11px;
+
+        border-radius: 8px;
+
+    }
+
+
+    .navbar-link.active::after {
+
+        left: 7px;
+        right: 7px;
+
+        bottom: 4px;
+
+    }
+
+
+    .navbar-logout {
+
+        width: 38px;
+        height: 38px;
+
+        padding: 0;
+
+        gap: 0;
+
+        border-radius: 8px;
+
+    }
+
+
+    .navbar-logout span {
+
+        display: none;
+
+    }
+
+}
+
+
+/* =========================================================
+   TRÈS PETITS ÉCRANS
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .navbar {
+
+        padding: 0 10px;
+
+    }
+
+
+    .navbar-logo img {
+
+        height: 34px;
+
+        max-width: 105px;
+
+    }
+
+
+    .navbar-link {
+
+        padding: 0 5px;
+
+        font-size: 10px;
+
+    }
+
+
+    .navbar-link.active::after {
+
+        left: 5px;
+        right: 5px;
+
+    }
+
+
+    .navbar-logout {
+
+        width: 34px;
+        height: 34px;
+
+    }
+
+}

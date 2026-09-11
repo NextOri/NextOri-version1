@@ -1,0 +1,25 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="tRQ72PykhAt8ee-3n68u">
+    <mxGraphModel dx="860" dy="1706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8rjZ2OoWzT-zLIV-AqbF-1" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" value="Utilisateur" vertex="1">
+          <mxGeometry height="170" width="160" x="30" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="8rjZ2OoWzT-zLIV-AqbF-2" parent="8rjZ2OoWzT-zLIV-AqbF-1" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="id_user&lt;br&gt;nom&lt;br&gt;email&lt;br&gt;mot_de_passe&lt;br&gt;pays&lt;br&gt;niveau_etude&lt;br&gt;date_creation" vertex="1">
+          <mxGeometry height="120" width="160" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="8rjZ2OoWzT-zLIV-AqbF-3" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" value="Test_RIASEC" vertex="1">
+          <mxGeometry height="210" width="160" x="460" as="geometry" />
+        </mxCell>
+        <mxCell id="8rjZ2OoWzT-zLIV-AqbF-4" parent="8rjZ2OoWzT-zLIV-AqbF-3" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="&lt;div&gt;id_test&lt;/div&gt;&lt;div&gt;id_user&lt;/div&gt;&lt;div&gt;date_test&lt;/div&gt;&lt;div&gt;score_R&lt;/div&gt;&lt;div&gt;score_I&lt;/div&gt;&lt;div&gt;score_A&lt;/div&gt;&lt;div&gt;score_S&lt;/div&gt;&lt;div&gt;score_E&lt;/div&gt;&lt;div&gt;score_C&lt;/div&gt;&lt;div&gt;profil_dominant&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="160" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="8rjZ2OoWzT-zLIV-AqbF-5" edge="1" parent="8rjZ2OoWzT-zLIV-AqbF-3" source="8rjZ2OoWzT-zLIV-AqbF-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="8rjZ2OoWzT-zLIV-AqbF-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

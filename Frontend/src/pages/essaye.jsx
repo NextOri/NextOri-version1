@@ -1,0 +1,1214 @@
+import React, { useState } from "react";
+import {
+  Lock, Check, ChevronRight, ChevronLeft, Download, Share2, Edit3,
+  Plus, Trash2, User, GraduationCap, Briefcase, Sparkles, CreditCard,
+  Smartphone, PartyPopper, FileText, Clock, Camera, Building2,
+  ArrowLeft, History, ShieldCheck,
+} from "lucide-react";
+
+/* ---------------------------------------------------------
+   NextOri — Générateur de CV & Lettre de motivation
+   Palette : #0B1F4D (marine), #F4C542 (jaune), #FFFFFF
+--------------------------------------------------------- */
+
+const BRAND = {
+  navy: "#0B1F4D",
+  yellow: "#F4C542",
+  yellowSoft: "#FBEAB6",
+  bg: "#F6F7FB",
+  muted: "#64748B",
+  line: "#E7EAF3",
+  success: "#1FA971",
+  danger: "#E0574C",
+};
+
+const PRICES = { cv: 2000, lettre: 3000 };
+
+const METIERS = {
+  "Data Engineer": {
+    objectif:
+      "Data Engineer passionné(e) par la conception de pipelines de données fiables, je souhaite mettre mes compétences en programmation et en analyse de données au service de projets à fort impact, au sein d'une équipe technique exigeante.",
+    accent: ["Informatique", "Programmation", "Analyse de données"],
+  },
+  Infirmier: {
+    objectif:
+      "Infirmier(ère) engagé(e) et rigoureux(se), je souhaite mettre mon sens de l'écoute et mes compétences cliniques au service des patients, au sein d'une structure de santé qui valorise le soin humain autant que technique.",
+    accent: ["Santé", "Relation humaine", "Stage hospitalier"],
+  },
+  "Chef de Projet Marketing": {
+    objectif:
+      "Chef(fe) de projet marketing créatif(ve) et orienté(e) résultats, je souhaite piloter des campagnes qui font grandir une marque, en m'appuyant sur mon sens de l'analyse et ma créativité.",
+    accent: ["Stratégie de marque", "Communication", "Gestion de campagnes"],
+  },
+};
+
+const emptyExperience = () => ({
+  id: crypto.randomUUID(),
+  type: "Stage",
+  titre: "",
+  structure: "",
+  periode: "",
+  description: "",
+});
+
+const STEP_LABELS = [
+  "Informations personnelles",
+  "Parcours scolaire",
+  "Expériences",
+  "Compétences",
+  "Objectif professionnel",
+  "Lettre de motivation",
+];
+
+function fmtFCFA(n) {
+  return n.toLocaleString("fr-FR") + " FCFA";
+}
+
+function Progress({ step }) {
+  const pct = (step / STEP_LABELS.length) * 100;
+  return (
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-2">
+        {STEP_LABELS.map((label, i) => {
+          const idx = i + 1;
+          const done = idx < step;
+          const active = idx === step;
+          return (
+            <div key={label} className="flex-1 flex flex-col items-center relative">
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300"
+                style={{
+                  backgroundColor: done ? BRAND.navy : active ? BRAND.yellow : "#fff",
+                  color: done ? "#fff" : active ? BRAND.navy : BRAND.muted,
+                  border: `2px solid ${done ? BRAND.navy : active ? BRAND.yellow : BRAND.line}`,
+                }}
+              >
+                {done ? <Check size={14} /> : idx}
+              </div>
+              <span
+                className="hidden md:block text-[10px] mt-1 text-center leading-tight max-w-[80px]"
+                style={{ color: active ? BRAND.navy : BRAND.muted, fontWeight: active ? 700 : 500 }}
+              >
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <div className="h-1.5 rounded-full w-full" style={{ backgroundColor: BRAND.line }}>
+        <div
+          className="h-1.5 rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, backgroundColor: BRAND.yellow }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Field({ label, children, required }) {
+  return (
+    <label className="flex flex-col gap-1.5 text-sm">
+      <span className="font-medium" style={{ color: BRAND.navy }}>
+        {label} {required && <span style={{ color: BRAND.danger }}>*</span>}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+const inputStyle =
+  "w-full rounded-xl border px-3.5 py-2.5 text-sm outline-none transition-all focus:ring-2";
+const inputBorder = { borderColor: BRAND.line, backgroundColor: "#fff" };
+
+function TextInput(props) {
+  return <input {...props} className={inputStyle} style={{ ...inputBorder, ["--tw-ring-color"]: BRAND.yellow }} />;
+}
+function TextArea(props) {
+  return <textarea {...props} className={inputStyle + " resize-none"} style={{ ...inputBorder, ["--tw-ring-color"]: BRAND.yellow }} />;
+}
+function Select(props) {
+  return <select {...props} className={inputStyle} style={{ ...inputBorder, ["--tw-ring-color"]: BRAND.yellow }} />;
+}
+
+function PrimaryButton({ children, onClick, disabled, icon: Icon, full }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed ${full ? "w-full" : ""}`}
+      style={{ backgroundColor: BRAND.navy, color: "#fff" }}
+    >
+      {children}
+      {Icon && <Icon size={16} />}
+    </button>
+  );
+}
+function SecondaryButton({ children, onClick, icon: Icon, full, disabled }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98] border disabled:opacity-40 disabled:cursor-not-allowed ${full ? "w-full" : ""}`}
+      style={{ borderColor: BRAND.line, color: BRAND.navy, backgroundColor: "#fff" }}
+    >
+      {Icon && <Icon size={16} />}
+      {children}
+    </button>
+  );
+}
+
+/* ---------- Génération du texte de la lettre ---------- */
+function buildLettreParagraphs({ profile, lettre, metier, objectif }) {
+  const poste = lettre.poste || metier;
+  const entreprise = lettre.entreprise || "votre entreprise";
+  const civilite = lettre.recruteur ? `Madame, Monsieur ${lettre.recruteur}` : "Madame, Monsieur";
+  const p1 = `Actuellement en projet professionnel autour du métier de ${metier}, je vous adresse ma candidature pour le poste de ${poste} au sein de ${entreprise}${lettre.ville ? ` à ${lettre.ville}` : ""}.`;
+  const p2 = lettre.pourquoiPoste
+    ? `Ce poste m'intéresse particulièrement car ${lowerFirst(lettre.pourquoiPoste)}`
+    : `Ce poste correspond pleinement à mon projet professionnel et aux compétences que je souhaite développer.`;
+  const p3 = lettre.pourquoiEntreprise
+    ? `${entreprise} retient mon attention car ${lowerFirst(lettre.pourquoiEntreprise)}`
+    : `${entreprise} est une structure qui correspond à mes valeurs et à mes ambitions professionnelles.`;
+  const p4 = lettre.qualites
+    ? `Je pense pouvoir apporter à votre équipe ${lowerFirst(lettre.qualites)}`
+    : `Rigueur, curiosité et sens du travail en équipe sont les qualités que je mets au service de chaque projet.`;
+  const p5 = `Je me tiens à votre disposition pour un entretien au cours duquel je pourrai vous exposer plus en détail ma motivation. Je vous prie d'agréer, ${civilite}, l'expression de mes salutations distinguées.`;
+  return [p1, p2, p3, p4, p5];
+}
+function lowerFirst(s) {
+  const t = s.trim();
+  if (!t) return t;
+  return t[0].toLowerCase() + t.slice(1) + (/[.!?]$/.test(t) ? "" : ".");
+}
+
+/* ===================================================================
+   GÉNÉRATION PDF PROFESSIONNELLE (jsPDF) — design NextOri
+=================================================================== */
+const NAVY = [11, 31, 77];
+const YELLOW = [244, 197, 66];
+const INK = [30, 41, 59];
+const MUTED = [100, 116, 139];
+const LIGHT = [230, 235, 245];
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error("Échec du chargement du générateur PDF"));
+    document.body.appendChild(s);
+  });
+}
+
+async function ensureJsPDF() {
+  if (window.jspdf?.jsPDF) return window.jspdf.jsPDF;
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js");
+  return window.jspdf.jsPDF;
+}
+
+function sidebarSection(doc, label, y, sidebarW) {
+  doc.setTextColor(...YELLOW);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text(label, 12, y);
+  doc.setDrawColor(...YELLOW);
+  doc.setLineWidth(0.6);
+  doc.line(12, y + 2, sidebarW - 12, y + 2);
+  return y + 8;
+}
+function sidebarList(doc, label, value, y, sidebarW) {
+  if (!value) return y;
+  y = sidebarSection(doc, label, y, sidebarW);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.setTextColor(...LIGHT);
+  value
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .forEach((it) => {
+      const lines = doc.splitTextToSize(`•  ${it}`, sidebarW - 24);
+      doc.text(lines, 12, y);
+      y += lines.length * 4.4 + 1;
+    });
+  return y + 4;
+}
+function mainHeading(doc, label, x, y, w) {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11.5);
+  doc.setTextColor(...NAVY);
+  doc.text(label, x, y);
+  doc.setDrawColor(...YELLOW);
+  doc.setLineWidth(0.9);
+  doc.line(x, y + 2.2, x + w, y + 2.2);
+  return y + 9;
+}
+
+async function generateCVPDF({ profile, parcours, experiences, competences, metier, objectif }) {
+  const JSPDF = await ensureJsPDF();
+  const doc = new JSPDF({ unit: "mm", format: "a4" });
+  const pageW = 210, pageH = 297, sidebarW = 68;
+  const initials = `${profile.prenom?.[0] || ""}${profile.nom?.[0] || ""}`.toUpperCase();
+
+  const drawSidebarBg = () => {
+    doc.setFillColor(...NAVY);
+    doc.rect(0, 0, sidebarW, pageH, "F");
+  };
+  drawSidebarBg();
+
+  let sy = 16;
+  if (profile.photo && profile.photo.startsWith("data:image")) {
+    try {
+      const type = profile.photo.includes("image/png") ? "PNG" : "JPEG";
+      doc.addImage(profile.photo, type, 12, sy, 44, 44, undefined, "FAST");
+    } catch (e) {
+      /* image illisible : on ignore silencieusement */
+    }
+  } else {
+    doc.setFillColor(...YELLOW);
+    doc.circle(12 + 22, sy + 22, 22, "F");
+    doc.setTextColor(...NAVY);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text(initials || "?", 12 + 22, sy + 25, { align: "center" });
+  }
+  sy += 52;
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(15);
+  const nameLines = doc.splitTextToSize(
+    `${profile.prenom || "Votre"} ${profile.nom || "Nom"}`.trim(),
+    sidebarW - 24
+  );
+  doc.text(nameLines, 12, sy);
+  sy += nameLines.length * 6 + 3;
+
+  const badgeW = doc.getTextWidth(metier) + 8;
+  doc.setFillColor(...YELLOW);
+  doc.roundedRect(12, sy - 4.5, Math.min(badgeW, sidebarW - 24), 7, 2, 2, "F");
+  doc.setTextColor(...NAVY);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.5);
+  doc.text(metier, 16, sy + 0.5, { maxWidth: sidebarW - 32 });
+  sy += 14;
+
+  sy = sidebarSection(doc, "CONTACT", sy, sidebarW);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.8);
+  doc.setTextColor(...LIGHT);
+  [profile.telephone, profile.email, [profile.ville, profile.region].filter(Boolean).join(", "), profile.adresse]
+    .filter(Boolean)
+    .forEach((line) => {
+      const lines = doc.splitTextToSize(line, sidebarW - 24);
+      doc.text(lines, 12, sy);
+      sy += lines.length * 4.4 + 2;
+    });
+  sy += 3;
+
+  sy = sidebarList(doc, "LANGUES", competences.langues, sy, sidebarW);
+  sy = sidebarList(doc, "LOGICIELS", competences.logiciels, sy, sidebarW);
+  sy = sidebarList(doc, "COMPÉTENCES", competences.techniques, sy, sidebarW);
+  sy = sidebarList(doc, "CERTIFICATIONS", competences.certifications, sy, sidebarW);
+  sy = sidebarList(doc, "CENTRES D'INTÉRÊT", competences.interets, sy, sidebarW);
+
+  let my = 22;
+  const mx = sidebarW + 10;
+  const contentW = pageW - mx - 12;
+
+  my = mainHeading(doc, "OBJECTIF PROFESSIONNEL", mx, my, contentW);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...INK);
+  const objLines = doc.splitTextToSize(objectif || "", contentW);
+  doc.text(objLines, mx, my);
+  my += objLines.length * 5 + 9;
+
+  if (parcours.universite || parcours.lycee) {
+    my = mainHeading(doc, "FORMATION", mx, my, contentW);
+    if (parcours.universite) {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...NAVY);
+      doc.text(parcours.universite, mx, my);
+      my += 5;
+      const sub = [parcours.faculte, parcours.niveau].filter(Boolean).join(" — ");
+      if (sub) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(...MUTED);
+        doc.text(sub, mx, my);
+        my += 6;
+      }
+    }
+    if (parcours.lycee) {
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...NAVY);
+      doc.text(parcours.lycee, mx, my);
+      my += 5;
+      const bacLine = [parcours.serieBac && `Bac ${parcours.serieBac}`, parcours.anneeBac].filter(Boolean).join(", ");
+      if (bacLine) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(...MUTED);
+        doc.text(bacLine, mx, my);
+        my += 6;
+      }
+    }
+    my += 3;
+  }
+
+  const exps = experiences.filter((e) => e.titre || e.structure);
+  if (exps.length) {
+    my = mainHeading(doc, "EXPÉRIENCES", mx, my, contentW);
+    exps.forEach((e) => {
+      if (my > 268) {
+        doc.addPage();
+        drawSidebarBg();
+        my = 20;
+      }
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...NAVY);
+      doc.text(`${e.titre || e.type}${e.structure ? " · " + e.structure : ""}`, mx, my);
+      if (e.periode) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(...MUTED);
+        doc.text(e.periode, pageW - 12, my, { align: "right" });
+      }
+      my += 5;
+      if (e.description) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(...INK);
+        const dLines = doc.splitTextToSize(e.description, contentW);
+        doc.text(dLines, mx, my);
+        my += dLines.length * 4.6 + 4;
+      } else {
+        my += 3;
+      }
+    });
+  }
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Généré avec NextOri", pageW - 12, pageH - 8, { align: "right" });
+
+  return doc;
+}
+
+async function generateLettrePDF({ profile, lettre, paragraphs }) {
+  const JSPDF = await ensureJsPDF();
+  const doc = new JSPDF({ unit: "mm", format: "a4" });
+  const pageW = 210, pageH = 297, marginX = 22;
+
+  doc.setFillColor(...NAVY);
+  doc.rect(0, 0, pageW, 10, "F");
+  doc.setFillColor(...YELLOW);
+  doc.rect(0, 10, pageW, 2, "F");
+
+  let y = 28;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.setTextColor(...NAVY);
+  doc.text(`${profile.prenom || ""} ${profile.nom || ""}`.trim() || "Votre nom", marginX, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
+  doc.setTextColor(...MUTED);
+  [profile.adresse, [profile.ville, profile.region].filter(Boolean).join(", "), profile.telephone, profile.email]
+    .filter(Boolean)
+    .forEach((l) => {
+      doc.text(l, marginX, y);
+      y += 4.8;
+    });
+
+  doc.setFontSize(9.5);
+  doc.setTextColor(...MUTED);
+  doc.text(`${lettre.ville || profile.ville || ""}, le ${new Date().toLocaleDateString("fr-FR")}`, pageW - marginX, 28, {
+    align: "right",
+  });
+
+  y += 6;
+  if (lettre.entreprise) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(...NAVY);
+    doc.text(lettre.entreprise, marginX, y);
+    y += 5;
+    if (lettre.ville) {
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...MUTED);
+      doc.text(lettre.ville, marginX, y);
+      y += 5;
+    }
+  }
+  y += 8;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10.5);
+  doc.setTextColor(...NAVY);
+  const objet = `Objet : Candidature au poste de ${lettre.poste || "—"}${
+    lettre.entreprise ? " au sein de " + lettre.entreprise : ""
+  }`;
+  const objetLines = doc.splitTextToSize(objet, pageW - 2 * marginX);
+  doc.text(objetLines, marginX, y);
+  y += objetLines.length * 5 + 9;
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(...INK);
+  const civilite = lettre.recruteur ? `Madame, Monsieur ${lettre.recruteur},` : "Madame, Monsieur,";
+  doc.text(civilite, marginX, y);
+  y += 7;
+
+  paragraphs.forEach((p) => {
+    const lines = doc.splitTextToSize(p, pageW - 2 * marginX);
+    if (y + lines.length * 5.6 > 270) {
+      doc.addPage();
+      y = 25;
+    }
+    doc.text(lines, marginX, y);
+    y += lines.length * 5.6 + 4;
+  });
+
+  y += 8;
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(...NAVY);
+  doc.setFontSize(10);
+  doc.text(`${profile.prenom || ""} ${profile.nom || ""}`.trim(), pageW - marginX, y, { align: "right" });
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.setTextColor(...MUTED);
+  doc.text("Généré avec NextOri", pageW - marginX, pageH - 10, { align: "right" });
+
+  return doc;
+}
+
+export default function App() {
+  const [screen, setScreen] = useState("dashboard");
+  const [cardDismissed, setCardDismissed] = useState(false);
+  const [wizardStep, setWizardStep] = useState(1);
+  const [metier, setMetier] = useState("Data Engineer");
+  const [objectifTouched, setObjectifTouched] = useState(false);
+
+  const [profile, setProfile] = useState({
+    photo: null, nom: "", prenom: "", sexe: "", naissance: "", nationalite: "",
+    adresse: "", region: "", ville: "", telephone: "", email: "",
+  });
+  const [parcours, setParcours] = useState({
+    primaire: "", college: "", lycee: "", serieBac: "", anneeBac: "",
+    universite: "", faculte: "", niveau: "",
+  });
+  const [experiences, setExperiences] = useState([emptyExperience()]);
+  const [competences, setCompetences] = useState({
+    langues: "", logiciels: "", techniques: "", interets: "", certifications: "",
+  });
+  const [objectif, setObjectif] = useState(METIERS["Data Engineer"].objectif);
+  const [lettre, setLettre] = useState({
+    entreprise: "", ville: "", recruteur: "", poste: "",
+    pourquoiPoste: "", pourquoiEntreprise: "", qualites: "",
+  });
+
+  const [selection, setSelection] = useState({ cv: true, lettre: true });
+  const [payMethod, setPayMethod] = useState("wave");
+  const [unlocked, setUnlocked] = useState({ cv: false, lettre: false });
+  const [historique, setHistorique] = useState([]);
+  const [generating, setGenerating] = useState(null); // 'cv' | 'lettre' | null
+  const [pdfError, setPdfError] = useState(null);
+
+  const accentSkills = METIERS[metier]?.accent || [];
+  const total = (selection.cv ? PRICES.cv : 0) + (selection.lettre ? PRICES.lettre : 0);
+
+  const fileSlug = (profile.nom || profile.prenom)
+    ? `${profile.prenom || ""}-${profile.nom || ""}`.replace(/\s+/g, "-").replace(/^-|-$/g, "")
+    : "NextOri";
+
+  async function handleDownloadCV() {
+    setPdfError(null);
+    setGenerating("cv");
+    try {
+      const doc = await generateCVPDF({ profile, parcours, experiences, competences, metier, objectif });
+      doc.save(`CV-${fileSlug}.pdf`);
+    } catch (e) {
+      setPdfError("Impossible de générer le PDF. Vérifiez votre connexion et réessayez.");
+    } finally {
+      setGenerating(null);
+    }
+  }
+  async function handleDownloadLettre() {
+    setPdfError(null);
+    setGenerating("lettre");
+    try {
+      const doc = await generateLettrePDF({ profile, lettre, paragraphs: lettreParagraphs });
+      doc.save(`Lettre-de-motivation-${fileSlug}.pdf`);
+    } catch (e) {
+      setPdfError("Impossible de générer le PDF. Vérifiez votre connexion et réessayez.");
+    } finally {
+      setGenerating(null);
+    }
+  }
+
+  function updateMetier(m) {
+    setMetier(m);
+    if (!objectifTouched) setObjectif(METIERS[m].objectif);
+  }
+  function addExperience() {
+    setExperiences((e) => [...e, emptyExperience()]);
+  }
+  function removeExperience(id) {
+    setExperiences((e) => e.filter((x) => x.id !== id));
+  }
+  function updateExperience(id, patch) {
+    setExperiences((e) => e.map((x) => (x.id === id ? { ...x, ...patch } : x)));
+  }
+
+  function confirmPayment() {
+    setUnlocked((u) => ({
+      cv: u.cv || selection.cv,
+      lettre: u.lettre || selection.lettre,
+    }));
+    setHistorique((h) => [
+      {
+        id: crypto.randomUUID(),
+        metier,
+        date: new Date().toLocaleDateString("fr-FR"),
+        version: `v${h.length + 1}`,
+        cv: selection.cv,
+        lettre: selection.lettre,
+      },
+      ...h,
+    ]);
+    setScreen("success");
+  }
+
+  const initials = `${profile.prenom?.[0] || ""}${profile.nom?.[0] || ""}`.toUpperCase();
+  const lettreParagraphs = buildLettreParagraphs({ profile, lettre, metier, objectif });
+
+  /* ================= DASHBOARD ================= */
+  if (screen === "dashboard") {
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-2xl mx-auto px-5 py-10">
+          <div className="mb-8">
+            <p className="text-xs font-semibold tracking-wide uppercase" style={{ color: BRAND.muted }}>Tableau de bord</p>
+            <h1 className="text-2xl mt-1 font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>Bonjour 👋</h1>
+            <p className="text-sm mt-1" style={{ color: BRAND.muted }}>
+              Test RIASEC terminé — métier recommandé :{" "}
+              <span className="font-semibold" style={{ color: BRAND.navy }}>{metier}</span>
+            </p>
+          </div>
+
+          {!cardDismissed && (
+            <div className="relative rounded-3xl p-7 overflow-hidden shadow-sm" style={{ backgroundColor: BRAND.navy }}>
+              <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-20" style={{ backgroundColor: BRAND.yellow }} />
+              <div className="absolute -bottom-14 -left-6 w-32 h-32 rounded-full opacity-10" style={{ backgroundColor: BRAND.yellow }} />
+              <div className="relative">
+                <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-4" style={{ backgroundColor: BRAND.yellow }}>
+                  <PartyPopper size={20} color={BRAND.navy} />
+                </div>
+                <h2 className="text-xl font-bold text-white" style={{ fontFamily: "Manrope, sans-serif" }}>Félicitations !</h2>
+                <p className="text-sm text-white/80 mt-2 leading-relaxed max-w-md">
+                  Vous avez choisi votre métier. Souhaitez-vous maintenant créer un CV professionnel et une lettre de motivation adaptés à votre projet ?
+                </p>
+                <div className="flex flex-wrap gap-3 mt-6">
+                  <button onClick={() => setScreen("wizard")} className="rounded-xl px-5 py-3 text-sm font-semibold transition-transform active:scale-[0.98]" style={{ backgroundColor: BRAND.yellow, color: BRAND.navy }}>
+                    Oui, créer mon CV
+                  </button>
+                  <button onClick={() => setCardDismissed(true)} className="rounded-xl px-5 py-3 text-sm font-semibold text-white/80 hover:text-white transition-colors">
+                    Plus tard
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {cardDismissed && (
+            <button onClick={() => setCardDismissed(false)} className="w-full rounded-2xl border p-5 flex items-center justify-between hover:shadow-sm transition-shadow" style={{ borderColor: BRAND.line, backgroundColor: "#fff" }}>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: BRAND.yellowSoft }}>
+                  <FileText size={18} color={BRAND.navy} />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-semibold" style={{ color: BRAND.navy }}>Créer mon CV et ma lettre de motivation</p>
+                  <p className="text-xs" style={{ color: BRAND.muted }}>Toujours disponible depuis votre espace personnel</p>
+                </div>
+              </div>
+              <ChevronRight size={18} color={BRAND.muted} />
+            </button>
+          )}
+
+          {(unlocked.cv || unlocked.lettre) && (
+            <button onClick={() => setScreen("historique")} className="w-full mt-4 rounded-2xl border p-4 flex items-center justify-between" style={{ borderColor: BRAND.line, backgroundColor: "#fff" }}>
+              <span className="text-sm font-semibold flex items-center gap-2" style={{ color: BRAND.navy }}>
+                <History size={16} /> Voir mes documents débloqués
+              </span>
+              <ChevronRight size={16} color={BRAND.muted} />
+            </button>
+          )}
+        </div>
+      </Shell>
+    );
+  }
+
+  /* ================= WIZARD ================= */
+  if (screen === "wizard") {
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-2xl mx-auto px-5 py-8">
+          <button onClick={() => setScreen("dashboard")} className="flex items-center gap-1.5 text-xs font-medium mb-6" style={{ color: BRAND.muted }}>
+            <ArrowLeft size={14} /> Retour au tableau de bord
+          </button>
+          <div className="mb-8"><Progress step={wizardStep} /></div>
+
+          <div className="rounded-3xl p-6 md:p-8 shadow-sm" style={{ backgroundColor: "#fff", border: `1px solid ${BRAND.line}` }}>
+            {wizardStep === 1 && (
+              <StepBlock icon={User} title="Informations personnelles">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden shrink-0" style={{ backgroundColor: BRAND.yellowSoft }}>
+                    {profile.photo ? <img src={profile.photo} alt="" className="w-full h-full object-cover" /> : <Camera size={20} color={BRAND.navy} />}
+                  </div>
+                  <label className="text-xs font-semibold rounded-xl px-3.5 py-2 border cursor-pointer" style={{ borderColor: BRAND.line, color: BRAND.navy }}>
+                    Ajouter une photo
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (!f) return;
+                      const reader = new FileReader();
+                      reader.onload = () => setProfile((p) => ({ ...p, photo: reader.result }));
+                      reader.readAsDataURL(f);
+                    }} />
+                  </label>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="Nom" required><TextInput value={profile.nom} onChange={(e) => setProfile({ ...profile, nom: e.target.value })} /></Field>
+                  <Field label="Prénom" required><TextInput value={profile.prenom} onChange={(e) => setProfile({ ...profile, prenom: e.target.value })} /></Field>
+                  <Field label="Sexe" required>
+                    <Select value={profile.sexe} onChange={(e) => setProfile({ ...profile, sexe: e.target.value })}>
+                      <option value="">Sélectionner</option><option>Femme</option><option>Homme</option>
+                    </Select>
+                  </Field>
+                  <Field label="Date de naissance" required><TextInput type="date" value={profile.naissance} onChange={(e) => setProfile({ ...profile, naissance: e.target.value })} /></Field>
+                  <Field label="Nationalité" required><TextInput value={profile.nationalite} onChange={(e) => setProfile({ ...profile, nationalite: e.target.value })} /></Field>
+                  <Field label="Région" required><TextInput value={profile.region} onChange={(e) => setProfile({ ...profile, region: e.target.value })} /></Field>
+                  <Field label="Ville" required><TextInput value={profile.ville} onChange={(e) => setProfile({ ...profile, ville: e.target.value })} /></Field>
+                  <Field label="Adresse" required><TextInput value={profile.adresse} onChange={(e) => setProfile({ ...profile, adresse: e.target.value })} /></Field>
+                  <Field label="Téléphone" required><TextInput value={profile.telephone} onChange={(e) => setProfile({ ...profile, telephone: e.target.value })} /></Field>
+                  <Field label="Email" required><TextInput type="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} /></Field>
+                </div>
+              </StepBlock>
+            )}
+
+            {wizardStep === 2 && (
+              <StepBlock icon={GraduationCap} title="Parcours scolaire">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="École primaire"><TextInput value={parcours.primaire} onChange={(e) => setParcours({ ...parcours, primaire: e.target.value })} /></Field>
+                  <Field label="Collège"><TextInput value={parcours.college} onChange={(e) => setParcours({ ...parcours, college: e.target.value })} /></Field>
+                  <Field label="Lycée"><TextInput placeholder="Ex : Lycée Seydina Limamou Laye" value={parcours.lycee} onChange={(e) => setParcours({ ...parcours, lycee: e.target.value })} /></Field>
+                  <Field label="Série du Bac"><TextInput value={parcours.serieBac} onChange={(e) => setParcours({ ...parcours, serieBac: e.target.value })} /></Field>
+                  <Field label="Année du Bac"><TextInput value={parcours.anneeBac} onChange={(e) => setParcours({ ...parcours, anneeBac: e.target.value })} /></Field>
+                  <Field label="Université"><TextInput value={parcours.universite} onChange={(e) => setParcours({ ...parcours, universite: e.target.value })} /></Field>
+                  <Field label="Faculté"><TextInput value={parcours.faculte} onChange={(e) => setParcours({ ...parcours, faculte: e.target.value })} /></Field>
+                  <Field label="Niveau actuel"><TextInput value={parcours.niveau} onChange={(e) => setParcours({ ...parcours, niveau: e.target.value })} /></Field>
+                </div>
+              </StepBlock>
+            )}
+
+            {wizardStep === 3 && (
+              <StepBlock icon={Briefcase} title="Expériences">
+                <div className="space-y-4">
+                  {experiences.map((exp, i) => (
+                    <div key={exp.id} className="rounded-2xl p-4" style={{ border: `1px solid ${BRAND.line}` }}>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-semibold" style={{ color: BRAND.muted }}>Expérience {i + 1}</span>
+                        {experiences.length > 1 && (
+                          <button onClick={() => removeExperience(exp.id)}><Trash2 size={15} color={BRAND.danger} /></button>
+                        )}
+                      </div>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <Field label="Type">
+                          <Select value={exp.type} onChange={(e) => updateExperience(exp.id, { type: e.target.value })}>
+                            <option>Stage</option><option>Emploi</option><option>Projet</option><option>Bénévolat</option>
+                          </Select>
+                        </Field>
+                        <Field label="Intitulé"><TextInput value={exp.titre} onChange={(e) => updateExperience(exp.id, { titre: e.target.value })} /></Field>
+                        <Field label="Structure / entreprise"><TextInput value={exp.structure} onChange={(e) => updateExperience(exp.id, { structure: e.target.value })} /></Field>
+                        <Field label="Période"><TextInput placeholder="Ex : juin – août 2025" value={exp.periode} onChange={(e) => updateExperience(exp.id, { periode: e.target.value })} /></Field>
+                        <div className="sm:col-span-2">
+                          <Field label="Description"><TextArea rows={2} value={exp.description} onChange={(e) => updateExperience(exp.id, { description: e.target.value })} /></Field>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <button onClick={addExperience} className="flex items-center gap-2 text-sm font-semibold" style={{ color: BRAND.navy }}>
+                    <Plus size={16} /> Ajouter une expérience
+                  </button>
+                </div>
+              </StepBlock>
+            )}
+
+            {wizardStep === 4 && (
+              <StepBlock icon={Sparkles} title="Compétences">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="Langues"><TextInput placeholder="Français, Anglais…" value={competences.langues} onChange={(e) => setCompetences({ ...competences, langues: e.target.value })} /></Field>
+                  <Field label="Logiciels maîtrisés"><TextInput placeholder="Excel, Python…" value={competences.logiciels} onChange={(e) => setCompetences({ ...competences, logiciels: e.target.value })} /></Field>
+                  <Field label="Compétences techniques"><TextInput value={competences.techniques} onChange={(e) => setCompetences({ ...competences, techniques: e.target.value })} /></Field>
+                  <Field label="Certifications"><TextInput value={competences.certifications} onChange={(e) => setCompetences({ ...competences, certifications: e.target.value })} /></Field>
+                  <div className="sm:col-span-2">
+                    <Field label="Centres d'intérêt"><TextInput value={competences.interets} onChange={(e) => setCompetences({ ...competences, interets: e.target.value })} /></Field>
+                  </div>
+                </div>
+              </StepBlock>
+            )}
+
+            {wizardStep === 5 && (
+              <StepBlock icon={Sparkles} title="Objectif professionnel">
+                <Field label="Métier choisi">
+                  <Select value={metier} onChange={(e) => updateMetier(e.target.value)}>
+                    {Object.keys(METIERS).map((m) => (<option key={m}>{m}</option>))}
+                  </Select>
+                </Field>
+                <div className="mt-4">
+                  <Field label="Votre objectif professionnel (pré-rempli, modifiable)">
+                    <TextArea rows={5} value={objectif} onChange={(e) => { setObjectif(e.target.value); setObjectifTouched(true); }} />
+                  </Field>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {accentSkills.map((s) => (
+                    <span key={s} className="text-xs font-medium rounded-full px-3 py-1" style={{ backgroundColor: BRAND.yellowSoft, color: BRAND.navy }}>
+                      Mis en avant · {s}
+                    </span>
+                  ))}
+                </div>
+              </StepBlock>
+            )}
+
+            {wizardStep === 6 && (
+              <StepBlock icon={Building2} title="Informations pour la lettre de motivation">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Field label="Entreprise / organisation"><TextInput value={lettre.entreprise} onChange={(e) => setLettre({ ...lettre, entreprise: e.target.value })} /></Field>
+                  <Field label="Ville"><TextInput value={lettre.ville} onChange={(e) => setLettre({ ...lettre, ville: e.target.value })} /></Field>
+                  <Field label="Nom du recruteur (facultatif)"><TextInput value={lettre.recruteur} onChange={(e) => setLettre({ ...lettre, recruteur: e.target.value })} /></Field>
+                  <Field label="Poste recherché"><TextInput value={lettre.poste} onChange={(e) => setLettre({ ...lettre, poste: e.target.value })} /></Field>
+                  <div className="sm:col-span-2"><Field label="Pourquoi souhaitez-vous ce poste ?"><TextArea rows={2} value={lettre.pourquoiPoste} onChange={(e) => setLettre({ ...lettre, pourquoiPoste: e.target.value })} /></Field></div>
+                  <div className="sm:col-span-2"><Field label="Pourquoi cette entreprise ?"><TextArea rows={2} value={lettre.pourquoiEntreprise} onChange={(e) => setLettre({ ...lettre, pourquoiEntreprise: e.target.value })} /></Field></div>
+                  <div className="sm:col-span-2"><Field label="Quelles sont vos qualités ?"><TextArea rows={2} value={lettre.qualites} onChange={(e) => setLettre({ ...lettre, qualites: e.target.value })} /></Field></div>
+                </div>
+              </StepBlock>
+            )}
+
+            <div className="flex items-center justify-between mt-8 pt-6" style={{ borderTop: `1px solid ${BRAND.line}` }}>
+              {wizardStep > 1 ? (
+                <SecondaryButton icon={ChevronLeft} onClick={() => setWizardStep((s) => s - 1)}>Précédent</SecondaryButton>
+              ) : <span />}
+              {wizardStep < 6 ? (
+                <PrimaryButton icon={ChevronRight} onClick={() => setWizardStep((s) => s + 1)}>Continuer</PrimaryButton>
+              ) : (
+                <PrimaryButton icon={Sparkles} onClick={() => setScreen("preview")}>
+                  Générer mon CV et ma lettre
+                </PrimaryButton>
+              )}
+            </div>
+          </div>
+        </div>
+      </Shell>
+    );
+  }
+
+  /* ================= PREVIEW (générée automatiquement, floutée si non payée) ================= */
+  if (screen === "preview") {
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-5xl mx-auto px-5 py-8">
+          <button onClick={() => setScreen("wizard")} className="flex items-center gap-1.5 text-xs font-medium mb-6" style={{ color: BRAND.muted }}>
+            <ArrowLeft size={14} /> Modifier mes informations
+          </button>
+
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>
+              Votre CV et votre lettre ont été générés
+            </h1>
+            <p className="text-sm mt-1" style={{ color: BRAND.muted }}>
+              Débloquez chaque document séparément, ou les deux ensemble.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <DocPreviewCard title="Curriculum Vitae" kind="cv" locked={!unlocked.cv} price={PRICES.cv}>
+              <CVContent profile={profile} parcours={parcours} experiences={experiences} competences={competences} metier={metier} objectif={objectif} initials={initials} compact />
+            </DocPreviewCard>
+
+            <DocPreviewCard title="Lettre de motivation" kind="lettre" locked={!unlocked.lettre} price={PRICES.lettre}>
+              <LettreContent profile={profile} lettre={lettre} paragraphs={lettreParagraphs} compact />
+            </DocPreviewCard>
+          </div>
+
+          <div className="max-w-md mx-auto mt-8 space-y-3">
+            {(unlocked.cv && unlocked.lettre) ? (
+              <div className="grid grid-cols-2 gap-3">
+                <SecondaryButton icon={Download} disabled={generating === "cv"} onClick={handleDownloadCV}>
+                  {generating === "cv" ? "Génération…" : "Télécharger le CV"}
+                </SecondaryButton>
+                <SecondaryButton icon={Download} disabled={generating === "lettre"} onClick={handleDownloadLettre}>
+                  {generating === "lettre" ? "Génération…" : "Télécharger la lettre"}
+                </SecondaryButton>
+              </div>
+            ) : (
+              <PrimaryButton full icon={Lock} onClick={() => setScreen("payment")}>
+                Débloquer mes documents
+              </PrimaryButton>
+            )}
+            {unlocked.cv && !unlocked.lettre && (
+              <SecondaryButton full icon={Download} disabled={generating === "cv"} onClick={handleDownloadCV}>
+                {generating === "cv" ? "Génération…" : "Télécharger le CV"}
+              </SecondaryButton>
+            )}
+            {unlocked.lettre && !unlocked.cv && (
+              <SecondaryButton full icon={Download} disabled={generating === "lettre"} onClick={handleDownloadLettre}>
+                {generating === "lettre" ? "Génération…" : "Télécharger la lettre"}
+              </SecondaryButton>
+            )}
+            {pdfError && <p className="text-xs text-center" style={{ color: BRAND.danger }}>{pdfError}</p>}
+            <SecondaryButton full icon={Edit3} onClick={() => setScreen("wizard")}>Modifier mes informations</SecondaryButton>
+          </div>
+        </div>
+      </Shell>
+    );
+  }
+
+  /* ================= PAYMENT ================= */
+  if (screen === "payment") {
+    const methods = [
+      { id: "wave", label: "Wave", icon: Smartphone },
+      { id: "orange", label: "Orange Money", icon: Smartphone },
+      { id: "free", label: "Free Money", icon: Smartphone },
+      { id: "carte", label: "Carte bancaire", icon: CreditCard },
+    ];
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-md mx-auto px-5 py-10">
+          <button onClick={() => setScreen("preview")} className="flex items-center gap-1.5 text-xs font-medium mb-6" style={{ color: BRAND.muted }}>
+            <ArrowLeft size={14} /> Retour
+          </button>
+          <div className="rounded-3xl p-6" style={{ backgroundColor: "#fff", border: `1px solid ${BRAND.line}` }}>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-4" style={{ color: BRAND.muted }}>Que souhaitez-vous débloquer ?</p>
+
+            <div className="space-y-2 mb-5">
+              <SelectRow
+                label="CV professionnel"
+                price={PRICES.cv}
+                checked={selection.cv || unlocked.cv}
+                disabled={unlocked.cv}
+                onToggle={() => setSelection((s) => ({ ...s, cv: !s.cv }))}
+              />
+              <SelectRow
+                label="Lettre de motivation"
+                price={PRICES.lettre}
+                checked={selection.lettre || unlocked.lettre}
+                disabled={unlocked.lettre}
+                onToggle={() => setSelection((s) => ({ ...s, lettre: !s.lettre }))}
+              />
+            </div>
+
+            <div className="flex items-end justify-between mb-6 pt-4" style={{ borderTop: `1px solid ${BRAND.line}` }}>
+              <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: BRAND.muted }}>Total</span>
+              <div className="flex items-end gap-1">
+                <span className="text-3xl font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>
+                  {total.toLocaleString("fr-FR")}
+                </span>
+                <span className="text-sm font-medium mb-1" style={{ color: BRAND.muted }}>FCFA</span>
+              </div>
+            </div>
+
+            <p className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: BRAND.muted }}>Mode de paiement</p>
+            <div className="space-y-2 mb-6">
+              {methods.map((m) => (
+                <button key={m.id} onClick={() => setPayMethod(m.id)} className="w-full flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all" style={{
+                  border: `2px solid ${payMethod === m.id ? BRAND.navy : BRAND.line}`,
+                  backgroundColor: payMethod === m.id ? BRAND.yellowSoft : "#fff",
+                  color: BRAND.navy,
+                }}>
+                  <m.icon size={16} />
+                  {m.label}
+                  {payMethod === m.id && <Check size={15} className="ml-auto" />}
+                </button>
+              ))}
+            </div>
+
+            <PrimaryButton full disabled={total === 0} onClick={confirmPayment}>
+              Payer {total.toLocaleString("fr-FR")} FCFA
+            </PrimaryButton>
+            <p className="text-[11px] text-center mt-3 flex items-center justify-center gap-1" style={{ color: BRAND.muted }}>
+              <ShieldCheck size={12} /> Prototype — aucun paiement réel n'est effectué.
+            </p>
+          </div>
+        </div>
+      </Shell>
+    );
+  }
+
+  /* ================= SUCCESS ================= */
+  if (screen === "success") {
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-md mx-auto px-5 py-14 text-center">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ backgroundColor: BRAND.success + "20" }}>
+            <Check size={28} color={BRAND.success} />
+          </div>
+          <h1 className="text-xl font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>Paiement effectué avec succès</h1>
+          <p className="text-sm mt-2" style={{ color: BRAND.muted }}>
+            {unlocked.cv && "Votre CV est prêt. "}{unlocked.lettre && "Votre lettre de motivation est prête."}
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 mt-8">
+            <SecondaryButton icon={Download} disabled={!unlocked.cv || generating === "cv"} onClick={handleDownloadCV}>
+              {generating === "cv" ? "Génération…" : "Télécharger le CV"}
+            </SecondaryButton>
+            <SecondaryButton icon={Download} disabled={!unlocked.lettre || generating === "lettre"} onClick={handleDownloadLettre}>
+              {generating === "lettre" ? "Génération…" : "Télécharger la lettre"}
+            </SecondaryButton>
+            <SecondaryButton icon={Share2}>Partager</SecondaryButton>
+            <SecondaryButton icon={Edit3} onClick={() => setScreen("wizard")}>Modifier</SecondaryButton>
+          </div>
+          {pdfError && <p className="text-xs text-center mt-3" style={{ color: BRAND.danger }}>{pdfError}</p>}
+          <div className="mt-3">
+            <PrimaryButton full icon={Sparkles} onClick={() => { setWizardStep(1); setScreen("wizard"); }}>
+              Créer une nouvelle version
+            </PrimaryButton>
+          </div>
+          <button onClick={() => setScreen("historique")} className="text-xs font-semibold mt-6 inline-flex items-center gap-1.5" style={{ color: BRAND.navy }}>
+            <History size={14} /> Voir mon historique
+          </button>
+        </div>
+      </Shell>
+    );
+  }
+
+  /* ================= HISTORIQUE ================= */
+  if (screen === "historique") {
+    return (
+      <Shell screen={screen} setScreen={setScreen}>
+        <div className="max-w-2xl mx-auto px-5 py-8">
+          <button onClick={() => setScreen("dashboard")} className="flex items-center gap-1.5 text-xs font-medium mb-6" style={{ color: BRAND.muted }}>
+            <ArrowLeft size={14} /> Retour au tableau de bord
+          </button>
+          <h1 className="text-xl font-bold mb-6" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>Mes CV & lettres de motivation</h1>
+          {historique.length === 0 && (
+            <p className="text-sm" style={{ color: BRAND.muted }}>Aucun document débloqué pour l'instant.</p>
+          )}
+          <div className="space-y-3">
+            {historique.map((h) => (
+              <div key={h.id} className="flex items-center justify-between rounded-2xl p-4" style={{ border: `1px solid ${BRAND.line}`, backgroundColor: "#fff" }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: BRAND.yellowSoft }}>
+                    <FileText size={17} color={BRAND.navy} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: BRAND.navy }}>{h.metier} · {h.version}</p>
+                    <p className="text-xs flex items-center gap-1" style={{ color: BRAND.muted }}><Clock size={11} /> {h.date} · {[h.cv && "CV", h.lettre && "Lettre"].filter(Boolean).join(" + ")}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  {h.cv && <IconBtn icon={Download} onClick={handleDownloadCV} />}
+                  {h.lettre && <IconBtn icon={Download} onClick={handleDownloadLettre} />}
+                  <IconBtn icon={Trash2} danger onClick={() => setHistorique((list) => list.filter((x) => x.id !== h.id))} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Shell>
+    );
+  }
+
+  return null;
+}
+
+function SelectRow({ label, price, checked, disabled, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      disabled={disabled}
+      className="w-full flex items-center justify-between rounded-xl px-4 py-3 transition-all disabled:opacity-60"
+      style={{ border: `2px solid ${checked ? BRAND.navy : BRAND.line}`, backgroundColor: checked ? BRAND.yellowSoft : "#fff" }}
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ backgroundColor: checked ? BRAND.navy : "#fff", border: `1.5px solid ${checked ? BRAND.navy : BRAND.line}` }}>
+          {checked && <Check size={12} color="#fff" />}
+        </div>
+        <span className="text-sm font-semibold" style={{ color: BRAND.navy }}>
+          {label}{disabled ? " · déjà débloqué" : ""}
+        </span>
+      </div>
+      <span className="text-sm font-bold" style={{ color: BRAND.navy }}>{fmtFCFA(price)}</span>
+    </button>
+  );
+}
+
+function IconBtn({ icon: Icon, danger, onClick }) {
+  return (
+    <button onClick={onClick} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-black/5">
+      <Icon size={14} color={danger ? BRAND.danger : BRAND.navy} />
+    </button>
+  );
+}
+
+function StepBlock({ icon: Icon, title, children }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2.5 mb-6">
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ backgroundColor: BRAND.yellowSoft }}>
+          <Icon size={16} color={BRAND.navy} />
+        </div>
+        <h2 className="text-lg font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>{title}</h2>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+/* ---------- Contenu réel du CV ---------- */
+function CVContent({ profile, parcours, experiences, competences, metier, objectif, initials, compact }) {
+  const hasExp = experiences.some((e) => e.titre || e.structure);
+  return (
+    <div className="text-xs leading-relaxed" style={{ color: "#334155" }}>
+      <div className="flex items-center gap-4 mb-5">
+        <div className="w-14 h-14 rounded-xl flex items-center justify-center font-bold text-white shrink-0 overflow-hidden" style={{ backgroundColor: BRAND.navy }}>
+          {profile.photo ? <img src={profile.photo} className="w-full h-full object-cover" alt="" /> : (initials || "?")}
+        </div>
+        <div>
+          <p className="font-bold text-base" style={{ color: BRAND.navy }}>{profile.prenom || "Prénom"} {profile.nom || "Nom"}</p>
+          <p className="text-[11px] font-semibold inline-block px-2 py-0.5 rounded-full mt-1" style={{ color: BRAND.yellow, backgroundColor: BRAND.navy }}>{metier}</p>
+          {!compact && (
+            <p className="text-[11px] mt-1" style={{ color: BRAND.muted }}>
+              {[profile.ville, profile.telephone, profile.email].filter(Boolean).join(" · ")}
+            </p>
+          )}
+        </div>
+      </div>
+
+      <Section title="Objectif professionnel">
+        <p>{compact ? objectif.slice(0, 90) + "…" : objectif}</p>
+      </Section>
+
+      {(!compact || parcours.universite || parcours.lycee) && (
+        <Section title="Formation">
+          {parcours.universite && <p><b>{parcours.universite}</b>{parcours.faculte ? ` — ${parcours.faculte}` : ""}{parcours.niveau ? ` (${parcours.niveau})` : ""}</p>}
+          {parcours.lycee && <p>{parcours.lycee}{parcours.serieBac ? ` — Bac ${parcours.serieBac}` : ""}{parcours.anneeBac ? `, ${parcours.anneeBac}` : ""}</p>}
+          {!compact && parcours.college && <p>{parcours.college}</p>}
+          {!compact && parcours.primaire && <p>{parcours.primaire}</p>}
+        </Section>
+      )}
+
+      {!compact && hasExp && (
+        <Section title="Expériences">
+          {experiences.filter((e) => e.titre || e.structure).map((e) => (
+            <div key={e.id} className="mb-2">
+              <p className="font-semibold" style={{ color: BRAND.navy }}>{e.titre || e.type} {e.structure && `· ${e.structure}`}</p>
+              <p className="text-[11px]" style={{ color: BRAND.muted }}>{e.periode}</p>
+              {e.description && <p className="mt-0.5">{e.description}</p>}
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {!compact && (
+        <Section title="Compétences">
+          {competences.langues && <p><b>Langues :</b> {competences.langues}</p>}
+          {competences.logiciels && <p><b>Logiciels :</b> {competences.logiciels}</p>}
+          {competences.techniques && <p><b>Compétences techniques :</b> {competences.techniques}</p>}
+          {competences.certifications && <p><b>Certifications :</b> {competences.certifications}</p>}
+          {competences.interets && <p><b>Centres d'intérêt :</b> {competences.interets}</p>}
+        </Section>
+      )}
+    </div>
+  );
+}
+function Section({ title, children }) {
+  return (
+    <div className="mb-4">
+      <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: BRAND.navy }}>{title}</p>
+      {children}
+    </div>
+  );
+}
+
+/* ---------- Contenu réel de la lettre ---------- */
+function LettreContent({ profile, lettre, paragraphs, compact }) {
+  return (
+    <div className="text-xs leading-relaxed" style={{ color: "#334155" }}>
+      <p style={{ color: BRAND.muted }}>{profile.prenom} {profile.nom}{profile.ville ? ` · ${profile.ville}` : ""}</p>
+      <p className="mt-3" style={{ color: BRAND.muted }}>{lettre.ville || profile.ville || "Ville"}, le {new Date().toLocaleDateString("fr-FR")}</p>
+      <p className="mt-3 font-semibold" style={{ color: BRAND.navy }}>
+        Objet : Candidature au poste de {lettre.poste || "—"} {lettre.entreprise && `au sein de ${lettre.entreprise}`}
+      </p>
+      {compact ? (
+        <p className="mt-3">{paragraphs[0]}</p>
+      ) : (
+        <div className="mt-3 space-y-2">
+          {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+          <p className="mt-4 font-semibold text-right" style={{ color: BRAND.navy }}>{profile.prenom} {profile.nom}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DocPreviewCard({ title, kind, locked, price, children }) {
+  return (
+    <div className="rounded-3xl overflow-hidden shadow-sm" style={{ border: `1px solid ${BRAND.line}` }}>
+      <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: BRAND.navy }}>
+        <span className="text-xs font-semibold text-white">{title}</span>
+        <FileText size={14} color={BRAND.yellow} />
+      </div>
+      <div className="relative">
+        <div className="p-5 bg-white">{children}</div>
+        {locked && (
+          <div className="absolute inset-x-0 bottom-0 top-24 flex items-center justify-center" style={{
+            backdropFilter: "blur(6px)",
+            background: "linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.92))",
+          }}>
+            <div className="flex flex-col items-center gap-2 px-6 text-center">
+              <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{ backgroundColor: BRAND.navy }}>
+                <Lock size={18} color={BRAND.yellow} />
+              </div>
+              <p className="text-xs font-semibold" style={{ color: BRAND.navy }}>
+                Débloquez votre {kind === "cv" ? "CV" : "lettre"} complet{kind === "cv" ? "" : "e"}
+              </p>
+              <p className="text-[11px] font-bold" style={{ color: BRAND.navy }}>{fmtFCFA(price)}</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Shell({ children, screen, setScreen }) {
+  return (
+    <div className="min-h-screen w-full" style={{ backgroundColor: BRAND.bg, fontFamily: "Inter, sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap');
+      `}</style>
+      <header className="sticky top-0 z-20 backdrop-blur border-b" style={{ backgroundColor: "rgba(246,247,251,0.85)", borderColor: BRAND.line }}>
+        <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: BRAND.navy }}>
+              <span className="text-xs font-bold" style={{ color: BRAND.yellow }}>N</span>
+            </div>
+            <span className="text-sm font-bold" style={{ color: BRAND.navy, fontFamily: "Manrope, sans-serif" }}>NextOri</span>
+          </div>
+          <button onClick={() => setScreen(screen === "historique" ? "dashboard" : "historique")} className="text-xs font-semibold flex items-center gap-1.5" style={{ color: BRAND.navy }}>
+            <History size={14} />
+            <span className="hidden sm:inline">Historique</span>
+          </button>
+        </div>
+      </header>
+      {children}
+    </div>
+  );
+}

@@ -1,0 +1,1534 @@
+/* =========================================================
+   RESULTAT HISTORIQUE — NEXTORI
+   ========================================================= */
+
+.resultat-historique-page {
+    min-height: 100vh;
+    background: #F2F4F7;
+    color: #0D1B2A;
+    font-family: Inter, Arial, sans-serif;
+    padding-bottom: 120px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.resultat-historique-header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #F2F4F7;
+    padding: 28px 40px;
+}
+
+.resultat-historique-header-content {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.resultat-historique-header-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.resultat-historique-header-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.resultat-historique-label {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+}
+
+.resultat-historique-header h1 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.resultat-historique-header p {
+    margin: 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #1E3A8A;
+    font-size: 0.9rem;
+}
+
+.resultat-historique-header p svg {
+    color: #F4B400;
+}
+
+.resultat-historique-retour-top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 17px;
+    border: 1px solid #0D1B2A;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #0D1B2A;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.resultat-historique-retour-top:hover {
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-test-id {
+    display: block;
+    max-width: 1180px;
+    margin: 18px auto 0;
+    color: #1E3A8A;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTENEUR GLOBAL
+   ========================================================= */
+
+.resultat-historique-header ~ section,
+.resultat-historique-header ~ .resultat-historique-actions {
+    width: min(1180px, calc(100% - 40px));
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   PARCOURS / RESUME
+   ========================================================= */
+
+.resultat-historique-resume {
+    margin-top: 32px;
+    padding: 28px;
+    background: #FFFFFF;
+    border: 1px solid #F2F4F7;
+    border-radius: 22px;
+    box-shadow: 0 8px 25px rgba(13, 27, 42, 0.06);
+}
+
+.resultat-historique-resume-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.resultat-historique-resume-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #F4B400;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+}
+
+.resultat-historique-resume-header span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+}
+
+.resultat-historique-resume-header h2 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.resultat-historique-resume-header p {
+    max-width: 700px;
+    margin: 7px 0 0;
+    color: #1E3A8A;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ETAPES DU PARCOURS
+   ========================================================= */
+
+.resultat-historique-parcours {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.resultat-parcours-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.resultat-parcours-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    border: 1px solid #F2F4F7;
+}
+
+.resultat-parcours-item.active .resultat-parcours-icon {
+    background: #0D1B2A;
+    color: #FFFFFF;
+    border-color: #0D1B2A;
+}
+
+.resultat-parcours-item span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.resultat-parcours-item strong {
+    display: block;
+    color: #0D1B2A;
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.resultat-parcours-line {
+    height: 1px;
+    flex: 1;
+    min-width: 20px;
+    background: #F4B400;
+}
+
+
+/* =========================================================
+   PROFIL RIASEC
+   ========================================================= */
+
+.resultat-historique-profil {
+    margin-top: 24px;
+    padding: 32px;
+    background: #0D1B2A;
+    border-radius: 22px;
+    color: #FFFFFF;
+    overflow: hidden;
+    position: relative;
+}
+
+.resultat-historique-profil::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 1px solid #1E3A8A;
+    border-radius: 50%;
+    right: -70px;
+    top: -80px;
+    opacity: 0.6;
+}
+
+.resultat-historique-profil-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #F4B400;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 24px;
+}
+
+.resultat-historique-profil-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.resultat-historique-code {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #1E3A8A;
+    border: 6px solid #FFFFFF;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.1rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.resultat-historique-profil-text span {
+    display: block;
+    color: #F4B400;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.resultat-historique-profil-text h2 {
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.resultat-historique-profil-text p {
+    max-width: 760px;
+    margin: 9px 0 0;
+    color: #FFFFFF;
+    opacity: 0.9;
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   TITRES DE SECTIONS
+   ========================================================= */
+
+.resultat-historique-section-title,
+.resultat-historique-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.resultat-historique-section-title-icon,
+.resultat-historique-section-header-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #F4B400;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+}
+
+.resultat-historique-section-title span,
+.resultat-historique-section-header span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+}
+
+.resultat-historique-section-title h2,
+.resultat-historique-section-header h2 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.55rem;
+    font-weight: 800;
+}
+
+.resultat-historique-section-title p,
+.resultat-historique-section-header p {
+    max-width: 720px;
+    margin: 7px 0 0;
+    color: #1E3A8A;
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   SCORES RIASEC
+   ========================================================= */
+
+.resultat-historique-scores {
+    margin-top: 24px;
+    padding: 30px;
+    background: #FFFFFF;
+    border-radius: 22px;
+    border: 1px solid #F2F4F7;
+    box-shadow: 0 8px 25px rgba(13, 27, 42, 0.05);
+}
+
+.resultat-scores-list {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 28px;
+}
+
+.resultat-score-item {
+    min-width: 0;
+}
+
+.resultat-score-header {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+}
+
+.resultat-score-letter {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
+.resultat-score-header strong {
+    color: #0D1B2A;
+    font-size: 0.9rem;
+}
+
+.resultat-score-header b {
+    color: #1E3A8A;
+    font-size: 0.88rem;
+}
+
+.resultat-score-bar {
+    height: 9px;
+    background: #F2F4F7;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.resultat-score-progress {
+    height: 100%;
+    background: #1E3A8A;
+    border-radius: inherit;
+    transition: width 0.7s ease;
+}
+
+
+/* =========================================================
+   BLOC DE CONFIANCE
+   ========================================================= */
+
+.resultat-historique-confiance {
+    margin-top: 24px;
+    padding: 24px 26px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #FFFFFF;
+    border-left: 5px solid #F4B400;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(13, 27, 42, 0.04);
+}
+
+.resultat-historique-confiance-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultat-historique-confiance span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.resultat-historique-confiance h3 {
+    margin: 4px 0 6px;
+    color: #0D1B2A;
+    font-size: 1.1rem;
+}
+
+.resultat-historique-confiance p {
+    margin: 0;
+    color: #1E3A8A;
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   RECOMMANDATIONS
+   ========================================================= */
+
+.resultat-historique-recommandations {
+    margin-top: 32px;
+}
+
+.resultat-historique-category {
+    margin-top: 28px;
+    padding: 24px;
+    background: #FFFFFF;
+    border-radius: 20px;
+    border: 1px solid #F2F4F7;
+    box-shadow: 0 7px 22px rgba(13, 27, 42, 0.04);
+}
+
+.resultat-historique-category.secondaire {
+    margin-top: 20px;
+}
+
+.resultat-historique-category-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 20px;
+}
+
+.resultat-historique-category-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.resultat-historique-category-icon.principal {
+    background: #F4B400;
+    color: #0D1B2A;
+}
+
+.resultat-historique-category-icon.secondaire {
+    background: #1E3A8A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-category-heading span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.73rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.resultat-historique-category-heading h3 {
+    margin: 3px 0 0;
+    color: #0D1B2A;
+    font-size: 1.12rem;
+}
+
+.resultat-historique-secondary-intro {
+    margin: -5px 0 20px;
+    color: #1E3A8A;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   LISTE DES METIERS
+   ========================================================= */
+
+.resultat-historique-metiers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.resultat-historique-metier {
+    background: #FFFFFF;
+    border: 1px solid #F2F4F7;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.2s ease;
+}
+
+.resultat-historique-metier:hover {
+    border-color: #1E3A8A;
+}
+
+.resultat-historique-metier.principal[open] {
+    border-color: #F4B400;
+}
+
+.resultat-historique-metier.secondaire[open] {
+    border-color: #1E3A8A;
+}
+
+.resultat-historique-metier summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px;
+}
+
+.resultat-historique-metier summary::-webkit-details-marker {
+    display: none;
+}
+
+.resultat-historique-metier-summary {
+    min-width: 0;
+    flex: 1;
+}
+
+.resultat-historique-metier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.resultat-historique-metier-badge.principal {
+    background: #F4B400;
+    color: #0D1B2A;
+}
+
+.resultat-historique-metier-badge.secondaire {
+    background: #1E3A8A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-metier-title-row {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.resultat-historique-metier-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultat-historique-metier-title-row h3 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.resultat-historique-metier-title-row p {
+    margin: 4px 0 0;
+    color: #1E3A8A;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.resultat-historique-metier-arrow {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, background 0.2s ease;
+}
+
+.resultat-historique-metier[open] .resultat-historique-metier-arrow {
+    transform: rotate(90deg);
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   DETAILS METIER
+   ========================================================= */
+
+.resultat-historique-metier-details {
+    padding: 0 18px 22px;
+    border-top: 1px solid #F2F4F7;
+}
+
+.resultat-historique-description {
+    margin-top: 18px;
+    padding: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    background: #F2F4F7;
+    border-radius: 14px;
+}
+
+.resultat-historique-description-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultat-historique-description span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.resultat-historique-description h4 {
+    margin: 3px 0 6px;
+    color: #0D1B2A;
+    font-size: 0.95rem;
+}
+
+.resultat-historique-description p {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   FORMATIONS
+   ========================================================= */
+
+.resultat-historique-formations {
+    margin-top: 22px;
+}
+
+.resultat-historique-formations > h4,
+.resultat-historique-formations-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 13px;
+    color: #0D1B2A;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.resultat-historique-formations > h4 svg,
+.resultat-historique-formations-title svg {
+    color: #1E3A8A;
+}
+
+.resultat-historique-formation {
+    padding: 16px;
+    margin-top: 10px;
+    background: #FFFFFF;
+    border: 1px solid #F2F4F7;
+    border-radius: 13px;
+}
+
+.resultat-historique-formation-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.resultat-historique-formation-header svg {
+    color: #1E3A8A;
+    margin-top: 3px;
+}
+
+.resultat-historique-formation-header h5 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 0.92rem;
+}
+
+.resultat-historique-formation-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 8px;
+    color: #1E3A8A;
+    font-size: 0.78rem;
+}
+
+.resultat-historique-formation-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+/* =========================================================
+   UNIVERSITES
+   ========================================================= */
+
+.resultat-historique-universites {
+    margin-top: 16px;
+    padding: 15px;
+    background: #F2F4F7;
+    border-radius: 12px;
+}
+
+.resultat-historique-universites-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    color: #0D1B2A;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.resultat-historique-universites-title svg {
+    color: #1E3A8A;
+}
+
+.resultat-historique-universites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.resultat-historique-universite-button {
+    width: 100%;
+    border: 1px solid #FFFFFF;
+    border-radius: 9px;
+    padding: 10px 12px;
+    background: #FFFFFF;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: left;
+    transition: 0.2s ease;
+}
+
+.resultat-historique-universite-button span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.resultat-historique-universite-button span svg {
+    color: #1E3A8A;
+    flex-shrink: 0;
+}
+
+.resultat-historique-universite-button > svg {
+    color: #1E3A8A;
+    flex-shrink: 0;
+}
+
+.resultat-historique-universite-button:hover {
+    border-color: #1E3A8A;
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-universite-button:hover span svg,
+.resultat-historique-universite-button:hover > svg {
+    color: #F4B400;
+}
+
+.resultat-historique-no-universite {
+    margin: 0;
+    color: #1E3A8A;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.resultat-historique-no-formation,
+.resultat-historique-no-metier {
+    margin-top: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #F2F4F7;
+    border-radius: 10px;
+    color: #1E3A8A;
+    font-size: 0.82rem;
+}
+
+
+/* =========================================================
+   PROCHAINE ETAPE
+   ========================================================= */
+
+.resultat-historique-next-step {
+    margin-top: 32px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #1E3A8A;
+    border-radius: 20px;
+    color: #FFFFFF;
+}
+
+.resultat-historique-next-step-icon {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #F4B400;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.resultat-historique-next-step-content > span {
+    display: block;
+    color: #F4B400;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.resultat-historique-next-step-content h2 {
+    margin: 4px 0 6px;
+    color: #FFFFFF;
+    font-size: 1.35rem;
+}
+
+.resultat-historique-next-step-content p {
+    max-width: 800px;
+    margin: 0;
+    color: #FFFFFF;
+    opacity: 0.9;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   PARCOURS FINAL
+   ========================================================= */
+
+.resultat-historique-parcours-final {
+    margin-top: 24px;
+    padding: 30px;
+    background: #FFFFFF;
+    border-radius: 22px;
+    border: 1px solid #F2F4F7;
+    box-shadow: 0 8px 25px rgba(13, 27, 42, 0.05);
+}
+
+.resultat-historique-final-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 25px;
+}
+
+.resultat-historique-final-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    background: #0D1B2A;
+    color: #F4B400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resultat-historique-final-title span {
+    display: block;
+    color: #1E3A8A;
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.resultat-historique-final-title h2 {
+    margin: 3px 0 0;
+    color: #0D1B2A;
+    font-size: 1.4rem;
+}
+
+.resultat-historique-final-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.resultat-final-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    padding: 20px;
+    background: #F2F4F7;
+    border-radius: 15px;
+}
+
+.resultat-final-step-number {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #F4B400;
+    color: #0D1B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.resultat-final-step > div:last-child > svg {
+    color: #1E3A8A;
+    margin-bottom: 5px;
+}
+
+.resultat-final-step strong {
+    display: block;
+    color: #0D1B2A;
+    font-size: 0.9rem;
+}
+
+.resultat-final-step p {
+    margin: 6px 0 0;
+    color: #1E3A8A;
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   MESSAGE FINAL
+   ========================================================= */
+
+.resultat-historique-message-final {
+    margin-top: 24px;
+    padding: 24px 26px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: #0D1B2A;
+    border-radius: 17px;
+    color: #FFFFFF;
+}
+
+.resultat-historique-message-final > svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #F4B400;
+}
+
+.resultat-historique-message-final h3 {
+    margin: 0 0 6px;
+    color: #FFFFFF;
+    font-size: 1.05rem;
+}
+
+.resultat-historique-message-final p {
+    max-width: 850px;
+    margin: 0;
+    color: #FFFFFF;
+    opacity: 0.9;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   ACTIONS FINALES
+   ========================================================= */
+
+.resultat-historique-actions {
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.resultat-historique-action-retour,
+.resultat-historique-action-test {
+    min-height: 48px;
+    padding: 12px 20px;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.resultat-historique-action-retour {
+    background: #FFFFFF;
+    color: #0D1B2A;
+    border: 1px solid #0D1B2A;
+}
+
+.resultat-historique-action-retour:hover {
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-action-test {
+    background: #F4B400;
+    color: #0D1B2A;
+    border: 1px solid #F4B400;
+}
+
+.resultat-historique-action-test:hover {
+    background: #0D1B2A;
+    border-color: #0D1B2A;
+    color: #FFFFFF;
+}
+
+.resultat-historique-action-test svg:last-child {
+    margin-left: 3px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.resultat-historique-loading {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.resultat-historique-loading-spinner {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 20px;
+    border: 4px solid #F2F4F7;
+    border-top-color: #F4B400;
+    border-radius: 50%;
+    animation: resultatHistoriqueSpin 0.8s linear infinite;
+}
+
+.resultat-historique-loading > svg {
+    margin-bottom: 12px;
+    color: #1E3A8A;
+    font-size: 1.4rem;
+}
+
+.resultat-historique-loading h2 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.3rem;
+}
+
+.resultat-historique-loading p {
+    margin: 8px 0 0;
+    color: #1E3A8A;
+    font-size: 0.9rem;
+}
+
+@keyframes resultatHistoriqueSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   ERREUR
+   ========================================================= */
+
+.resultat-historique-error {
+    width: min(560px, calc(100% - 40px));
+    min-height: 60vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.resultat-historique-error-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 17px;
+    background: #0D1B2A;
+    color: #F4B400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+}
+
+.resultat-historique-error h2 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.35rem;
+}
+
+.resultat-historique-error p {
+    margin: 8px 0 20px;
+    color: #1E3A8A;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.resultat-historique-error-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #0D1B2A;
+    color: #FFFFFF;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.resultat-historique-error-button:hover {
+    background: #1E3A8A;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLETTE
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .resultat-historique-header {
+        padding: 24px 25px;
+    }
+
+    .resultat-historique-header-content {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .resultat-historique-retour-top {
+        align-self: flex-start;
+    }
+
+    .resultat-historique-final-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .resultat-parcours-item strong {
+        font-size: 0.78rem;
+    }
+
+    .resultat-parcours-item span {
+        font-size: 0.65rem;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .resultat-historique-header {
+        padding: 20px;
+    }
+
+    .resultat-historique-header-title {
+        align-items: flex-start;
+    }
+
+    .resultat-historique-header-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+    }
+
+    .resultat-historique-header h1 {
+        font-size: 1.45rem;
+    }
+
+    .resultat-historique-retour-top {
+        width: 100%;
+    }
+
+    .resultat-historique-header ~ section,
+    .resultat-historique-header ~ .resultat-historique-actions {
+        width: calc(100% - 24px);
+    }
+
+    .resultat-historique-resume,
+    .resultat-historique-scores,
+    .resultat-historique-category,
+    .resultat-historique-parcours-final {
+        padding: 20px;
+        border-radius: 17px;
+    }
+
+    .resultat-historique-resume-header {
+        margin-bottom: 22px;
+    }
+
+    .resultat-historique-parcours {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .resultat-parcours-item {
+        padding: 8px;
+        background: #F2F4F7;
+        border-radius: 10px;
+    }
+
+    .resultat-parcours-line {
+        width: 1px;
+        height: 12px;
+        flex: none;
+        margin-left: 28px;
+    }
+
+    .resultat-historique-profil {
+        padding: 25px 20px;
+        border-radius: 17px;
+    }
+
+    .resultat-historique-profil-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .resultat-historique-code {
+        width: 90px;
+        height: 90px;
+        font-size: 1.6rem;
+    }
+
+    .resultat-historique-profil-text h2 {
+        font-size: 1.4rem;
+    }
+
+    .resultat-scores-list {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .resultat-historique-section-title h2,
+    .resultat-historique-section-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .resultat-historique-confiance,
+    .resultat-historique-next-step,
+    .resultat-historique-message-final {
+        padding: 20px;
+    }
+
+    .resultat-historique-next-step {
+        align-items: flex-start;
+    }
+
+    .resultat-historique-category-heading {
+        align-items: flex-start;
+    }
+
+    .resultat-historique-metier summary {
+        padding: 15px;
+    }
+
+    .resultat-historique-metier-title-row {
+        align-items: flex-start;
+    }
+
+    .resultat-historique-metier-title-row p {
+        display: none;
+    }
+
+    .resultat-historique-metier-arrow {
+        width: 31px;
+        height: 31px;
+    }
+
+    .resultat-historique-metier-details {
+        padding: 0 15px 18px;
+    }
+
+    .resultat-historique-description {
+        padding: 15px;
+    }
+
+    .resultat-historique-formation {
+        padding: 13px;
+    }
+
+    .resultat-historique-formation-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .resultat-historique-universite-button {
+        padding: 10px;
+    }
+
+    .resultat-historique-final-title h2 {
+        font-size: 1.2rem;
+    }
+
+    .resultat-final-step {
+        padding: 16px;
+    }
+
+    .resultat-historique-actions {
+        flex-direction: column;
+        width: calc(100% - 24px);
+    }
+
+    .resultat-historique-action-retour,
+    .resultat-historique-action-test {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE — PETITS TELEPHONES
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .resultat-historique-header-title {
+        gap: 12px;
+    }
+
+    .resultat-historique-header-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 1rem;
+    }
+
+    .resultat-historique-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .resultat-historique-header p {
+        font-size: 0.78rem;
+    }
+
+    .resultat-historique-label {
+        font-size: 0.68rem;
+    }
+
+    .resultat-historique-resume-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .resultat-historique-section-title,
+    .resultat-historique-section-header {
+        gap: 11px;
+    }
+
+    .resultat-historique-section-title-icon,
+    .resultat-historique-section-header-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+    }
+
+    .resultat-historique-category-heading h3 {
+        font-size: 1rem;
+    }
+
+    .resultat-historique-metier-title-row h3 {
+        font-size: 0.9rem;
+    }
+
+    .resultat-historique-metier-icon {
+        width: 37px;
+        height: 37px;
+    }
+
+    .resultat-historique-next-step-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .resultat-historique-next-step-content h2 {
+        font-size: 1.15rem;
+    }
+}

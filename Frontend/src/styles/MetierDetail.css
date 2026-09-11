@@ -1,0 +1,959 @@
+/* =====================================================
+   PAGE MÉTIER
+===================================================== */
+
+.metier-detail-page {
+
+    width: min(94%, 1050px);
+
+    margin: 0 auto;
+
+    padding: 25px 0 100px;
+
+    background: #F2F4F7;
+
+    min-height: 100vh;
+
+    color: #0D1B2A;
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.metier-detail-header {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+    background: #FFFFFF;
+
+    border-radius: 22px;
+
+    padding: 32px 30px;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 25px rgba(13, 27, 42, 0.10);
+
+    margin-bottom: 22px;
+
+    border-top: 5px solid #F4B400;
+
+    backdrop-filter: blur(10px);
+
+}
+
+
+.metier-detail-header h1 {
+
+    margin: 0;
+
+    color: #0D1B2A;
+
+    font-size: 2.1rem;
+
+    line-height: 1.25;
+
+    font-weight: 800;
+
+}
+
+
+.metier-secteur {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    margin: 0;
+
+    color: #64748B;
+
+    font-size: 15px;
+
+}
+
+
+.metier-secteur svg {
+
+    color: #1E3A8A;
+
+}
+
+
+/* =====================================================
+   TENDANCE
+===================================================== */
+
+.metier-tendance {
+
+    width: fit-content;
+
+    margin: 16px auto;
+
+    padding: 8px 16px;
+
+    border-radius: 30px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    background: #EAF7EE;
+
+    color: #2E7D32;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+}
+
+
+.metier-tendance svg {
+
+    color: #2E7D32;
+
+    width: 16px;
+
+    height: 16px;
+
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.detail-section {
+
+    background: #FFFFFF;
+
+    border-radius: 20px;
+
+    padding: 28px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #E8ECF2;
+
+    box-shadow:
+        0 6px 20px rgba(13, 27, 42, 0.06);
+
+}
+
+
+.detail-section h2 {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #1E3A8A;
+
+    font-size: 21px;
+
+    font-weight: 750;
+
+    margin: 0 0 18px;
+
+    padding-left: 13px;
+
+    border-left: 4px solid #F4B400;
+
+}
+
+
+.detail-section h2 svg {
+
+    width: 20px;
+
+    height: 20px;
+
+    color: #F4B400;
+
+    flex-shrink: 0;
+
+}
+
+
+.detail-section > p {
+
+    margin: 0;
+
+    color: #475569;
+
+    font-size: 15px;
+
+    line-height: 1.85;
+
+    text-align: justify;
+
+}
+
+
+/* =====================================================
+   COMPÉTENCES
+===================================================== */
+
+.competences-container {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 5px;
+
+}
+
+
+.competence-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 9px 15px;
+
+    background: #FFF8DD;
+
+    color: #0D1B2A;
+
+    border: 1px solid #F4B400;
+
+    border-radius: 30px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .25s ease;
+
+}
+
+
+.competence-badge:hover {
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    border-color: #1E3A8A;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =====================================================
+   INFORMATIONS
+===================================================== */
+
+.infos-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+}
+
+
+.info-item {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 145px;
+
+    padding: 18px 15px;
+
+    background: #F8FAFC;
+
+    border: 1px solid #E2E8F0;
+
+    border-radius: 16px;
+
+    transition: .25s ease;
+
+}
+
+
+.info-item:hover {
+
+    transform: translateY(-3px);
+
+    border-color: #D6DEEA;
+
+    box-shadow:
+        0 8px 20px rgba(13, 27, 42, 0.07);
+
+}
+
+
+.info-item > svg {
+
+    width: 24px;
+
+    height: 24px;
+
+    margin-bottom: 10px;
+
+    color: #1E3A8A;
+
+}
+
+
+.info-item span {
+
+    color: #64748B;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.info-item strong {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #0D1B2A;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+}
+
+
+/* =====================================================
+   FILIÈRES
+===================================================== */
+
+.filieres-container {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+}
+
+
+.metier-filiere-card {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 11px 16px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    border-radius: 30px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .25s ease;
+
+}
+
+
+.metier-filiere-card svg {
+
+    color: #F4B400;
+
+    width: 16px;
+
+    height: 16px;
+
+    flex-shrink: 0;
+
+}
+
+
+.metier-filiere-card:hover {
+
+    background: #0D1B2A;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =====================================================
+   BOUTON RETOUR
+===================================================== */
+
+.retour-btn {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    margin: 5px 0 20px;
+
+    padding: 14px 20px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: #0D1B2A;
+
+    color: #FFFFFF;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+
+}
+
+
+.retour-btn svg {
+
+    width: 16px;
+
+    height: 16px;
+
+}
+
+
+.retour-btn:hover {
+
+    background: #1E3A8A;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(30, 58, 138, .20);
+
+}
+
+
+.retour-btn:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* =====================================================
+   CHARGEMENT
+===================================================== */
+
+.loading-container {
+
+    min-height: 70vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #0D1B2A;
+
+}
+
+
+.loading-spinner {
+
+    width: 45px;
+
+    height: 45px;
+
+    margin-bottom: 15px;
+
+    border: 4px solid #E5E7EB;
+
+    border-top-color: #F4B400;
+
+    border-right-color: #1E3A8A;
+
+    border-radius: 50%;
+
+    animation: rotation 0.9s linear infinite;
+
+}
+
+
+@keyframes rotation {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.metier-filiere-card {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 11px 16px;
+
+    background: #1E3A8A;
+
+    color: #FFFFFF;
+
+    border: none;
+
+    border-radius: 30px;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+
+}
+
+/* =====================================================
+   MÉTIER INTROUVABLE
+===================================================== */
+
+.metier-introuvable {
+
+    width: min(94%, 600px);
+
+    min-height: 65vh;
+
+    margin: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+}
+
+
+.metier-introuvable h2 {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #0D1B2A;
+
+    margin-bottom: 12px;
+
+}
+
+
+.metier-introuvable h2 svg {
+
+    color: #F4B400;
+
+}
+
+
+.metier-introuvable p {
+
+    max-width: 450px;
+
+    margin-bottom: 20px;
+
+    color: #64748B;
+
+    line-height: 1.7;
+
+}
+
+
+/* =====================================================
+   TABLETTE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .metier-detail-page {
+
+        width: 94%;
+
+        padding: 18px 0 85px;
+
+    }
+
+
+    .metier-detail-header {
+
+        padding: 24px 20px;
+
+        border-radius: 19px;
+
+        margin-bottom: 16px;
+
+    }
+
+
+    .metier-detail-header h1 {
+
+        font-size: 1.75rem;
+
+    }
+
+
+    .detail-section {
+
+        padding: 22px;
+
+        border-radius: 18px;
+
+        margin-bottom: 15px;
+
+    }
+
+
+    .detail-section h2 {
+
+        font-size: 19px;
+
+        margin-bottom: 15px;
+
+    }
+
+
+    .infos-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 550px) {
+
+    .metier-detail-page {
+
+        width: 100%;
+
+        padding: 10px 10px 75px;
+
+        box-sizing: border-box;
+
+    }
+
+
+    .metier-detail-header {
+
+        position: sticky;
+
+        top: 0;
+
+        padding: 20px 15px;
+
+        border-radius: 17px;
+
+        border-top-width: 4px;
+
+    }
+
+
+    .metier-detail-header h1 {
+
+        font-size: 1.45rem;
+
+        line-height: 1.3;
+
+    }
+
+
+    .metier-secteur {
+
+        font-size: 13px;
+
+    }
+
+
+    .metier-tendance {
+
+        margin: 12px auto;
+
+        padding: 7px 13px;
+
+        font-size: 12px;
+
+    }
+
+
+    .detail-section {
+
+        padding: 18px;
+
+        border-radius: 16px;
+
+        margin-bottom: 13px;
+
+    }
+
+
+    .detail-section h2 {
+
+        font-size: 17px;
+
+        gap: 8px;
+
+        padding-left: 10px;
+
+        border-left-width: 3px;
+
+    }
+
+
+    .detail-section h2 svg {
+
+        width: 17px;
+
+        height: 17px;
+
+    }
+
+
+    .detail-section > p {
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        text-align: left;
+
+    }
+
+
+    /* COMPÉTENCES */
+
+    .competences-container {
+
+        gap: 8px;
+
+    }
+
+
+    .competence-badge {
+
+        padding: 8px 12px;
+
+        font-size: 12px;
+
+    }
+
+
+    /* INFORMATIONS */
+
+    .infos-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+    }
+
+
+    .info-item {
+
+        min-height: 110px;
+
+        padding: 15px;
+
+    }
+
+
+    .info-item > svg {
+
+        width: 21px;
+
+        height: 21px;
+
+    }
+
+
+    /* FILIÈRES */
+
+    .filieres-container {
+
+        gap: 8px;
+
+    }
+
+
+    .metier-filiere-card {
+
+        padding: 9px 13px;
+
+        font-size: 12px;
+
+    }
+
+
+    .metier-filiere-card svg {
+
+        width: 14px;
+
+        height: 14px;
+
+    }
+
+
+    /* BOUTON */
+
+    .retour-btn {
+
+        padding: 13px;
+
+        font-size: 14px;
+
+        border-radius: 12px;
+
+    }
+
+}
+
+
+/* =====================================================
+   TRÈS PETIT ÉCRAN
+===================================================== */
+
+@media (max-width: 380px) {
+
+    .metier-detail-page {
+
+        padding-left: 8px;
+
+        padding-right: 8px;
+
+    }
+
+
+    .metier-detail-header {
+
+        padding: 18px 12px;
+
+    }
+
+
+    .metier-detail-header h1 {
+
+        font-size: 1.3rem;
+
+    }
+
+
+    .detail-section {
+
+        padding: 15px;
+
+    }
+
+
+    .detail-section h2 {
+
+        font-size: 16px;
+
+    }
+
+
+    .detail-section > p {
+
+        font-size: 13px;
+
+    }
+
+
+    .competence-badge {
+
+        font-size: 11px;
+
+        padding: 7px 10px;
+
+    }
+
+
+    .metier-filiere-card {
+
+        font-size: 11px;
+
+        padding: 8px 11px;
+
+    }
+
+}

@@ -1,0 +1,780 @@
+/* ===========================
+   PAGE TÉMOIGNAGES
+=========================== */
+
+.temoignages-page {
+    min-height: 100vh;
+    background: #F2F4F7;
+    padding-bottom: 110px;
+}
+
+
+/* ===========================
+   HERO
+=========================== */
+
+.temoignages-hero {
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: min(94%, 1100px);
+    min-height: 330px;
+
+    margin: 0 auto 40px;
+    padding: 55px 60px;
+
+    box-sizing: border-box;
+
+    background: #0D1B2A;
+    border-radius: 0 0 30px 30px;
+
+    box-shadow: 0 15px 40px rgba(13,27,42,0.12);
+}
+
+
+.temoignages-hero::before {
+    content: "";
+
+    position: absolute;
+
+    width: 280px;
+    height: 280px;
+
+    right: -100px;
+    top: -130px;
+
+    border-radius: 50%;
+
+    background: #F4B400;
+    opacity: 0.12;
+}
+
+
+.temoignages-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    left: 42%;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: #1E3A8A;
+    opacity: 0.35;
+}
+
+
+.temoignages-hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 650px;
+}
+
+
+.temoignages-label {
+    display: inline-flex;
+
+    padding: 7px 13px;
+
+    margin-bottom: 15px;
+
+    border-radius: 30px;
+
+    background: rgba(244,180,0,0.14);
+
+    color: #F4B400;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+.temoignages-hero h1 {
+    margin: 0 0 15px;
+
+    color: #FFFFFF;
+
+    font-size: clamp(32px, 5vw, 50px);
+    line-height: 1.08;
+    font-weight: 800;
+}
+
+
+.temoignages-hero h1 span {
+    color: #F4B400;
+}
+
+
+.temoignages-hero-content > p {
+    max-width: 600px;
+
+    margin: 0;
+
+    color: #FFFFFF;
+
+    opacity: 0.82;
+
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+.temoignages-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    margin-top: 25px;
+
+    padding: 14px 20px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: #F4B400;
+    color: #0D1B2A;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.temoignages-cta svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+.temoignages-cta svg:last-child {
+    width: 16px;
+    height: 16px;
+}
+
+
+.temoignages-cta:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 25px rgba(244,180,0,0.25);
+}
+
+
+/* ===========================
+   STATISTIQUE
+=========================== */
+
+.temoignages-stat {
+    position: relative;
+    z-index: 2;
+
+    flex-shrink: 0;
+
+    min-width: 170px;
+
+    padding: 25px;
+
+    text-align: center;
+
+    background: #FFFFFF;
+
+    border-radius: 22px;
+
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+
+.stat-note {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 3px;
+
+    color: #0D1B2A;
+}
+
+
+.stat-note svg {
+    width: 22px;
+    height: 22px;
+
+    color: #F4B400;
+}
+
+
+.stat-note strong {
+    font-size: 34px;
+    font-weight: 800;
+}
+
+
+.stat-note span {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.temoignages-stat p {
+    margin: 7px 0 0;
+
+    color: #1E3A8A;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* ===========================
+   CONTENU
+=========================== */
+
+.temoignages-content {
+    width: min(94%, 1100px);
+    margin: 0 auto;
+}
+
+
+.temoignages-heading {
+    margin-bottom: 25px;
+}
+
+
+.temoignages-heading > span {
+    color: #1E3A8A;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.9px;
+}
+
+
+.temoignages-heading h2 {
+    margin: 7px 0 6px;
+
+    color: #0D1B2A;
+
+    font-size: 27px;
+    font-weight: 800;
+}
+
+
+.temoignages-heading p {
+    margin: 0;
+
+    color: #0D1B2A;
+
+    opacity: 0.65;
+
+    font-size: 14px;
+}
+
+
+/* ===========================
+   GRILLE
+=========================== */
+
+.temoignages-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+.temoignage-card {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 230px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(13,27,42,0.05);
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 25px rgba(13,27,42,0.07);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.temoignage-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: 0 15px 32px rgba(13,27,42,0.11);
+}
+
+
+.temoignage-stars {
+    display: flex;
+    gap: 3px;
+
+    margin-bottom: 17px;
+
+    color: #F4B400;
+}
+
+
+.temoignage-stars svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+.temoignage-stars .star-empty {
+    color: #F2F4F7;
+}
+
+
+.temoignage-commentaire {
+    flex: 1;
+
+    margin: 0 0 22px;
+
+    color: #0D1B2A;
+
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+
+.temoignage-author {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #F2F4F7;
+}
+
+
+.temoignage-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #F4B400;
+    color: #0D1B2A;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+
+.temoignage-author strong {
+    display: block;
+
+    color: #0D1B2A;
+
+    font-size: 13px;
+}
+
+
+.temoignage-author span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #0D1B2A;
+
+    opacity: 0.55;
+
+    font-size: 11px;
+}
+
+
+/* ===========================
+   CHARGEMENT
+=========================== */
+
+.temoignages-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 250px;
+
+    color: #0D1B2A;
+}
+
+
+.loading-icon {
+    width: 30px;
+    height: 30px;
+
+    color: #1E3A8A;
+
+    animation: temoignages-spin 1s linear infinite;
+}
+
+
+.temoignages-loading p {
+    margin-top: 12px;
+
+    font-size: 14px;
+}
+
+
+@keyframes temoignages-spin {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* ===========================
+   VIDE / ERREUR
+=========================== */
+
+.temoignages-empty,
+.temoignages-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 55px 25px;
+
+    text-align: center;
+
+    background: #FFFFFF;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 25px rgba(13,27,42,0.07);
+}
+
+
+.temoignages-empty > svg,
+.temoignages-error > svg {
+    width: 35px;
+    height: 35px;
+
+    margin-bottom: 15px;
+
+    color: #F4B400;
+}
+
+
+.temoignages-empty h3 {
+    margin: 0 0 8px;
+
+    color: #0D1B2A;
+
+    font-size: 18px;
+}
+
+
+.temoignages-empty p,
+.temoignages-error p {
+    max-width: 500px;
+
+    margin: 0;
+
+    color: #0D1B2A;
+
+    opacity: 0.65;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+.temoignages-empty button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-top: 20px;
+
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #1E3A8A;
+    color: #FFFFFF;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.temoignages-empty button svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* ===========================
+   CTA FINAL
+=========================== */
+
+.temoignages-bottom-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+
+    width: min(94%, 1100px);
+
+    margin: 45px auto 0;
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(244,180,0,0.25);
+
+    border-radius: 23px;
+
+    box-shadow: 0 12px 30px rgba(13,27,42,0.07);
+}
+
+
+.temoignages-bottom-cta > div {
+    max-width: 680px;
+}
+
+
+.temoignages-bottom-cta span {
+    color: #1E3A8A;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+
+.temoignages-bottom-cta h2 {
+    margin: 7px 0 7px;
+
+    color: #0D1B2A;
+
+    font-size: 22px;
+}
+
+
+.temoignages-bottom-cta p {
+    margin: 0;
+
+    color: #0D1B2A;
+
+    opacity: 0.65;
+
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+.temoignages-bottom-cta button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    flex-shrink: 0;
+
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: #1E3A8A;
+    color: #FFFFFF;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.temoignages-bottom-cta button svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* ===========================
+   TABLETTE
+=========================== */
+
+@media (max-width: 900px) {
+
+    .temoignages-hero {
+        width: calc(100% - 32px);
+
+        padding: 45px 35px;
+    }
+
+
+    .temoignages-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .temoignages-content,
+    .temoignages-bottom-cta {
+        width: calc(100% - 32px);
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 700px) {
+
+    .temoignages-page {
+        padding-bottom: 85px;
+    }
+
+
+    .temoignages-hero {
+        flex-direction: column;
+        align-items: flex-start;
+
+        min-height: auto;
+
+        margin-bottom: 30px;
+
+        padding: 38px 23px;
+
+        border-radius: 0 0 23px 23px;
+    }
+
+
+    .temoignages-hero h1 {
+        font-size: 34px;
+    }
+
+
+    .temoignages-hero-content > p {
+        font-size: 14px;
+    }
+
+
+    .temoignages-cta {
+        width: 100%;
+    }
+
+
+    .temoignages-stat {
+        width: 100%;
+        box-sizing: border-box;
+
+        margin-top: 25px;
+    }
+
+
+    .temoignages-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .temoignages-heading h2 {
+        font-size: 23px;
+    }
+
+
+    .temoignages-bottom-cta {
+        flex-direction: column;
+        align-items: stretch;
+
+        width: calc(100% - 28px);
+
+        margin-top: 30px;
+
+        padding: 23px 19px;
+
+        text-align: center;
+    }
+
+
+    .temoignages-bottom-cta button {
+        width: 100%;
+    }
+
+}
+
+
+/* ===========================
+   PETITS MOBILES
+=========================== */
+
+@media (max-width: 380px) {
+
+    .temoignages-hero {
+        padding: 32px 18px;
+    }
+
+
+    .temoignages-hero h1 {
+        font-size: 29px;
+    }
+
+
+    .temoignages-label {
+        font-size: 9px;
+    }
+
+
+    .temoignages-cta {
+        font-size: 13px;
+        padding: 13px 15px;
+    }
+
+
+    .temoignage-card {
+        padding: 20px;
+    }
+
+}
