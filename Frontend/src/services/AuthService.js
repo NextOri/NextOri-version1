@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 
 export async function login(email, mot_de_passe) {
 
@@ -72,3 +72,41 @@ export async function logout() {
 
     return await response.json();
 }
+
+export async function verifyCode(code, verificationToken) {
+    const response = await fetch(
+        `${API_ROUTES_URL}/verify-code`,
+        {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code,
+                verificationToken
+            })
+        }
+    );
+
+    return await response.json();
+}
+
+export async function resendCode(verificationToken) {
+    const response = await fetch(
+        `${API_ROUTES_URL}/resend-code`,
+        {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                verificationToken
+            })
+        }
+    );
+
+    return await response.json();
+}
+

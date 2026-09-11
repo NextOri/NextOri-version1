@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { supabase } from "../_lib/supabase.js";
 import { handleCors } from "../_lib/cors.js";
 import { signToken, setAuthCookie } from "../_lib/auth.js";
+import { envoyerEmailVerification } from "../_lib/email.js";
 
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;
@@ -68,38 +70,39 @@ export default async function handler(req, res) {
 
     const hashedPassword = await bcrypt.hash(mot_de_passe, 10);
 
-    const { data: newUser, error: insertError } = await supabase
-      .from("utilisateur")
-      .insert([
-        {
-          nom: nom.trim(),
-          email: email.trim().toLowerCase(),
-          mot_de_passe: hashedPassword,
-          pays: pays.trim(),
-          niveau_etude: niveau_etude.trim(),
-          id_serie: id_serie ? parseInt(id_serie, 10) : null,
-          date_creation: new Date().toISOString(),
-        },
-      ])
-      .select("id_user, nom, email, pays, niveau_etude, id_serie, date_creation")
-      .single();
+    // Génération du code OTP à 6 chiffres
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeHash = await bcrypt.hash(code, 6);
 
-    if (insertError || !newUser) {
-      console.error("Insert user error:", insertError);
-      return res.status(500).json({
-        success: false,
-        message: "Erreur lors de la création du compte.",
-      });
-    }
+    const JWT_SECRET = process.env.JWT_SECRET || "nextori_super_secret_jwt_key_2026";
+    const verificationToken = jwt.sign(
+      {
+        action: "EMAIL_VERIFICATION",
+        nom: nom.trim(),
+        email: cleanEmail,
+        mot_de_passe: hashedPassword,
+        pays: pays.trim(),
+        niveau_etude: niveau_etude.trim(),
+        id_serie: id_serie ? parseInt(id_serie, 10) : null,
+        codeHash,
+      },
+      JWT_SECRET,
+      { expiresIn: "15m" }
+    );
 
-    const token = signToken({ id_user: newUser.id_user, email: newUser.email });
-    setAuthCookie(res, token);
+    // Envoi de l'email avec le logo officiel NextOri
+    await envoyerEmailVerification({
+      email: cleanEmail,
+      nom: nom.trim(),
+      code,
+    });
 
     return res.status(200).json({
       success: true,
-      message: "Compte créé avec succès.",
-      utilisateur: newUser,
-      token,
+      pendingVerification: true,
+      email: cleanEmail,
+      verificationToken,
+      message: `Un code de vérification a été envoyé à ${cleanEmail}. Veuillez vérifier votre boîte de réception.`,
     });
   } catch (err) {
     console.error("Register error:", err);

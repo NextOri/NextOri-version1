@@ -26,8 +26,12 @@ import temoignagesHandler from "./_routes/temoignages.js";
 import univCatHandler from "./_routes/universite-catalogue.js";
 import univDetailHandler from "./_routes/universite-detail.js";
 import universitesHandler from "./_routes/universites.js";
+import verifyCodeHandler from "./_routes/verify-code.js";
+import resendCodeHandler from "./_routes/resend-code.js";
 
 const routes = {
+  "verify-code": verifyCodeHandler,
+  "resend-code": resendCodeHandler,
   "avis": avisHandler,
   "dashboard": dashboardHandler,
   "filiere": filiereHandler,

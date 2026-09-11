@@ -82,8 +82,15 @@ function Connexion() {
 
         <div className="auth-card">
 
-            <div className="auth-logo notranslate" translate="no">
-                NextOri
+            <div className="auth-brand-header">
+                <img
+                    src="/images/logo-nextori.jpg"
+                    alt="Logo NextOri"
+                    className="auth-logo-img"
+                />
+                <div className="auth-logo notranslate" translate="no">
+                    NextOri
+                </div>
             </div>
 
 
