@@ -6,7 +6,9 @@ import {
     FaLinkedin,
     FaFacebook,
     FaWhatsapp,
-    FaSnapchat
+    FaSnapchat,
+    FaEnvelope,
+    FaPhone
 } from "react-icons/fa";
 
 import {
@@ -67,21 +69,21 @@ function Footer() {
 
                 {/* Identité */}
 
-               <div className="site-footer-brand">
+                <div className="site-footer-brand">
 
-    <img
-        src="/images/logo-nextori.jpg"
-        alt="NextOri"
-        className="footer-logo"
-    />
+                    <img
+                        src="/images/logo-nextori.jpg"
+                        alt="NextOri"
+                        className="footer-logo"
+                    />
 
-    <p>
-        Votre plateforme d'accompagnement
-        à l'orientation académique et
-        professionnelle.
-    </p>
+                    <p>
+                        Votre plateforme d'accompagnement
+                        à l'orientation académique et
+                        professionnelle.
+                    </p>
 
-</div>
+                </div>
 
 
                 {/* Navigation */}
@@ -131,6 +133,39 @@ function Footer() {
                         </Link>
 
                     </div>
+
+                </div>
+
+
+                {/* Contact */}
+
+                <div className="site-footer-contact">
+
+                    <h3>
+                        Contact
+                    </h3>
+
+                    <a
+                        href="mailto:nextori.plateforme@gmail.com"
+                        className="footer-contact-item"
+                    >
+                        <FaEnvelope />
+
+                        <span>
+                            nextori.plateforme@gmail.com
+                        </span>
+                    </a>
+
+                    <a
+                        href="tel:+221778344168"
+                        className="footer-contact-item"
+                    >
+                        <FaPhone />
+
+                        <span>
+                            +221 77 834 41 68
+                        </span>
+                    </a>
 
                 </div>
 

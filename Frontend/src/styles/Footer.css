@@ -20,9 +20,9 @@
     margin: 0 auto;
 
     display: grid;
-    grid-template-columns: 1.2fr 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
 
-    gap: 50px;
+    gap: 40px;
 
     align-items: start;
 }
@@ -119,6 +119,66 @@
     font-weight: bold;
 
     margin: 0 2px;
+}
+
+
+/* =========================
+   CONTACT
+========================= */
+
+.site-footer-contact {
+    width: 100%;
+}
+
+.site-footer-contact h3 {
+    margin: 0 0 15px;
+
+    color: #F4B400;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+.footer-contact-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 13px;
+
+    color: #FFFFFF;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    text-decoration: none;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.footer-contact-item svg {
+    flex: 0 0 auto;
+
+    margin-top: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    color: #F4B400;
+}
+
+
+.footer-contact-item:hover {
+    color: #F4B400;
+
+    transform: translateX(3px);
 }
 
 
