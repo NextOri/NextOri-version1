@@ -46,21 +46,26 @@ export default async function handler(req, res) {
       const idSerie = user?.id_serie || null;
       const recommandations = await getRecommendedMetiers(lastTest.profil_dominant, idSerie);
 
-      return res.status(200).json({
-        success: true,
+      const responseData = {
         id_test: lastTest.id_test,
         profil: {
           principal: lastTest.profil_dominant,
           scores: {
-            R: lastTest.score_r,
-            I: lastTest.score_i,
-            A: lastTest.score_a,
-            S: lastTest.score_s,
-            E: lastTest.score_e,
-            C: lastTest.score_c,
+            R: lastTest.score_r ?? lastTest.score_R ?? 0,
+            I: lastTest.score_i ?? lastTest.score_I ?? 0,
+            A: lastTest.score_a ?? lastTest.score_A ?? 0,
+            S: lastTest.score_s ?? lastTest.score_S ?? 0,
+            E: lastTest.score_e ?? lastTest.score_E ?? 0,
+            C: lastTest.score_c ?? lastTest.score_C ?? 0,
           },
         },
         recommandations,
+      };
+
+      return res.status(200).json({
+        success: true,
+        data: responseData,
+        ...responseData,
       });
     }
 
@@ -197,14 +202,19 @@ export default async function handler(req, res) {
       const idSerie = user?.id_serie || null;
       const recommandations = await getRecommendedMetiers(dominantProfile, idSerie);
 
-      return res.status(200).json({
-        success: true,
+      const responseData = {
         id_test: idTest,
         profil: {
           principal: dominantProfile,
           scores,
         },
         recommandations,
+      };
+
+      return res.status(200).json({
+        success: true,
+        data: responseData,
+        ...responseData,
       });
     }
 

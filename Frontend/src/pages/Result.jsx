@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import Confetti from "react-confetti";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -79,8 +79,14 @@ function Result(){
 
             setChargement(true);
 
+            let idUserQuery = "";
+            try {
+                const u = JSON.parse(localStorage.getItem("utilisateur") || "{}");
+                if (u?.id_user) idUserQuery = `?id_user=${u.id_user}`;
+            } catch (_) {}
+
             fetch(
-                `${API_ROUTES_URL}/resultats`,
+                `${API_ROUTES_URL}/resultats${idUserQuery}`,
                 {
                     credentials: "include"
                 }
@@ -107,7 +113,10 @@ function Result(){
                 if (!data) return;
 
                 if (data.success) {
-                    setResultat(data.data);
+                    const payload = data.data || (data.profil ? data : null);
+                    if (payload) {
+                        setResultat(payload);
+                    }
                 }
 
                 setChargement(false);
