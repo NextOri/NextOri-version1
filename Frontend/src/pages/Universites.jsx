@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -122,9 +122,8 @@ function Universites() {
 
 
                 if (data.success) {
-
                     setUniversites(data.universites);
-
+                    enregistrerAction("UNIVERSITES_CONSULTEES");
                 }
 
                 else {

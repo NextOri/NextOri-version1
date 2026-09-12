@@ -74,44 +74,83 @@ export default async function handler(req, res) {
 
     const actions = (actionsData || []).map((a) => a.action);
 
-    // 3. Badges utilisateur
+    // 3. Récupérer tous les badges définis dans le système
+    const { data: allBadges } = await supabase
+      .from("badge")
+      .select("id_badge, code, nom, description, icone, points");
+
+    const badgesMap = new Map((allBadges || []).map((b) => [b.code, b]));
+
+    // 4. Badges utilisateur existants
     let { data: badgesData } = await supabase
       .from("badge_utilisateur")
       .select("id_badge, date_obtention, badge(id_badge, code, nom, description, icone, points)")
       .eq("id_user", idUser);
 
-    // Vérifier et attribuer le badge "PREMIER_PAS" si absent
-    const hasPremierPas = (badgesData || []).some(
-      (b) => b.badge?.code === "PREMIER_PAS" || b.id_badge === 2
-    );
+    if (!badgesData) badgesData = [];
 
-    if (!hasPremierPas) {
-      try {
-        const { data: badgePremierPas } = await supabase
-          .from("badge")
-          .select("id_badge, code, nom, description, icone, points")
-          .eq("code", "PREMIER_PAS")
-          .maybeSingle();
+    // Connexions pour séries
+    const { count: connCount } = await supabase
+      .from("connexion_utilisateur")
+      .select("id_connexion", { count: "exact", head: true })
+      .eq("id_user", idUser);
 
-        if (badgePremierPas) {
+    const serieJours = connCount || 1;
+
+    // Détection des actions effectuées (supporte égalité exacte et préfixe)
+    const hasProfil = true;
+    const hasTest = (testCount || 0) > 0;
+    const hasProfilConsulte = actions.includes("PROFIL_CONSULTE");
+    const hasMetiersConsultes =
+      actions.includes("METIERS_CONSULTES") ||
+      actions.some((a) => a && a.startsWith("METIER_CONSULTE"));
+    const hasFormationConsultee =
+      actions.includes("FORMATION_CONSULTEE") ||
+      actions.some((a) => a && a.startsWith("FORMATION_CONSULTEE"));
+    const hasUniversitesConsultees =
+      actions.includes("UNIVERSITES_CONSULTEES") ||
+      actions.some((a) => a && a.startsWith("UNIVERSITE_CONSULTEE"));
+    const hasAvisDonne = actions.includes("AVIS_DONNE");
+
+    // Liste des codes de badges éligibles pour l'utilisateur
+    const eligibleBadges = ["PREMIER_PAS"];
+    if (hasTest) eligibleBadges.push("EXPLORATEUR");
+    if (hasProfilConsulte) eligibleBadges.push("CONNAISSANCE_SOI");
+    if (hasMetiersConsultes) eligibleBadges.push("DECOUVREUR_METIERS");
+    if (hasFormationConsultee) eligibleBadges.push("CHOIX_CARRIERE");
+    if (hasUniversitesConsultees) eligibleBadges.push("PRET_UNIVERSITE");
+    if (hasAvisDonne) eligibleBadges.push("CONTRIBUTEUR");
+    if (serieJours >= 5) eligibleBadges.push("SERIE_5_JOURS");
+    if (serieJours >= 7) eligibleBadges.push("SERIE_7_JOURS");
+    if (serieJours >= 15) eligibleBadges.push("SERIE_15_JOURS");
+    if (serieJours >= 30) eligibleBadges.push("SERIE_30_JOURS");
+
+    // Attribution automatique des badges éligibles manquants
+    for (const code of eligibleBadges) {
+      const alreadyHas = badgesData.some(
+        (b) => b.badge?.code === code || (badgesMap.get(code) && b.id_badge === badgesMap.get(code).id_badge)
+      );
+
+      if (!alreadyHas && badgesMap.has(code)) {
+        const badgeDef = badgesMap.get(code);
+        try {
           await supabase.from("badge_utilisateur").upsert(
             {
               id_user: idUser,
-              id_badge: badgePremierPas.id_badge,
+              id_badge: badgeDef.id_badge,
               date_obtention: today,
             },
             { onConflict: "id_user,id_badge" }
           );
 
-          if (!badgesData) badgesData = [];
           badgesData.push({
-            id_badge: badgePremierPas.id_badge,
+            id_badge: badgeDef.id_badge,
             date_obtention: today,
-            badge: badgePremierPas,
+            badge: badgeDef,
           });
+        } catch (badgeErr) {
+          console.warn(`Erreur attribution badge ${code}:`, badgeErr);
         }
-      } catch (badgeErr) {
-        console.warn("Erreur auto-attribution badge PREMIER_PAS:", badgeErr);
       }
     }
 
@@ -120,36 +159,31 @@ export default async function handler(req, res) {
       date_obtention: b.date_obtention,
     }));
 
+    // 5. Calcul des points
+    let points = 20; // Profil créé
+    if (hasTest) points += 50;
+    if (hasProfilConsulte) points += 20;
+    if (hasMetiersConsultes) points += 20;
+    if (hasFormationConsultee) points += 10;
+    if (hasUniversitesConsultees) points += 10;
+    if (hasAvisDonne) points += 20;
 
-    // 4. Calcul des points
-    let points = 20; // profil créé
-    if ((testCount || 0) > 0) points += 50;
-    if (actions.includes("PROFIL_CONSULTE")) points += 20;
-    if (actions.includes("METIERS_CONSULTES")) points += 20;
-    if (actions.includes("FORMATION_CONSULTEE")) points += 10;
-    if (actions.includes("UNIVERSITES_CONSULTEES")) points += 10;
-    if (actions.includes("AVIS_DONNE")) points += 20;
-
-    // Connexions
-    const { count: connCount } = await supabase
-      .from("connexion_utilisateur")
-      .select("id_connexion", { count: "exact", head: true })
-      .eq("id_user", idUser);
-
+    // Points des connexions journalières (+5 points par jour)
     points += (connCount || 0) * 5;
 
+    // Points des badges obtenus
     for (const b of badges) {
       points += b.points || 0;
     }
 
     const parcours = {
-      profil: true,
-      test: (testCount || 0) > 0,
-      profilConsulte: actions.includes("PROFIL_CONSULTE"),
-      metiersConsultes: actions.includes("METIERS_CONSULTES"),
-      formationConsultee: actions.includes("FORMATION_CONSULTEE"),
-      universitesConsultees: actions.includes("UNIVERSITES_CONSULTEES"),
-      avisDonne: actions.includes("AVIS_DONNE"),
+      profil: hasProfil,
+      test: hasTest,
+      profilConsulte: hasProfilConsulte,
+      metiersConsultes: hasMetiersConsultes,
+      formationConsultee: hasFormationConsultee,
+      universitesConsultees: hasUniversitesConsultees,
+      avisDonne: hasAvisDonne,
     };
 
     const niveau = calculerNiveau(points);
@@ -161,7 +195,7 @@ export default async function handler(req, res) {
       niveau,
       statistiques: {
         points,
-        serie: connCount || 1,
+        serie: serieJours,
         badges: badges.length,
       },
       parcours,

@@ -22,7 +22,7 @@ function Test() {
     const [choix, setChoix] = useState(null);
     const [loading, setLoading] = useState(true);
     const [afficherInformation, setAfficherInformation] = useState(true);
-
+    const [analyseEnCours, setAnalyseEnCours] = useState(false);
     const navigate = useNavigate();
 
 
@@ -92,6 +92,86 @@ function Test() {
                     <p>
                         Préparation de ton test...
                     </p>
+
+                </div>
+
+            </div>
+        );
+
+    }
+
+    /* =========================
+   ANALYSE DU RÉSULTAT
+========================= */
+
+    if (analyseEnCours) {
+
+        return (
+            <div className="nextori-analysis-page">
+
+                <div className="nextori-analysis-card">
+
+                    <div className="nextori-analysis-icon">
+                        <div className="nextori-analysis-spinner"></div>
+                    </div>
+
+                    <span className="nextori-analysis-eyebrow">
+                        NEXTORI · ANALYSE
+                    </span>
+
+                    <h1>
+                        Analyse de tes réponses...
+                    </h1>
+
+                    <p>
+                        Nous étudions tes réponses pour identifier
+                        les tendances de ton profil et préparer
+                        ta restitution personnalisée.
+                    </p>
+
+                    <div className="nextori-analysis-progress">
+
+                        <div className="nextori-analysis-progress-track">
+                            <div className="nextori-analysis-progress-fill"></div>
+                        </div>
+
+                    </div>
+
+                    <div className="nextori-analysis-steps">
+
+                        <div className="nextori-analysis-step active">
+                            <span>✓</span>
+                            <p>
+                                Réponses enregistrées
+                            </p>
+                        </div>
+
+                        <div className="nextori-analysis-step active">
+                            <span className="nextori-analysis-dot"></span>
+                            <p>
+                                Analyse de ton profil RIASEC
+                            </p>
+                        </div>
+
+                        <div className="nextori-analysis-step">
+                            <span className="nextori-analysis-dot"></span>
+                            <p>
+                                Identification des métiers
+                            </p>
+                        </div>
+
+                        <div className="nextori-analysis-step">
+                            <span className="nextori-analysis-dot"></span>
+                            <p>
+                                Préparation de tes résultats
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <small>
+                        Cela peut prendre quelques instants.
+                    </small>
 
                 </div>
 
@@ -190,6 +270,8 @@ function Test() {
 
         } else {
 
+            setAnalyseEnCours(true);
+
             envoyerReponses(reponses)
 
                 .then(async (resultat) => {
@@ -209,6 +291,8 @@ function Test() {
                 .catch((error) => {
 
                     console.error(error);
+
+                    setAnalyseEnCours(false);
 
                     alert("Erreur lors du calcul.");
 
@@ -474,11 +558,10 @@ function Test() {
                             <button
                                 key={proposition.id_proposition}
                                 type="button"
-                                className={`nextori-test-answer ${
-                                    estActive
+                                className={`nextori-test-answer ${estActive
                                         ? "nextori-test-answer-active"
                                         : ""
-                                }`}
+                                    }`}
                                 onClick={() =>
                                     choisirReponse(
                                         proposition.id_proposition

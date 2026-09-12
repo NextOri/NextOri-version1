@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -54,8 +54,14 @@ function Profil() {
 
         try {
 
+            let idUserQuery = "";
+            try {
+                const u = JSON.parse(localStorage.getItem("utilisateur") || "{}");
+                if (u?.id_user) idUserQuery = `?id_user=${u.id_user}`;
+            } catch (_) {}
+
             const response = await fetch(
-                `${API_ROUTES_URL}/historique-tests`,
+                `${API_ROUTES_URL}/historique-tests${idUserQuery}`,
                 {
                     credentials: "include"
                 }

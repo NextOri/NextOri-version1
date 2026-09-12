@@ -54,12 +54,12 @@ export default async function handler(req, res) {
         profil: {
           principal: test.profil_dominant,
           scores: {
-            R: test.score_r,
-            I: test.score_i,
-            A: test.score_a,
-            S: test.score_s,
-            E: test.score_e,
-            C: test.score_c,
+            R: test.score_r ?? test.score_R ?? 0,
+            I: test.score_i ?? test.score_I ?? 0,
+            A: test.score_a ?? test.score_A ?? 0,
+            S: test.score_s ?? test.score_S ?? 0,
+            E: test.score_e ?? test.score_E ?? 0,
+            C: test.score_c ?? test.score_C ?? 0,
           },
         },
         recommandations,

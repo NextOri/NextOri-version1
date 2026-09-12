@@ -92,7 +92,7 @@
 }
 
 
-.nextori-test-brand > div:last-child {
+.nextori-test-brand>div:last-child {
     display: flex;
     flex-direction: column;
 
@@ -359,7 +359,7 @@
 }
 
 
-.nextori-test-progress-top > div {
+.nextori-test-progress-top>div {
     display: flex;
     align-items: baseline;
 
@@ -1058,6 +1058,324 @@
     .nextori-test-previous,
     .nextori-test-next {
         width: 100%;
+    }
+
+}
+
+/* =========================================================
+   ANALYSE DU RÉSULTAT
+========================================================= */
+
+.nextori-analysis-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top,
+            rgba(30, 58, 138, 0.12),
+            transparent 45%),
+        #F2F4F7;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 32px 20px;
+}
+
+
+.nextori-analysis-card {
+    width: min(620px, 100%);
+
+    background: #FFFFFF;
+
+    border: 1px solid rgba(13, 27, 42, 0.08);
+
+    border-radius: 24px;
+
+    padding: 48px 42px;
+
+    text-align: center;
+
+    box-shadow:
+        0 24px 70px rgba(13, 27, 42, 0.10);
+
+    animation: nextoriAnalysisAppear 0.45s ease;
+}
+
+
+@keyframes nextoriAnalysisAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+.nextori-analysis-icon {
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 24px;
+
+    border-radius: 20px;
+
+    background: #0D1B2A;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.nextori-analysis-spinner {
+    width: 30px;
+    height: 30px;
+
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #F4B400;
+
+    border-radius: 50%;
+
+    animation: nextoriAnalysisSpin 0.9s linear infinite;
+}
+
+
+@keyframes nextoriAnalysisSpin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.nextori-analysis-eyebrow {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #1E3A8A;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+}
+
+
+.nextori-analysis-card h1 {
+    margin: 0 0 14px;
+
+    color: #0D1B2A;
+
+    font-size: clamp(26px, 4vw, 34px);
+
+    line-height: 1.15;
+}
+
+
+.nextori-analysis-card>p {
+    max-width: 500px;
+
+    margin: 0 auto;
+
+    color: #667085;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   PROGRESSION
+========================================================= */
+
+.nextori-analysis-progress {
+    margin: 32px 0 28px;
+}
+
+
+.nextori-analysis-progress-track {
+    width: 100%;
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #F2F4F7;
+}
+
+
+.nextori-analysis-progress-fill {
+    width: 45%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #F4B400;
+
+    animation:
+        nextoriAnalysisProgress 2.8s ease-in-out infinite;
+}
+
+
+@keyframes nextoriAnalysisProgress {
+
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(80%);
+    }
+
+    100% {
+        transform: translateX(220%);
+    }
+
+}
+
+
+/* =========================================================
+   ÉTAPES
+========================================================= */
+
+.nextori-analysis-steps {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+
+    text-align: left;
+
+    margin-top: 26px;
+}
+
+
+.nextori-analysis-step {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: #98A2B3;
+
+    font-size: 14px;
+}
+
+
+.nextori-analysis-step span:first-child {
+    width: 26px;
+    height: 26px;
+
+    flex: 0 0 26px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #F2F4F7;
+
+    color: #98A2B3;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+.nextori-analysis-step.active {
+    color: #0D1B2A;
+}
+
+
+.nextori-analysis-step.active span:first-child {
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+
+.nextori-analysis-step p {
+    margin: 0;
+}
+
+
+.nextori-analysis-dot {
+    width: 8px !important;
+    height: 8px !important;
+
+    margin: 0 9px;
+
+    border-radius: 50%;
+
+    background: #D0D5DD !important;
+}
+
+
+.nextori-analysis-step.active .nextori-analysis-dot {
+    background: #F4B400 !important;
+
+    animation: nextoriAnalysisPulse 1.2s ease-in-out infinite;
+}
+
+
+@keyframes nextoriAnalysisPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+}
+
+
+.nextori-analysis-card small {
+    display: block;
+
+    margin-top: 28px;
+
+    color: #98A2B3;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .nextori-analysis-page {
+        padding: 20px 14px;
+    }
+
+    .nextori-analysis-card {
+        padding: 38px 24px;
+        border-radius: 20px;
+    }
+
+    .nextori-analysis-card h1 {
+        font-size: 27px;
+    }
+
+    .nextori-analysis-card>p {
+        font-size: 14px;
     }
 
 }

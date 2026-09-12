@@ -74,27 +74,7 @@ export default async function handler(req, res) {
         });
       }
 
-      // 1. Créer le test
-      const { data: newTest, error: createTestErr } = await supabase
-        .from("test_riasec")
-        .insert([
-          {
-            id_user: idUser,
-            id_questionnaire: id_questionnaire ? parseInt(id_questionnaire, 10) : 1,
-            date_test: new Date().toISOString(),
-          },
-        ])
-        .select("id_test")
-        .single();
-
-      if (createTestErr || !newTest) {
-        console.error("Test creation error:", createTestErr);
-        throw new Error("Impossible de créer le test.");
-      }
-
-      const idTest = newTest.id_test;
-
-      // 2. Récupérer les propositions sélectionnées pour connaître leur type_riasec
+      // 1. Récupérer les propositions sélectionnées pour connaître leur type_riasec
       const propIds = reponses.map((r) => parseInt(r.id_proposition, 10)).filter(Boolean);
       const { data: propositions, error: propErr } = await supabase
         .from("proposition")
@@ -106,30 +86,108 @@ export default async function handler(req, res) {
       const typesList = (propositions || []).map((p) => p.type_riasec);
       const { scores, dominantProfile } = calculateRiasecScores(typesList);
 
-      // 3. Enregistrer les réponses
-      const reponsesRows = reponses.map((r) => ({
-        id_test: idTest,
-        id_question: parseInt(r.id_question, 10),
-        id_proposition: parseInt(r.id_proposition, 10),
-      }));
+      // 2. Créer le test avec ses scores
+      let testInsert = {
+        id_user: idUser,
+        id_questionnaire: id_questionnaire ? parseInt(id_questionnaire, 10) : 1,
+        date_test: new Date().toISOString(),
+        score_r: scores.R,
+        score_i: scores.I,
+        score_a: scores.A,
+        score_s: scores.S,
+        score_e: scores.E,
+        score_c: scores.C,
+        profil_dominant: dominantProfile,
+      };
 
-      await supabase.from("reponse").insert(reponsesRows);
-
-      // 4. Mettre à jour le test avec les scores
-      await supabase
+      let { data: newTest, error: createTestErr } = await supabase
         .from("test_riasec")
-        .update({
-          score_r: scores.R,
-          score_i: scores.I,
-          score_a: scores.A,
-          score_s: scores.S,
-          score_e: scores.E,
-          score_c: scores.C,
-          profil_dominant: dominantProfile,
-        })
-        .eq("id_test", idTest);
+        .insert([testInsert])
+        .select("id_test")
+        .single();
 
-      // 5. Calculer recommandations
+      // Tentative avec colonnes majuscules si nécessaire
+      if (createTestErr) {
+        console.warn("Retrying test insert with uppercase score column names:", createTestErr.message);
+        testInsert = {
+          id_user: idUser,
+          id_questionnaire: id_questionnaire ? parseInt(id_questionnaire, 10) : 1,
+          date_test: new Date().toISOString(),
+          score_R: scores.R,
+          score_I: scores.I,
+          score_A: scores.A,
+          score_S: scores.S,
+          score_E: scores.E,
+          score_C: scores.C,
+          profil_dominant: dominantProfile,
+        };
+        const retry = await supabase
+          .from("test_riasec")
+          .insert([testInsert])
+          .select("id_test")
+          .single();
+        newTest = retry.data;
+        createTestErr = retry.error;
+      }
+
+      if (createTestErr || !newTest) {
+        console.error("Test creation error:", createTestErr);
+        throw new Error("Impossible de créer le test.");
+      }
+
+      const idTest = newTest.id_test;
+
+      // 3. Enregistrer les réponses
+      try {
+        const reponsesRows = reponses
+          .map((r) => ({
+            id_test: idTest,
+            id_proposition: parseInt(r.id_proposition, 10),
+          }))
+          .filter((r) => !isNaN(r.id_proposition));
+
+        if (reponsesRows.length > 0) {
+          await supabase.from("reponse").insert(reponsesRows);
+        }
+      } catch (repErr) {
+        console.warn("Erreur enregistrement réponses (non-bloquant):", repErr);
+      }
+
+      // 4. Attribuer automatiquement le badge EXPLORATEUR
+      try {
+        const { data: badgeExplorateur } = await supabase
+          .from("badge")
+          .select("id_badge")
+          .eq("code", "EXPLORATEUR")
+          .maybeSingle();
+
+        if (badgeExplorateur) {
+          const today = new Date().toISOString().split("T")[0];
+          await supabase.from("badge_utilisateur").upsert(
+            {
+              id_user: idUser,
+              id_badge: badgeExplorateur.id_badge,
+              date_obtention: today,
+            },
+            { onConflict: "id_user,id_badge" }
+          );
+        }
+      } catch (bErr) {
+        console.warn("Erreur attribution badge EXPLORATEUR:", bErr);
+      }
+
+      // 5. Enregistrer les actions dans l'historique
+      try {
+        const nowIso = new Date().toISOString();
+        await supabase.from("historique").insert([
+          { id_user: idUser, action: "TEST_EFFECTUE", date_action: nowIso },
+          { id_user: idUser, action: "METIERS_CONSULTES", date_action: nowIso },
+        ]);
+      } catch (hErr) {
+        console.warn("Erreur enregistrement historique test:", hErr);
+      }
+
+      // 6. Calculer recommandations
       const { data: user } = await supabase
         .from("utilisateur")
         .select("id_serie")

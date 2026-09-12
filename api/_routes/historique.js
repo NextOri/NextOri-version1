@@ -14,28 +14,51 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action } = req.body || {};
+    if (req.method === "GET") {
+      const { data: actions, error } = await supabase
+        .from("historique")
+        .select("*")
+        .eq("id_user", authUser.id_user)
+        .order("date_action", { ascending: false });
 
-    if (!action) {
-      return res.status(400).json({
-        success: false,
-        message: "Action requise.",
+      if (error) throw error;
+
+      return res.status(200).json({
+        success: true,
+        data: actions || [],
+        message: "Historique récupéré avec succès.",
       });
     }
 
-    const { error } = await supabase.from("historique").insert([
-      {
-        id_user: authUser.id_user,
-        action: String(action),
-        date_action: new Date().toISOString(),
-      },
-    ]);
+    if (req.method === "POST") {
+      const { action } = req.body || {};
 
-    if (error) throw error;
+      if (!action) {
+        return res.status(400).json({
+          success: false,
+          message: "Action requise.",
+        });
+      }
 
-    return res.status(200).json({
-      success: true,
-      message: "Action enregistrée",
+      const { error } = await supabase.from("historique").insert([
+        {
+          id_user: authUser.id_user,
+          action: String(action),
+          date_action: new Date().toISOString(),
+        },
+      ]);
+
+      if (error) throw error;
+
+      return res.status(200).json({
+        success: true,
+        message: "Action enregistrée",
+      });
+    }
+
+    return res.status(405).json({
+      success: false,
+      message: "Méthode non autorisée.",
     });
   } catch (err) {
     console.error("Historique error:", err);

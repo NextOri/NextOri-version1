@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -31,9 +31,14 @@ function HistoriqueTests() {
     ================================================== */
 
     useEffect(() => {
+        let idUserQuery = "";
+        try {
+            const u = JSON.parse(localStorage.getItem("utilisateur") || "{}");
+            if (u?.id_user) idUserQuery = `?id_user=${u.id_user}`;
+        } catch (_) {}
 
         fetch(
-            `${API_ROUTES_URL}/historique-tests`,
+            `${API_ROUTES_URL}/historique-tests${idUserQuery}`,
             {
                 credentials: "include"
             }
@@ -435,68 +440,45 @@ function HistoriqueTests() {
                                             <div className="historique-test-scores">
 
                                                 <div className="historique-score-item">
-
                                                     <span>R</span>
-
                                                     <strong>
-                                                        {test.score_R}
+                                                        {test.score_R ?? test.score_r ?? 0}
                                                     </strong>
-
                                                 </div>
 
-
                                                 <div className="historique-score-item">
-
                                                     <span>I</span>
-
                                                     <strong>
-                                                        {test.score_I}
+                                                        {test.score_I ?? test.score_i ?? 0}
                                                     </strong>
-
                                                 </div>
 
-
                                                 <div className="historique-score-item">
-
                                                     <span>A</span>
-
                                                     <strong>
-                                                        {test.score_A}
+                                                        {test.score_A ?? test.score_a ?? 0}
                                                     </strong>
-
                                                 </div>
 
-
                                                 <div className="historique-score-item">
-
                                                     <span>S</span>
-
                                                     <strong>
-                                                        {test.score_S}
+                                                        {test.score_S ?? test.score_s ?? 0}
                                                     </strong>
-
                                                 </div>
 
-
                                                 <div className="historique-score-item">
-
                                                     <span>E</span>
-
                                                     <strong>
-                                                        {test.score_E}
+                                                        {test.score_E ?? test.score_e ?? 0}
                                                     </strong>
-
                                                 </div>
 
-
                                                 <div className="historique-score-item">
-
                                                     <span>C</span>
-
                                                     <strong>
-                                                        {test.score_C}
+                                                        {test.score_C ?? test.score_c ?? 0}
                                                     </strong>
-
                                                 </div>
 
                                             </div>
