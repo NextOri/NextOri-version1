@@ -1,9 +1,7 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { supabase } from "../_lib/supabase.js";
 import { handleCors } from "../_lib/cors.js";
 import { signToken, setAuthCookie } from "../_lib/auth.js";
-import { envoyerEmailVerification } from "../_lib/email.js";
 
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;
@@ -58,7 +56,7 @@ export default async function handler(req, res) {
     const { data: existing } = await supabase
       .from("utilisateur")
       .select("id_user")
-      .ilike("email", email.trim())
+      .ilike("email", cleanEmail)
       .maybeSingle();
 
     if (existing) {
@@ -70,43 +68,64 @@ export default async function handler(req, res) {
 
     const hashedPassword = await bcrypt.hash(mot_de_passe, 10);
 
-    // Génération du code OTP à 6 chiffres
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    const codeHash = await bcrypt.hash(code, 6);
+    // Création directe de l'utilisateur
+    const { data: newUser, error: insertError } = await supabase
+      .from("utilisateur")
+      .insert([
+        {
+          nom: nom.trim(),
+          email: cleanEmail,
+          mot_de_passe: hashedPassword,
+          pays: pays.trim(),
+          niveau_etude: niveau_etude.trim(),
+          id_serie: id_serie ? parseInt(id_serie, 10) : null,
+          date_creation: new Date().toISOString(),
+        },
+      ])
+      .select("id_user, nom, email, pays, niveau_etude, id_serie, date_creation")
+      .single();
 
-    const JWT_SECRET = process.env.JWT_SECRET || "nextori_super_secret_jwt_key_2026";
-    const verificationToken = jwt.sign(
-      {
-        action: "EMAIL_VERIFICATION",
-        nom: nom.trim(),
-        email: cleanEmail,
-        mot_de_passe: hashedPassword,
-        pays: pays.trim(),
-        niveau_etude: niveau_etude.trim(),
-        id_serie: id_serie ? parseInt(id_serie, 10) : null,
-        codeHash,
-      },
-      JWT_SECRET,
-      { expiresIn: "15m" }
-    );
+    if (insertError || !newUser) {
+      console.error("Insert user error:", insertError);
+      return res.status(500).json({
+        success: false,
+        message: "Erreur lors de la création du compte.",
+      });
+    }
 
-    // Envoi de l'email avec le logo officiel NextOri
-    const resultatEmail = await envoyerEmailVerification({
-      email: cleanEmail,
-      nom: nom.trim(),
-      code,
-    });
+    // Attribution automatique du badge "Premier Pas" (PREMIER_PAS)
+    try {
+      const { data: badge } = await supabase
+        .from("badge")
+        .select("id_badge")
+        .eq("code", "PREMIER_PAS")
+        .maybeSingle();
 
-    const msg = resultatEmail.simulation
-      ? `[Mode test - Aucun serveur email configuré dans Vercel]. Votre code de test est : ${code}`
-      : `Un code de vérification a été envoyé à ${cleanEmail}. Veuillez vérifier votre boîte de réception.`;
+      if (badge) {
+        await supabase.from("badge_utilisateur").upsert(
+          [
+            {
+              id_user: newUser.id_user,
+              id_badge: badge.id_badge,
+              date_obtention: new Date().toISOString().split("T")[0],
+            },
+          ],
+          { onConflict: "id_user,id_badge" }
+        );
+      }
+    } catch (badgeErr) {
+      console.warn("Badge attribution warning:", badgeErr);
+    }
+
+    // Connexion automatique avec session JWT et cookie
+    const token = signToken({ id_user: newUser.id_user, email: newUser.email });
+    setAuthCookie(res, token);
 
     return res.status(200).json({
       success: true,
-      pendingVerification: true,
-      email: cleanEmail,
-      verificationToken,
-      message: msg,
+      message: "Compte créé avec succès ! Bienvenue sur NextOri.",
+      utilisateur: newUser,
+      token,
     });
   } catch (err) {
     console.error("Register error:", err);
@@ -116,3 +135,4 @@ export default async function handler(req, res) {
     });
   }
 }
+

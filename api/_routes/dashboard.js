@@ -75,15 +75,51 @@ export default async function handler(req, res) {
     const actions = (actionsData || []).map((a) => a.action);
 
     // 3. Badges utilisateur
-    const { data: badgesData } = await supabase
+    let { data: badgesData } = await supabase
       .from("badge_utilisateur")
-      .select("id_badge, date_obtention, badge(id_badge, nom, description, icone, points)")
+      .select("id_badge, date_obtention, badge(id_badge, code, nom, description, icone, points)")
       .eq("id_user", idUser);
+
+    // Vérifier et attribuer le badge "PREMIER_PAS" si absent
+    const hasPremierPas = (badgesData || []).some(
+      (b) => b.badge?.code === "PREMIER_PAS" || b.id_badge === 2
+    );
+
+    if (!hasPremierPas) {
+      try {
+        const { data: badgePremierPas } = await supabase
+          .from("badge")
+          .select("id_badge, code, nom, description, icone, points")
+          .eq("code", "PREMIER_PAS")
+          .maybeSingle();
+
+        if (badgePremierPas) {
+          await supabase.from("badge_utilisateur").upsert(
+            {
+              id_user: idUser,
+              id_badge: badgePremierPas.id_badge,
+              date_obtention: today,
+            },
+            { onConflict: "id_user,id_badge" }
+          );
+
+          if (!badgesData) badgesData = [];
+          badgesData.push({
+            id_badge: badgePremierPas.id_badge,
+            date_obtention: today,
+            badge: badgePremierPas,
+          });
+        }
+      } catch (badgeErr) {
+        console.warn("Erreur auto-attribution badge PREMIER_PAS:", badgeErr);
+      }
+    }
 
     const badges = (badgesData || []).map((b) => ({
       ...b.badge,
       date_obtention: b.date_obtention,
     }));
+
 
     // 4. Calcul des points
     let points = 20; // profil créé

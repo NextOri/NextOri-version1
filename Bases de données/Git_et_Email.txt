@@ -3,6 +3,10 @@ email: nextori.platform@gmail.com
 mot de passe: NSetXEtp02...
 username: NextOri
 
+Supabase:
+email: nextori.platform@gmail.com
+mot de passe: NSetXEtp02...
+
 nextstep.platform2026@gmail.con
 mot de passe: NSetXEtp02...
 username: NextOri
