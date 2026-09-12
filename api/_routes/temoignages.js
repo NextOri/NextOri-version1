@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       .from("avis")
       .select("id_avis, note, commentaire, date_creation, utilisateur(nom)")
       .eq("afficher", true)
+      .eq("approuve", true)
       .order("date_creation", { ascending: false });
 
     if (error) throw error;

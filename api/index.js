@@ -1,5 +1,6 @@
 import { handleCors } from "./_lib/cors.js";
 
+import adminAvisHandler from "./_routes/admin-avis.js";
 import avisHandler from "./_routes/avis.js";
 import dashboardHandler from "./_routes/dashboard.js";
 import filiereHandler from "./_routes/filiere.js";
@@ -32,6 +33,7 @@ import resendCodeHandler from "./_routes/resend-code.js";
 const routes = {
   "verify-code": verifyCodeHandler,
   "resend-code": resendCodeHandler,
+  "admin-avis": adminAvisHandler,
   "avis": avisHandler,
   "dashboard": dashboardHandler,
   "filiere": filiereHandler,
