@@ -1293,19 +1293,37 @@
 }
 
 
-.nextori-analysis-step.active {
+.nextori-analysis-step.active,
+.nextori-analysis-step.completed {
     color: #0D1B2A;
 }
 
 
-.nextori-analysis-step.active span:first-child {
+.nextori-analysis-step.active span:first-child,
+.nextori-analysis-step.completed span:first-child {
     background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+
+.nextori-analysis-step.completed span:first-child {
+    background: #059669;
     color: #FFFFFF;
 }
 
 
 .nextori-analysis-step p {
     margin: 0;
+    transition: color 0.3s ease;
+}
+
+
+.nextori-analysis-dot-pending {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #D0D5DD;
+    display: inline-block;
 }
 
 

@@ -23,6 +23,7 @@ function Test() {
     const [loading, setLoading] = useState(true);
     const [afficherInformation, setAfficherInformation] = useState(true);
     const [analyseEnCours, setAnalyseEnCours] = useState(false);
+    const [etapeAnalyse, setEtapeAnalyse] = useState(1);
     const navigate = useNavigate();
 
 
@@ -106,6 +107,12 @@ function Test() {
 
     if (analyseEnCours) {
 
+        const pourcentageProgress =
+            etapeAnalyse === 1 ? 25 :
+            etapeAnalyse === 2 ? 50 :
+            etapeAnalyse === 3 ? 75 :
+            etapeAnalyse === 4 ? 90 : 100;
+
         return (
             <div className="nextori-analysis-page">
 
@@ -132,36 +139,68 @@ function Test() {
                     <div className="nextori-analysis-progress">
 
                         <div className="nextori-analysis-progress-track">
-                            <div className="nextori-analysis-progress-fill"></div>
+                            <div
+                                className="nextori-analysis-progress-fill"
+                                style={{
+                                    width: `${pourcentageProgress}%`,
+                                    transition: "width 0.45s ease"
+                                }}
+                            ></div>
                         </div>
 
                     </div>
 
                     <div className="nextori-analysis-steps">
 
-                        <div className="nextori-analysis-step active">
-                            <span>✓</span>
+                        {/* Étape 1 : Réponses enregistrées */}
+                        <div className={`nextori-analysis-step ${etapeAnalyse > 1 ? "completed" : "active"}`}>
+                            {etapeAnalyse > 1 ? (
+                                <span>✓</span>
+                            ) : (
+                                <span><span className="nextori-analysis-dot"></span></span>
+                            )}
                             <p>
                                 Réponses enregistrées
                             </p>
                         </div>
 
-                        <div className="nextori-analysis-step active">
-                            <span className="nextori-analysis-dot"></span>
+                        {/* Étape 2 : Analyse du profil RIASEC */}
+                        <div className={`nextori-analysis-step ${etapeAnalyse > 2 ? "completed" : etapeAnalyse === 2 ? "active" : ""}`}>
+                            {etapeAnalyse > 2 ? (
+                                <span>✓</span>
+                            ) : etapeAnalyse === 2 ? (
+                                <span><span className="nextori-analysis-dot"></span></span>
+                            ) : (
+                                <span><span className="nextori-analysis-dot-pending"></span></span>
+                            )}
                             <p>
                                 Analyse de ton profil RIASEC
                             </p>
                         </div>
 
-                        <div className="nextori-analysis-step">
-                            <span className="nextori-analysis-dot"></span>
+                        {/* Étape 3 : Identification des métiers */}
+                        <div className={`nextori-analysis-step ${etapeAnalyse > 3 ? "completed" : etapeAnalyse === 3 ? "active" : ""}`}>
+                            {etapeAnalyse > 3 ? (
+                                <span>✓</span>
+                            ) : etapeAnalyse === 3 ? (
+                                <span><span className="nextori-analysis-dot"></span></span>
+                            ) : (
+                                <span><span className="nextori-analysis-dot-pending"></span></span>
+                            )}
                             <p>
                                 Identification des métiers
                             </p>
                         </div>
 
-                        <div className="nextori-analysis-step">
-                            <span className="nextori-analysis-dot"></span>
+                        {/* Étape 4 : Préparation des résultats */}
+                        <div className={`nextori-analysis-step ${etapeAnalyse >= 5 ? "completed" : etapeAnalyse === 4 ? "active" : ""}`}>
+                            {etapeAnalyse >= 5 ? (
+                                <span>✓</span>
+                            ) : etapeAnalyse === 4 ? (
+                                <span><span className="nextori-analysis-dot"></span></span>
+                            ) : (
+                                <span><span className="nextori-analysis-dot-pending"></span></span>
+                            )}
                             <p>
                                 Préparation de tes résultats
                             </p>
@@ -271,10 +310,35 @@ function Test() {
         } else {
 
             setAnalyseEnCours(true);
+            setEtapeAnalyse(1);
 
-            envoyerReponses(reponses)
+            const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-                .then(async (resultat) => {
+            const executerAnalyse = async () => {
+
+                try {
+
+                    // Lancement immédiat de l'appel backend
+                    const apiPromise = envoyerReponses(reponses);
+
+                    // Étape 1 validée -> Étape 2 en cours (Analyse profil RIASEC)
+                    await sleep(400);
+                    setEtapeAnalyse(2);
+
+                    // Étape 2 validée -> Étape 3 en cours (Identification métiers)
+                    await sleep(700);
+                    setEtapeAnalyse(3);
+
+                    // On attend la réponse du calcul serveur
+                    const resultat = await apiPromise;
+
+                    // Étape 3 validée -> Étape 4 en cours (Préparation résultats)
+                    setEtapeAnalyse(4);
+                    await sleep(600);
+
+                    // Étape finale validée
+                    setEtapeAnalyse(5);
+                    await sleep(300);
 
                     await enregistrerAction(
                         "METIERS_CONSULTES"
@@ -286,17 +350,20 @@ function Test() {
                         }
                     });
 
-                })
-
-                .catch((error) => {
+                } catch (error) {
 
                     console.error(error);
 
                     setAnalyseEnCours(false);
+                    setEtapeAnalyse(1);
 
                     alert("Erreur lors du calcul.");
 
-                });
+                }
+
+            };
+
+            executerAnalyse();
 
         }
 
@@ -623,6 +690,7 @@ function Test() {
                         type="button"
                         className="nextori-test-next"
                         onClick={suivant}
+                        disabled={analyseEnCours}
                     >
 
                         <span>
