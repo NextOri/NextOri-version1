@@ -2,7 +2,7 @@
     width: 100%;
     box-sizing: border-box;
 
-    padding: 100px 6vw;
+    padding: 80px 6vw;
 
     background: #F2F4F7;
 }
@@ -23,7 +23,7 @@
 .features-introduction {
     max-width: 760px;
 
-    margin-bottom: 60px;
+    margin-bottom: 46px;
 }
 
 
@@ -93,7 +93,7 @@
 ========================= */
 
 .feature-card {
-    min-height: 330px;
+    min-height: 300px;
 
     box-sizing: border-box;
 
@@ -174,7 +174,7 @@
 ========================= */
 
 .feature-card-content {
-    margin-top: 45px;
+    margin-top: 34px;
 }
 
 
@@ -207,7 +207,7 @@
 .feature-card-bottom {
     margin-top: auto;
 
-    padding-top: 25px;
+    padding-top: 20px;
 
     display: flex;
 
@@ -260,7 +260,7 @@
 @media (max-width: 900px) {
 
     .features-section {
-        padding: 80px 30px;
+        padding: 65px 30px;
     }
 
     .features-introduction {
@@ -282,7 +282,7 @@
 @media (max-width: 600px) {
 
     .features-section {
-        padding: 65px 20px;
+        padding: 55px 20px;
     }
 
 
@@ -320,14 +320,14 @@
 
 
     .feature-card {
-        min-height: 290px;
+        min-height: 270px;
 
         padding: 23px;
     }
 
 
     .feature-card-content {
-        margin-top: 35px;
+        margin-top: 28px;
     }
 
 

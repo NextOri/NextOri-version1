@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { LogOut, UserPlus } from "lucide-react";
 
 import "../styles/Navbar.css";
 import { logout } from "../services/AuthService";
@@ -8,6 +8,8 @@ function Navbar() {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const utilisateur = localStorage.getItem("utilisateur");
+    const estConnecte = Boolean(utilisateur);
 
     const handleLogout = async () => {
 
@@ -82,17 +84,30 @@ function Navbar() {
                 </div>
 
 
-                <button
-                    type="button"
-                    className="navbar-logout"
-                    onClick={handleLogout}
-                >
-                    <LogOut size={17} />
+                {estConnecte ? (
+                    <button
+                        type="button"
+                        className="navbar-logout"
+                        onClick={handleLogout}
+                    >
+                        <LogOut size={17} />
 
-                    <span>
-                        Déconnexion
-                    </span>
-                </button>
+                        <span>
+                            Déconnexion
+                        </span>
+                    </button>
+                ) : (
+                    <Link
+                        to="/inscription"
+                        className="navbar-logout"
+                    >
+                        <UserPlus size={17} />
+
+                        <span>
+                            Inscription
+                        </span>
+                    </Link>
+                )}
 
             </div>
 

@@ -2,7 +2,7 @@
 
     background: #FFFFFF;
 
-    padding: 100px 60px;
+    padding: 80px 60px;
 
 }
 
@@ -17,7 +17,7 @@
 
     grid-template-columns: 1.5fr 0.8fr;
 
-    gap: 80px;
+    gap: 60px;
 
     align-items: center;
 
@@ -137,7 +137,7 @@
 
     .about-section {
 
-        padding: 70px 25px;
+        padding: 60px 25px;
 
     }
 
@@ -164,7 +164,7 @@
 
     .about-section {
 
-        padding: 60px 20px;
+        padding: 52px 20px;
 
     }
 
