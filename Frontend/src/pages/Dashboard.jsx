@@ -364,7 +364,7 @@ const demanderNotification = async () => {
         <h2>{dashboardDataState.niveau.nom}</h2>
 
         <span>
-       Niveau
+       Niveau {dashboardDataState.niveau.numero}
         </span>
 
     </div>

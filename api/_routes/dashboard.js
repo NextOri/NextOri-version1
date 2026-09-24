@@ -4,11 +4,11 @@ import { getUserFromRequest } from "../_lib/auth.js";
 
 function calculerNiveau(points) {
   const paliers = [
-    { niveau: "Débutant", min: 0, max: 100 },
-    { niveau: "Explorateur", min: 101, max: 300 },
-    { niveau: "Aventurier", min: 301, max: 600 },
-    { niveau: "Expert", min: 601, max: 1000 },
-    { niveau: "Maître", min: 1001, max: 99999 },
+    { numero: 1, niveau: "Débutant", min: 0, max: 100 },
+    { numero: 2, niveau: "Explorateur", min: 101, max: 300 },
+    { numero: 3, niveau: "Aventurier", min: 301, max: 600 },
+    { numero: 4, niveau: "Expert", min: 601, max: 1000 },
+    { numero: 5, niveau: "Maître", min: 1001, max: 99999 },
   ];
 
   for (const p of paliers) {
@@ -17,6 +17,7 @@ function calculerNiveau(points) {
       const prog = points - p.min;
       const pct = Math.min(100, Math.max(0, Math.round((prog / (etendue || 1)) * 100)));
       return {
+        numero: p.numero,
         nom: p.niveau,
         points_actuels: points,
         points_suivant: p.max,
@@ -25,7 +26,7 @@ function calculerNiveau(points) {
     }
   }
 
-  return { nom: "Maître", points_actuels: points, points_suivant: points, pourcentage: 100 };
+  return { numero: 5, nom: "Maître", points_actuels: points, points_suivant: points, pourcentage: 100 };
 }
 
 export default async function handler(req, res) {
