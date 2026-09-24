@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Result.css";
 import { enregistrerAction } from "../services/historiqueService";
+import profilsRiasec from "../data/profilsRiasec";
+import { recupererProfilsRiasec } from "../services/profilRiasecService";
 
 import {
     FaTrophy,
@@ -67,6 +69,17 @@ function Result(){
 
     const [resultat, setResultat] = useState(resultatInitial);
     const [chargement, setChargement] = useState(!resultatInitial);
+    const [profils, setProfils] = useState(profilsRiasec);
+
+    useEffect(() => {
+        recupererProfilsRiasec()
+            .then((profilsDistants) => {
+                if (profilsDistants) setProfils(profilsDistants);
+            })
+            .catch(() => {
+                // La source locale garde l'affichage disponible pendant la migration.
+            });
+    }, []);
 
 
     /* =========================================================
@@ -178,7 +191,9 @@ function Result(){
        PROFILS RIASEC
     ========================================================= */
 
-    const profils = {
+    /* Données historiques dupliquées : conservées temporairement pour faciliter
+       toute vérification visuelle, mais la source utilisée est désormais commune. */
+    /* const profilsLegacy = {
 
         RI: {
             nom: "Réaliste - Investigateur",
@@ -360,7 +375,7 @@ function Result(){
                 "Vous combinez organisation, rigueur et capacité à prendre des initiatives."
         }
 
-    };
+    }; */
 
 
     /* =========================================================

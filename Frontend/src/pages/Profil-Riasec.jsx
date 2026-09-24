@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import "../styles/Profil-Riasec.css";
 
 import profilsRiasec from "../data/profilsRiasec";
+import { recupererProfilsRiasec } from "../services/profilRiasecService";
 
 import {
     FaStar,
@@ -18,6 +20,18 @@ function ProfilRiasec() {
     const location = useLocation();
 
     const navigate = useNavigate();
+
+    const [profils, setProfils] = useState(profilsRiasec);
+
+    useEffect(() => {
+        recupererProfilsRiasec()
+            .then((profilsDistants) => {
+                if (profilsDistants) setProfils(profilsDistants);
+            })
+            .catch(() => {
+                // La source locale garde l'affichage disponible pendant la migration.
+            });
+    }, []);
 
     const resultat = location.state?.resultat;
 
@@ -65,7 +79,7 @@ function ProfilRiasec() {
 
     const codeProfil = resultat.profil.principal;
 
-    const profil = profilsRiasec[codeProfil];
+    const profil = profils[codeProfil];
 
 
     /*

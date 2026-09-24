@@ -24,6 +24,8 @@ import {
 
 import "../styles/ResultatHistorique.css";
 import FooterNavigation from "../components/FooterNavigation";
+import profilsRiasec from "../data/profilsRiasec";
+import { recupererProfilsRiasec } from "../services/profilRiasecService";
 
 
 function ResultatHistorique() {
@@ -35,6 +37,17 @@ function ResultatHistorique() {
     const [test, setTest] = useState(null);
     const [chargement, setChargement] = useState(true);
     const [erreur, setErreur] = useState("");
+    const [profils, setProfils] = useState(profilsRiasec);
+
+    useEffect(() => {
+        recupererProfilsRiasec()
+            .then((profilsDistants) => {
+                if (profilsDistants) setProfils(profilsDistants);
+            })
+            .catch(() => {
+                // La source locale garde l'affichage disponible pendant la migration.
+            });
+    }, []);
 
 
     // =========================================================
@@ -109,7 +122,9 @@ setTest(data.data);
     // PROFILS RIASEC
     // =========================================================
 
-    const profils = {
+    /* Données historiques dupliquées : conservées temporairement pour faciliter
+       toute vérification visuelle, mais la source utilisée est désormais commune. */
+    /* const profilsLegacy = {
 
         RI: {
             nom: "Réaliste – Investigateur",
@@ -295,7 +310,7 @@ setTest(data.data);
             description:
                 "Vous combinez organisation et esprit d'initiative. Vous appréciez la gestion, la coordination et les environnements structurés."
         }
-    };
+    }; */
 
 
     // =========================================================
