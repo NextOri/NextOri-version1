@@ -2,7 +2,7 @@
 
     background: #F2F4F7;
 
-    min-height: min(720px, calc(100vh - 80px));
+    min-height: min(650px, calc(100vh - 80px));
 
     display: flex;
 

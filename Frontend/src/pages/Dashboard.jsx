@@ -134,7 +134,14 @@ const [typeNotification, setTypeNotification] = useState("");
 
    if(chargementDashboard){
 
-    return <p>Chargement du tableau de bord...</p>;
+    return (
+        <main className="dashboard-loading" aria-busy="true" aria-live="polite">
+            <div className="dashboard-loading-panel">
+                <span className="dashboard-loading-spinner" aria-hidden="true"></span>
+                <p>Chargement de votre espace...</p>
+            </div>
+        </main>
+    );
 
  }
 
@@ -337,7 +344,7 @@ const demanderNotification = async () => {
 
         <div>
             <p className="dashboard-subtitle">
-                Tableau de bord
+                Votre tableau de bord
             </p>
 
             <h1 className="notranslate" translate="no">
