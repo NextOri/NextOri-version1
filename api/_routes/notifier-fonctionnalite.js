@@ -24,10 +24,29 @@ export default async function handler(req, res) {
       });
     }
 
+    const fonctionnaliteNormalisee = String(fonctionnalite).trim();
+
+    const { data: inscriptionExistante, error: erreurVerification } = await supabase
+      .from("attente_fonctionnalite")
+      .select("id_user")
+      .eq("id_user", authUser.id_user)
+      .eq("fonctionnalite", fonctionnaliteNormalisee)
+      .maybeSingle();
+
+    if (erreurVerification) throw erreurVerification;
+
+    if (inscriptionExistante) {
+      return res.status(200).json({
+        success: true,
+        dejaInscrit: true,
+        message: "Vous êtes déjà inscrit pour cette fonctionnalité.",
+      });
+    }
+
     const { error } = await supabase.from("attente_fonctionnalite").upsert(
       {
         id_user: authUser.id_user,
-        fonctionnalite: String(fonctionnalite).trim(),
+        fonctionnalite: fonctionnaliteNormalisee,
         statut: "EN_ATTENTE",
         date_inscription: new Date().toISOString(),
       },
@@ -38,7 +57,8 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: "Tu seras notifié dès que cette fonctionnalité sera disponible !",
+      dejaInscrit: false,
+      message: "Vous serez notifié dès que cette fonctionnalité sera disponible !",
     });
   } catch (err) {
     console.error("Notifier error:", err);

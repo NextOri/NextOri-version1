@@ -464,6 +464,42 @@ const demanderNotification = async () => {
 </section>
 
 
+            {/* ACTION PRINCIPALE */}
+
+            <section className="action-button-section">
+
+                <div className="action-button-icon" aria-hidden="true">
+                    <Rocket />
+                </div>
+
+                <h2>
+                    Passez à l'action
+                </h2>
+
+                <p>
+                    {aDejaTeste
+                        ? "Retrouvez votre résultat RIASEC et poursuivez votre parcours d'orientation."
+                        : "Faites le test RIASEC pour découvrir votre profil d'orientation."
+                    }
+                </p>
+
+                <button
+                    className="start-test-button"
+                    onClick={() =>
+                        aDejaTeste
+                            ? navigate("/result")
+                            : navigate("/test")
+                    }
+                >
+                    {aDejaTeste
+                        ? "Retrouver mon résultat"
+                        : "Faire le test RIASEC"}
+                    <Rocket />
+                </button>
+
+            </section>
+
+
             {/* PARCOURS */}
                 <section className="orientation-path">
 
@@ -679,35 +715,6 @@ etape.numero
 
 </section>
  
-       {/* BOUTON */}
-
-      <section className="action-button-section">
-
-    <h2>
-        Passez à l'action <Rocket />
-    </h2>
-
-    <p>
-        Découvrez votre profil d'orientation
-        et construisez votre avenir professionnel avec NextOri.
-    </p>
-
-
-  <button
-    className="start-test-button"
-    onClick={() =>
-        aDejaTeste
-            ? navigate("/result")
-            : navigate("/test")
-    }
->
-    {aDejaTeste
-        ? "Voir mes résultats"
-        : "Commencer le test"}
-  </button>
-
-</section>
-
             {/* PROJET 
 
             <section className="project-card"> 
