@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -23,6 +23,26 @@ import {
     FaPhone,
     FaEnvelope,
 } from "react-icons/fa";
+
+const parseContactList = (str) => {
+    if (!str) return [];
+    return str
+        .split(/\s*[/,;]\s*/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+};
+
+const handleEmailClick = (email) => (e) => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
+        e.preventDefault();
+        window.open(
+            `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+};
 
 
 function UniversiteDetail() {
@@ -321,11 +341,20 @@ function UniversiteDetail() {
                     <FaPhone />
 
                     <div>
-                        <span>Téléphone</span>
+                        <span>{parseContactList(universite.telephone).length > 1 ? "Téléphones" : "Téléphone"}</span>
 
-                        <a href={`tel:${universite.telephone}`}>
-                            {universite.telephone}
-                        </a>
+                        {parseContactList(universite.telephone).map((tel, index) => {
+                            const cleanTel = tel.replace(/[^\d+]/g, "");
+                            return (
+                                <a
+                                    key={index}
+                                    href={`tel:${cleanTel || tel}`}
+                                    title={`Appeler le ${tel}`}
+                                >
+                                    {tel}
+                                </a>
+                            );
+                        })}
                     </div>
 
                 </div>
@@ -342,11 +371,18 @@ function UniversiteDetail() {
                     <FaEnvelope />
 
                     <div>
-                        <span>Email</span>
+                        <span>{parseContactList(universite.email).length > 1 ? "Emails" : "Email"}</span>
 
-                        <a href={`mailto:${universite.email}`}>
-                            {universite.email}
-                        </a>
+                        {parseContactList(universite.email).map((mail, index) => (
+                            <a
+                                key={index}
+                                href={`mailto:${mail}`}
+                                title={`Envoyer un email à ${mail}`}
+                                onClick={handleEmailClick(mail)}
+                            >
+                                {mail}
+                            </a>
+                        ))}
                     </div>
 
                 </div>
