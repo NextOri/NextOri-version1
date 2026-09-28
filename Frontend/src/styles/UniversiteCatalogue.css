@@ -1261,42 +1261,78 @@
 
     .no-universite-catalogue-toolbar {
 
+        position: sticky;
+        top: 6px;
+        z-index: 100;
+
         width: calc(100% - 20px);
 
-        margin: -20px auto 23px;
+        margin: -16px auto 16px;
 
-        padding: 14px;
+        padding: 10px 12px;
 
-        gap: 10px;
+        gap: 8px;
 
-        border-radius: 17px;
+        border-radius: 14px;
+
+        box-shadow: 0 6px 16px rgba(13, 27, 42, 0.12);
+
+    }
+
+
+    .search-container {
+
+        width: 100%;
+        min-width: 100%;
+
+    }
+
+
+    .search-icon {
+
+        left: 12px;
+        font-size: 13px;
 
     }
 
 
     .no-universite-catalogue-search {
 
-        min-height: 48px;
+        min-height: 36px;
+        height: 36px;
 
-        font-size: 0.86rem;
+        padding: 6px 12px 6px 36px;
+
+        font-size: 13px;
+
+        border-radius: 9px;
 
     }
 
 
     .filter-container {
 
-        grid-template-columns: 1fr;
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
 
         gap: 8px;
+
+        width: 100%;
 
     }
 
 
     .no-universite-catalogue-filter {
 
-        min-height: 46px;
+        min-height: 36px;
+        height: 36px;
 
-        font-size: 0.84rem;
+        padding: 6px 10px;
+
+        font-size: 12.5px;
+
+        border-radius: 9px;
 
     }
 

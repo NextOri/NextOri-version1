@@ -545,9 +545,19 @@
     }
 
     .metiers-filtres {
-        padding: 20px;
-        gap: 15px;
-        margin-bottom: 25px;
+        position: sticky;
+        top: 8px;
+        z-index: 100;
+        grid-template-columns: 1fr 1fr;
+        padding: 12px 14px;
+        gap: 10px;
+        margin-bottom: 20px;
+        border-radius: 16px;
+        box-shadow: 0 6px 18px rgba(13, 27, 42, 0.12);
+    }
+
+    .filtre-item:first-child {
+        grid-column: 1 / -1;
     }
 
     .metiers-list {
@@ -599,28 +609,39 @@
 
     .metiers-filtres {
         position: sticky;
-        top: 0;
-        padding: 16px;
-        border-radius: 18px;
-        gap: 12px;
-        margin-bottom: 20px;
+        top: 6px;
+        z-index: 100;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 10px 12px;
+        border-radius: 14px;
+        gap: 8px;
+        margin-bottom: 16px;
+        box-shadow: 0 6px 16px rgba(13, 27, 42, 0.12);
     }
 
     .filtre-item {
         width: 100%;
     }
 
+    .filtre-item:first-child {
+        grid-column: 1 / -1;
+    }
+
     .filtre-item label {
-        font-size: 13px;
-        margin-bottom: 6px;
+        font-size: 11px;
+        margin-bottom: 3px;
     }
 
     .metiers-search,
     .filtre-item select {
         width: 100%;
         box-sizing: border-box;
-        padding: 11px 12px;
-        font-size: 14px;
+        padding: 6px 10px;
+        font-size: 13px;
+        min-height: 36px;
+        height: 36px;
+        border-radius: 9px;
     }
 
 
