@@ -146,7 +146,7 @@ function Footer() {
                     </h3>
 
                     <a
-                        href="mailto:nextori.plateform@gmail.com"
+                        href="mailto:nextori.platform@gmail.com"
                         className="footer-contact-item"
                         title="Envoyer un email à NextOri"
                         onClick={(e) => {
@@ -154,7 +154,7 @@ function Footer() {
                             if (!isMobile) {
                                 e.preventDefault();
                                 window.open(
-                                    "https://mail.google.com/mail/?view=cm&fs=1&to=nextori.plateform@gmail.com",
+                                    "https://mail.google.com/mail/?view=cm&fs=1&to=nextori.platform@gmail.com",
                                     "_blank",
                                     "noopener,noreferrer"
                                 );
@@ -164,7 +164,7 @@ function Footer() {
                         <FaEnvelope />
 
                         <span>
-                            nextori.plateform@gmail.com
+                            nextori.platform@gmail.com
                         </span>
                     </a>
 
