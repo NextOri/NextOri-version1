@@ -129,6 +129,15 @@ function FiliereDetail() {
 
         <div className="filiere-detail-page">
 
+            <div className="filiere-detail-navigation">
+                <button
+                    className="filiere-detail-back-button"
+                    onClick={() => navigate("/filieres")}
+                >
+                    <FaArrowLeft />
+                    <span>Retour aux filières</span>
+                </button>
+            </div>
 
             {/* ================================
                 EN-TÊTE
@@ -357,24 +366,6 @@ function FiliereDetail() {
                 }
 
             </section>
-
-
-
-            {/* ================================
-                RETOUR
-            ================================= */}
-
-            <button
-                className="retour-btn"
-                onClick={() => navigate("/filieres")}
-            >
-
-                <FaArrowLeft />
-
-                <span>Retour aux filières</span>
-
-            </button>
-
 
             <FooterNavigation />
 

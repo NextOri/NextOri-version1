@@ -889,11 +889,11 @@
 
     width:min(1050px,92%);
 
-    margin:5px auto 30px;
+    margin:0 auto 14px;
 
     display:flex;
 
-    justify-content:center;
+    justify-content:flex-start;
 
 }
 
@@ -908,17 +908,15 @@
 
     gap:10px;
 
-    min-width:260px;
+    padding:11px 18px;
 
-    padding:13px 25px;
+    border:none;
 
-    border:2px solid #1E3A8A;
+    border-radius:10px;
 
-    border-radius:14px;
+    background:transparent;
 
-    background:#FFFFFF;
-
-    color:#0D1B2A;
+    color:#1E3A8A;
 
     font-size:.92rem;
 
@@ -936,11 +934,11 @@
 
 .no-universite-detail-retour-button:hover {
 
-    background:#1E3A8A;
+    background:#FFFFFF;
 
-    color:#FFFFFF;
+    color:#0D1B2A;
 
-    transform:translateY(-2px);
+    transform:translateX(-3px);
 
 }
 

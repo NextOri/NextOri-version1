@@ -128,6 +128,15 @@ function MetierDetail() {
 
         <div className="metier-detail-page">
 
+            <div className="metier-detail-navigation">
+                <button
+                    className="metier-detail-back-button"
+                    onClick={() => navigate("/metiers")}
+                >
+                    <FaArrowLeft />
+                    <span>Retour aux métiers</span>
+                </button>
+            </div>
 
             {/* En-tête */}
 
@@ -313,20 +322,6 @@ function MetierDetail() {
 
             </section>
 
-
-
-
-
-            <button
-                className="retour-btn"
-                onClick={()=>navigate("/metiers")}
-            >
-
-                <FaArrowLeft /> Retour aux métiers
-
-            </button>
-
-            
 
               <FooterNavigation />
 

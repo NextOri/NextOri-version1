@@ -39,7 +39,7 @@
 
     overflow: hidden;
 
-    padding: 64px 25px 52px;
+    padding: 42px 25px 34px;
 
     background: linear-gradient(
         135deg,
@@ -133,11 +133,11 @@
 
     justify-content: center;
 
-    width: 62px;
+    width: 54px;
 
-    height: 62px;
+    height: 54px;
 
-    margin: 0 auto 18px;
+    margin: 0 auto 12px;
 
     border-radius: 18px;
 
@@ -1216,7 +1216,7 @@
 
     .no-universite-catalogue-header {
 
-        padding: 48px 18px 42px;
+        padding: 32px 18px 30px;
 
         border-bottom-left-radius: 25px;
 
@@ -1227,9 +1227,9 @@
 
     .catalogue-header-icon {
 
-        width: 54px;
+        width: 48px;
 
-        height: 54px;
+        height: 48px;
 
         margin-bottom: 15px;
 

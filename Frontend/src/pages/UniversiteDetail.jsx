@@ -136,6 +136,15 @@ function UniversiteDetail() {
 
         <div className="no-universite-detail-page">
 
+            <div className="no-universite-detail-retour">
+                <button
+                    onClick={() => navigate("/universite-catalogue")}
+                    className="no-universite-detail-retour-button"
+                >
+                    <FaArrowLeft />
+                    <span>Retour aux universités</span>
+                </button>
+            </div>
 
             {/* =========================================
                 HEADER
@@ -553,30 +562,6 @@ function UniversiteDetail() {
                 </section>
 
             </main>
-
-
-
-            {/* =========================================
-                RETOUR
-            ========================================= */}
-
-            <div className="no-universite-detail-retour">
-
-                <button
-                    onClick={() =>
-                        navigate("/universite-catalogue")
-                    }
-                    className="no-universite-detail-retour-button"
-                >
-
-                    <FaArrowLeft />
-
-                    <span>Retour aux universités</span>
-
-                </button>
-
-            </div>
-
 
             <FooterNavigation />
 

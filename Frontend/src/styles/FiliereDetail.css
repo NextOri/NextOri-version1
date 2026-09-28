@@ -31,6 +31,33 @@ background: #F2F4F7;
 
 }
 
+.filiere-detail-navigation {
+    width: min(1100px, 92%);
+    margin: 0 auto 14px;
+}
+
+.filiere-detail-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #1E3A8A;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.filiere-detail-back-button:hover {
+    background: #FFFFFF;
+    color: #0D1B2A;
+    transform: translateX(-3px);
+}
+
 /* =========================================================
 2. HEADER — HERO
 ========================================================= */
