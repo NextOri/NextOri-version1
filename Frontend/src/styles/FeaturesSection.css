@@ -2,7 +2,7 @@
     width: 100%;
     box-sizing: border-box;
 
-    padding: 56px 6vw 80px;
+    padding: 16px 6vw 70px;
 
     background: #F2F4F7;
 }
@@ -260,11 +260,11 @@
 @media (max-width: 900px) {
 
     .features-section {
-        padding: 65px 30px;
+        padding: 16px 30px 60px;
     }
 
     .features-introduction {
-        margin-bottom: 45px;
+        margin-bottom: 40px;
     }
 
     .features-steps {
@@ -282,7 +282,7 @@
 @media (max-width: 600px) {
 
     .features-section {
-        padding: 55px 20px;
+        padding: 12px 20px 50px;
     }
 
 

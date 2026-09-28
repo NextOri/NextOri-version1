@@ -2,13 +2,13 @@
 
     background: #F2F4F7;
 
-    min-height: min(650px, calc(100vh - 80px));
+    min-height: min(580px, calc(100vh - 90px));
 
     display: flex;
 
     align-items: center;
 
-    padding: 56px 40px;
+    padding: 42px 40px 16px;
 
 }
 
@@ -312,7 +312,7 @@
 
         min-height: auto;
 
-        padding: 52px 25px;
+        padding: 38px 25px 12px;
 
     }
 
@@ -357,7 +357,7 @@
 
     .hero-section {
 
-        padding: 40px 20px 48px;
+        padding: 30px 20px 8px;
 
     }
 
