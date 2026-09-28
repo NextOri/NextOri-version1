@@ -38,6 +38,7 @@ function Dashboard() {
     const navigate = useNavigate();
 
     const [aDejaTeste, setADejaTeste] = useState(false);
+    const [chargementRiasec, setChargementRiasec] = useState(true);
 
 const [dashboardDataState, setDashboardDataState] = useState(null);
 
@@ -73,6 +74,9 @@ const [typeNotification, setTypeNotification] = useState("");
                 error
             );
 
+        })
+        .finally(() => {
+            setChargementRiasec(false);
         });
 
       }, []);
@@ -475,33 +479,56 @@ const demanderNotification = async () => {
 
             <section className="action-button-section">
 
-                <div className="action-button-icon" aria-hidden="true">
-                    <Rocket />
+                <div className="action-cta-left">
+                    <div className="action-button-icon" aria-hidden="true">
+                        <Brain />
+                    </div>
+
+                    <div className="action-cta-text">
+                        <h2>
+                            {chargementRiasec
+                                ? "\u00a0"
+                                : aDejaTeste
+                                    ? "Retrouvez votre profil RIASEC"
+                                    : "Découvrez votre profil RIASEC"
+                            }
+                        </h2>
+                        <p>
+                            {chargementRiasec
+                                ? "\u00a0"
+                                : aDejaTeste
+                                    ? "Continuez votre parcours d\u2019orientation là où vous vous êtes arrêté."
+                                    : "Faites le test RIASEC pour découvrir votre profil d\u2019orientation."
+                            }
+                        </p>
+                    </div>
                 </div>
 
-                <h2>
-                    Passez à l'action
-                </h2>
-
-                <p>
-                    {aDejaTeste
-                        ? "Retrouvez votre résultat RIASEC et poursuivez votre parcours d'orientation."
-                        : "Faites le test RIASEC pour découvrir votre profil d'orientation."
-                    }
-                </p>
-
                 <button
-                    className="start-test-button"
+                    className={`start-test-button${chargementRiasec ? " start-test-button--loading" : ""}`}
+                    disabled={chargementRiasec}
                     onClick={() =>
-                        aDejaTeste
-                            ? navigate("/result")
-                            : navigate("/test")
+                        !chargementRiasec && (
+                            aDejaTeste
+                                ? navigate("/result")
+                                : navigate("/test")
+                        )
                     }
                 >
-                    {aDejaTeste
-                        ? "Retrouver mon résultat"
-                        : "Faire le test RIASEC"}
-                    <Rocket />
+                    {chargementRiasec ? (
+                        <span className="start-test-spinner" />
+                    ) : (
+                        <>
+                            <Brain size={19} />
+                            <span>
+                                {aDejaTeste
+                                    ? "Retrouver mon résultat"
+                                    : "Faire le test RIASEC"
+                                }
+                            </span>
+                            <Rocket size={16} />
+                        </>
+                    )}
                 </button>
 
             </section>
