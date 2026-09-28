@@ -29,6 +29,26 @@ function calculerNiveau(points) {
   return { numero: 5, nom: "Maître", points_actuels: points, points_suivant: points, pourcentage: 100 };
 }
 
+function calculerSerieConnexion(datesConnexion, aujourdHui) {
+  const dates = new Set(
+    (datesConnexion || []).map(({ date_connexion }) =>
+      String(date_connexion).slice(0, 10)
+    )
+  );
+
+  let dateAttendue = aujourdHui;
+  let serie = 0;
+
+  while (dates.has(dateAttendue)) {
+    serie += 1;
+    const date = new Date(`${dateAttendue}T00:00:00.000Z`);
+    date.setUTCDate(date.getUTCDate() - 1);
+    dateAttendue = date.toISOString().slice(0, 10);
+  }
+
+  return serie;
+}
+
 export default async function handler(req, res) {
   if (handleCors(req, res)) return;
 
@@ -56,10 +76,12 @@ export default async function handler(req, res) {
     const today = new Date().toISOString().split("T")[0];
 
     // Enregistrer connexion du jour
-    await supabase.from("connexion_utilisateur").upsert(
+    const { error: connexionError } = await supabase.from("connexion_utilisateur").upsert(
       { id_user: idUser, date_connexion: today },
       { onConflict: "id_user,date_connexion" }
     );
+
+    if (connexionError) throw connexionError;
 
     // 1. Tests RIASEC faits ?
     const { count: testCount } = await supabase
@@ -90,13 +112,21 @@ export default async function handler(req, res) {
 
     if (!badgesData) badgesData = [];
 
-    // Connexions pour séries
+    // Historique complet pour les points, qui restent acquis.
     const { count: connCount } = await supabase
       .from("connexion_utilisateur")
       .select("id_connexion", { count: "exact", head: true })
       .eq("id_user", idUser);
 
-    const serieJours = connCount || 1;
+    // Une série ne compte que les jours calendaires consécutifs jusqu'à aujourd'hui.
+    const { data: connexions, error: connexionsError } = await supabase
+      .from("connexion_utilisateur")
+      .select("date_connexion")
+      .eq("id_user", idUser);
+
+    if (connexionsError) throw connexionsError;
+
+    const serieJours = calculerSerieConnexion(connexions, today);
 
     // Détection des actions effectuées (supporte égalité exacte et préfixe)
     const hasProfil = true;
