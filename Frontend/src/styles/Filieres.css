@@ -689,7 +689,9 @@
 
     .filieres-filtres {
 
-        position: relative;
+        position: sticky;
+        top: 10px;
+        z-index: 100;
 
         grid-template-columns: 1fr;
 

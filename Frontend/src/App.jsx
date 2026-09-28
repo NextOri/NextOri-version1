@@ -24,15 +24,16 @@ import ResultatHesitation from "./pages/ResultatHesitation";
 import DepartagerHesitation from "./pages/DepartagerHesitation";
 import Avis from "./pages/Avis";
 import Temoignages from "./pages/Temoignages";
+import ScrollToTop from "./components/ScrollToTop";
 
 
 function App() {
 
     return (
 
-        
-       
-        <Routes>
+        <>
+            <ScrollToTop />
+            <Routes>
 
 
 <Route path="/" element={<Home />} />
@@ -89,9 +90,7 @@ function App() {
 
 
         </Routes>
-      
-
-      
+        </>
     );
 
 }
