@@ -136,7 +136,11 @@ function UniversiteDetail() {
 
         <div className="no-universite-detail-page">
 
-            <div className="no-universite-detail-retour">
+            {/* =========================================
+                HEADER
+            ========================================= */}
+
+            <header className="no-universite-detail-header">
                 <button
                     onClick={() => navigate("/universite-catalogue")}
                     className="no-universite-detail-retour-button"
@@ -144,13 +148,6 @@ function UniversiteDetail() {
                     <FaArrowLeft />
                     <span>Retour aux universités</span>
                 </button>
-            </div>
-
-            {/* =========================================
-                HEADER
-            ========================================= */}
-
-            <header className="no-universite-detail-header">
 
                 <div className="no-universite-detail-logo-container">
 
