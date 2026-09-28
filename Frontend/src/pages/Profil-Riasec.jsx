@@ -127,6 +127,18 @@ function ProfilRiasec() {
 
             <header className="nextori-riasec-profile-header">
 
+                <button
+                    className="nextori-riasec-profile-header-back"
+                    onClick={() =>
+                        navigate("/result", {
+                            state: { data: resultat }
+                        })
+                    }
+                >
+                    <FaArrowLeft />
+                    <span>Retour aux résultats</span>
+                </button>
+
                 <div className="nextori-riasec-profile-header-content">
 
                     <span className="nextori-riasec-profile-eyebrow">
@@ -358,26 +370,6 @@ function ProfilRiasec() {
                 ================================================= */}
 
                 <section className="nextori-riasec-profile-actions">
-
-                    <button
-                        className="nextori-riasec-profile-back-button"
-                        onClick={() =>
-                            navigate("/result", {
-                                state: {
-                                    data: resultat
-                                }
-                            })
-                        }
-                    >
-
-                        <FaArrowLeft />
-
-                        <span>
-                            Retour aux résultats
-                        </span>
-
-                    </button>
-
 
                     <button
                         className="nextori-riasec-profile-home-button"

@@ -94,7 +94,7 @@
 
     color: var(--nextori-riasec-white);
 
-    padding: 78px 20px 150px;
+    padding: 45px 20px 110px;
 
     overflow: hidden;
 }
@@ -150,6 +150,57 @@
     margin: 0 auto;
 
     text-align: center;
+}
+
+
+/* ============================================================
+   4b. BOUTON RETOUR DANS LE HEADER
+   ============================================================ */
+
+.nextori-riasec-profile-header-back {
+    position: absolute;
+
+    top: 14px;
+    left: 18px;
+
+    z-index: 10;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    color: rgba(255, 255, 255, 0.90);
+
+    font-family: inherit;
+    font-size: 0.80rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nextori-riasec-profile-header-back:hover {
+    background: rgba(255, 255, 255, 0.20);
+    color: #fff;
+    transform: translateX(-2px);
+}
+
+.nextori-riasec-profile-header-back svg {
+    font-size: 0.78rem;
+    flex-shrink: 0;
 }
 
 
