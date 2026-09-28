@@ -73,7 +73,7 @@
     z-index: 2;
     width: min(1180px, calc(100% - 40px));
     margin: 0 auto;
-    padding: 76px 0 105px;
+    padding: 38px 0 55px;
     text-align: center;
 }
 
@@ -81,13 +81,13 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 9px 16px;
+    padding: 7px 15px;
     border: 1px solid rgba(244, 180, 0, 0.45);
     border-radius: 999px;
     background: rgba(244, 180, 0, 0.12);
     color: #F4B400;
-    font-size: 0.72rem;
-    font-weight: 900;
+    font-size: 0.78rem;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -97,29 +97,29 @@
 }
 
 .result-v1-eyebrow {
-    margin: 26px 0 13px;
+    margin: 14px 0 8px;
     color: #F4B400;
-    font-size: 0.72rem;
-    font-weight: 900;
-    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
 }
 
 .result-v1-hero h1 {
     max-width: 850px;
     margin: 0 auto;
     color: #FFFFFF;
-    font-size: clamp(2.1rem, 5vw, 4rem);
+    font-size: clamp(1.9rem, 4.2vw, 3.2rem);
     font-weight: 900;
-    line-height: 1.08;
-    letter-spacing: -0.045em;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
 }
 
 .result-v1-hero-description {
     max-width: 730px;
-    margin: 24px auto 0;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 1rem;
-    line-height: 1.8;
+    margin: 12px auto 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.98rem;
+    line-height: 1.65;
 }
 
 
@@ -132,17 +132,17 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
     max-width: 900px;
-    margin: 42px auto 0;
+    margin: 24px auto 0;
 }
 
 .result-v1-analysis-step {
     display: flex;
     align-items: flex-start;
     gap: 13px;
-    padding: 17px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.06);
+    padding: 13px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.08);
     text-align: left;
     backdrop-filter: blur(6px);
 }
@@ -152,27 +152,28 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 31px;
-    height: 31px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #F4B400;
     color: #0D1B2A;
-    font-size: 0.72rem;
+    font-size: 0.76rem;
+    font-weight: 900;
 }
 
 .result-v1-analysis-step strong {
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     color: #FFFFFF;
-    font-size: 0.79rem;
+    font-size: 0.88rem;
     font-weight: 800;
 }
 
 .result-v1-analysis-step small {
     display: block;
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 0.68rem;
-    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.78rem;
+    line-height: 1.4;
 }
 
 
@@ -184,7 +185,7 @@
     position: relative;
     z-index: 5;
     width: min(1180px, calc(100% - 40px));
-    margin: -45px auto 0;
+    margin: -30px auto 0;
 }
 
 
@@ -768,25 +769,26 @@
 
 .result-v1-job-description-box {
     display: grid;
-    grid-template-columns: 32px 1fr;
+    grid-template-columns: 28px 1fr;
     gap: 12px;
     margin: 0 25px;
-    padding: 16px;
-    border-radius: 13px;
-    background: #F2F4F7;
+    padding: 16px 18px;
+    border-radius: 14px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
 }
 
 .result-v1-job-description-box svg {
-    margin-top: 2px;
+    margin-top: 3px;
     color: #1E3A8A;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 .result-v1-job-description-box p {
     margin: 0;
-    color: #0D1B2A;
-    opacity: 0.7;
-    font-size: 0.78rem;
+    color: #1E293B;
+    font-size: 0.94rem;
+    font-weight: 500;
     line-height: 1.65;
 }
 
@@ -799,37 +801,40 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 14px;
-    margin: 20px 25px 0;
+    margin: 18px 25px 0;
 }
 
 .result-v1-job-information p {
     display: grid;
-    grid-template-columns: 22px 1fr;
-    gap: 3px 8px;
+    grid-template-columns: 24px 1fr;
+    gap: 4px 10px;
     margin: 0;
-    padding: 13px;
-    border: 1px solid #F2F4F7;
-    border-radius: 11px;
-    background: #FFFFFF;
+    padding: 14px 16px;
+    border: 1px solid #E2E8F0;
+    border-radius: 13px;
+    background: #F8FAFC;
 }
 
 .result-v1-job-information p > svg {
     grid-row: span 2;
     align-self: center;
     color: #F4B400;
+    font-size: 1.2rem;
 }
 
 .result-v1-job-information strong {
-    color: #0D1B2A;
-    font-size: 0.62rem;
-    font-weight: 900;
+    color: #1E3A8A;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .result-v1-job-information span {
     color: #0D1B2A;
-    opacity: 0.62;
-    font-size: 0.68rem;
-    line-height: 1.35;
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.4;
 }
 
 
@@ -848,10 +853,10 @@
 }
 
 .result-v1-job-footer > span {
-    color: #0D1B2A;
-    opacity: 0.56;
-    font-size: 0.7rem;
-    line-height: 1.4;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.45;
 }
 
 .result-v1-job-button {
@@ -860,13 +865,13 @@
     justify-content: center;
     gap: 9px;
     flex-shrink: 0;
-    padding: 12px 17px;
+    padding: 12px 20px;
     border: none;
     border-radius: 11px;
     background: #0D1B2A;
     color: #FFFFFF;
     font-family: inherit;
-    font-size: 0.75rem;
+    font-size: 0.84rem;
     font-weight: 800;
     white-space: nowrap;
     cursor: pointer;
@@ -1439,7 +1444,7 @@
 @media (max-width: 900px) {
 
     .result-v1-hero-content {
-        padding: 60px 0 90px;
+        padding: 32px 0 48px;
     }
 
     .result-v1-analysis-steps {
@@ -1481,20 +1486,20 @@
 
     .result-v1-main {
         width: min(100% - 24px, 1180px);
-        margin-top: -30px;
+        margin-top: -24px;
     }
 
     .result-v1-hero-content {
         width: calc(100% - 28px);
-        padding: 48px 0 70px;
+        padding: 28px 0 38px;
     }
 
     .result-v1-hero h1 {
-        font-size: 2rem;
+        font-size: 1.85rem;
     }
 
     .result-v1-hero-description {
-        font-size: 0.87rem;
+        font-size: 0.9rem;
     }
 
     .result-v1-introduction {
