@@ -59,13 +59,19 @@ function Result(){
     ========================================================= */
 
     const resultatInitial =
+        location.state?.resultat ??
         location.state?.data?.data ??
-        location.state?.data;
-
+        location.state?.data ??
+        (() => {
+            try {
+                const saved = sessionStorage.getItem("dernierResultatRiasec") || localStorage.getItem("dernierResultatRiasec");
+                if (saved) return JSON.parse(saved);
+            } catch (_) {}
+            return null;
+        })();
 
     console.log("STATE RESULT :", location.state);
     console.log("DATA RESULT :", resultatInitial);
-
 
     const [resultat, setResultat] = useState(resultatInitial);
     const [chargement, setChargement] = useState(!resultatInitial);
@@ -129,6 +135,10 @@ function Result(){
                     const payload = data.data || (data.profil ? data : null);
                     if (payload) {
                         setResultat(payload);
+                        try {
+                            sessionStorage.setItem("dernierResultatRiasec", JSON.stringify(payload));
+                            localStorage.setItem("dernierResultatRiasec", JSON.stringify(payload));
+                        } catch (_) {}
                     }
                 }
 

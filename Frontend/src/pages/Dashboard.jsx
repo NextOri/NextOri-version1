@@ -37,101 +37,77 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
-    const [aDejaTeste, setADejaTeste] = useState(false);
-    const [chargementRiasec, setChargementRiasec] = useState(true);
+    const [aDejaTeste, setADejaTeste] = useState(() => {
+        try {
+            return localStorage.getItem("aDejaTeste") === "true" || !!localStorage.getItem("dernierResultatRiasec");
+        } catch (_) {
+            return false;
+        }
+    });
+    const [chargementRiasec, setChargementRiasec] = useState(false);
 
-const [dashboardDataState, setDashboardDataState] = useState(null);
-
-const [chargementDashboard, setChargementDashboard] = useState(true);
-
-const [chargementNotification, setChargementNotification] = useState(false);
-
-const [messageNotification, setMessageNotification] = useState("");
-
-const [typeNotification, setTypeNotification] = useState("");
+    const [dashboardDataState, setDashboardDataState] = useState(null);
+    const [chargementDashboard, setChargementDashboard] = useState(true);
+    const [chargementNotification, setChargementNotification] = useState(false);
+    const [messageNotification, setMessageNotification] = useState("");
+    const [typeNotification, setTypeNotification] = useState("");
 
     useEffect(() => {
+        fetch(`/api/resultats`, { credentials: "include" })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    setADejaTeste(true);
+                    try {
+                        localStorage.setItem("aDejaTeste", "true");
+                        const payload = data.data || (data.profil ? data : null);
+                        if (payload) {
+                            sessionStorage.setItem("dernierResultatRiasec", JSON.stringify(payload));
+                            localStorage.setItem("dernierResultatRiasec", JSON.stringify(payload));
+                        }
+                    } catch (_) {}
+                }
+            })
+            .catch(error => {
+                console.error("Erreur récupération résultat :", error);
+            });
+    }, []);
 
-    fetch(
-     `/api/resultats`,
-    {
-        credentials: "include"
-    }
-    )
-         
-        .then(response => response.json())
-        .then(data => {
+    useEffect(() => {
+        fetch(`/api/dashboard`, { credentials: "include" })
+            .then(async response => {
+                const data = await response.json();
+                if (response.status === 401) {
+                    localStorage.removeItem("utilisateur");
+                    navigate("/connexion", { replace: true });
+                    return null;
+                }
+                return data;
+            })
+            .then(data => {
+                if (!data) return;
 
-            if (data.success) {
-                setADejaTeste(true);
-            }
+                if (data.utilisateur && data.parcours) {
+                    setDashboardDataState(data);
+                    if (data.parcours.test) {
+                        setADejaTeste(true);
+                        try { localStorage.setItem("aDejaTeste", "true"); } catch (_) {}
+                    }
+                } else if (data.success && data.data) {
+                    setDashboardDataState(data.data);
+                    if (data.data.parcours?.test) {
+                        setADejaTeste(true);
+                        try { localStorage.setItem("aDejaTeste", "true"); } catch (_) {}
+                    }
+                }
 
-        })
-        .catch(error => {
-
-            console.error(
-                "Erreur récupération résultat :",
-                error
-            );
-
-        })
-        .finally(() => {
-            setChargementRiasec(false);
-        });
-
-      }, []);
-
-      useEffect(() => {
-
-    fetch(
-    `/api/dashboard`,
-    {
-        credentials: "include"
-    }
-   )
-    .then(async response => {
-
-        const data = await response.json();
-
-        if (response.status === 401) {
-            localStorage.removeItem("utilisateur");
-            navigate("/connexion", { replace: true });
-            return null;
-        }
-
-        return data;
-
-    })
-    .then(data => {
-
-        if (!data) {
-            return;
-        }
-
-        // Le backend retourne directement { utilisateur, niveau, statistiques, parcours }
-        // sans wrapper data.success/data.data
-        if (data.utilisateur && data.parcours) {
-            setDashboardDataState(data);
-        } else if (data.success && data.data) {
-            setDashboardDataState(data.data);
-        }
-
-        setChargementDashboard(false);
-
-    })
-
-    .catch(error => {
-
-        console.error(
-            "Erreur Dashboard :",
-            error
-        );
-
-        setChargementDashboard(false);
-
-    });
-
-}, []);
+                setChargementDashboard(false);
+            })
+            .catch(error => {
+                console.error("Erreur Dashboard :", error);
+                setChargementDashboard(false);
+            });
+    }, []);
   
 
 
@@ -486,49 +462,43 @@ const demanderNotification = async () => {
 
                     <div className="action-cta-text">
                         <h2>
-                            {chargementRiasec
-                                ? "\u00a0"
-                                : aDejaTeste
-                                    ? "Retrouvez votre profil RIASEC"
-                                    : "Découvrez votre profil RIASEC"
+                            {aDejaTeste
+                                ? "Retrouver votre analyse de profil"
+                                : "Découvrez votre profil RIASEC"
                             }
                         </h2>
                         <p>
-                            {chargementRiasec
-                                ? "\u00a0"
-                                : aDejaTeste
-                                    ? "Continuez votre parcours d\u2019orientation là où vous vous êtes arrêté."
-                                    : "Faites le test RIASEC pour découvrir votre profil d\u2019orientation."
+                            {aDejaTeste
+                                ? "Continuez votre parcours d’orientation là où vous vous êtes arrêté."
+                                : "Faites le test RIASEC pour découvrir votre profil d’orientation."
                             }
                         </p>
                     </div>
                 </div>
 
                 <button
-                    className={`start-test-button${chargementRiasec ? " start-test-button--loading" : ""}`}
-                    disabled={chargementRiasec}
-                    onClick={() =>
-                        !chargementRiasec && (
-                            aDejaTeste
-                                ? navigate("/result")
-                                : navigate("/test")
-                        )
-                    }
+                    className="start-test-button"
+                    onClick={() => {
+                        if (aDejaTeste) {
+                            let cachedResult = null;
+                            try {
+                                const saved = sessionStorage.getItem("dernierResultatRiasec") || localStorage.getItem("dernierResultatRiasec");
+                                if (saved) cachedResult = JSON.parse(saved);
+                            } catch (_) {}
+                            navigate("/result", { state: cachedResult ? { resultat: cachedResult } : undefined });
+                        } else {
+                            navigate("/test");
+                        }
+                    }}
                 >
-                    {chargementRiasec ? (
-                        <span className="start-test-spinner" />
-                    ) : (
-                        <>
-                            <Brain size={19} />
-                            <span>
-                                {aDejaTeste
-                                    ? "Retrouver mon résultat"
-                                    : "Faire le test RIASEC"
-                                }
-                            </span>
-                            <Rocket size={16} />
-                        </>
-                    )}
+                    <Brain size={19} />
+                    <span>
+                        {aDejaTeste
+                            ? "Retrouver mon résultat"
+                            : "Faire le test RIASEC"
+                        }
+                    </span>
+                    <Rocket size={16} />
                 </button>
 
             </section>
