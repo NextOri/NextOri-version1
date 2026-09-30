@@ -102,9 +102,12 @@ function Test() {
         notifTimer.current = setTimeout(() => setNotifVisible(false), 2600);
     }
 
-    function verifierJalons(progression) {
+    /* Vérifie les jalons SAUF 100% (géré dans soumettre) */
+    function verifierJalons(nbRepondues, total) {
+        const pct = Math.round((nbRepondues / total) * 100);
         for (const m of MILESTONES) {
-            if (progression >= m.seuil && !milestoneRef.current.has(m.seuil)) {
+            if (m.seuil === 100) continue;               // réservé à soumettre()
+            if (pct >= m.seuil && !milestoneRef.current.has(m.seuil)) {
                 milestoneRef.current.add(m.seuil);
                 afficherNotif(m);
                 return;
@@ -199,8 +202,11 @@ function Test() {
 
     const question        = questions[index];
     const total           = questions.length;
-    const progression     = Math.round(((index + 1) / total) * 100);
     const reponseActuelle = reponses[index]?.id_proposition ?? null;
+
+    /* Progression = nombre de questions RÉPONDUES / total */
+    const nbRepondues = reponses.filter(Boolean).length;
+    const progression = Math.round((nbRepondues / total) * 100);
 
 
     /* =========================
@@ -230,13 +236,16 @@ function Test() {
     ========================= */
 
     function naviguer(nouvelIndex) {
-        // 1. Phase "out" → le contenu sort
+        // Masquer toute notification en cours avant la transition
+        setNotifVisible(false);
+        if (notifTimer.current) clearTimeout(notifTimer.current);
+
+        // 1. Phase "out" + vider les propositions pour éviter le flash
         setAnimPhase("out");
-        // Vider les propositions immédiatement pour éviter le flash
         setPropositions([]);
 
         setTimeout(() => {
-            // 2. Changer l'index — le useEffect va chercher les propositions
+            // 2. Changer l'index — le useEffect charge les nouvelles propositions
             setIndex(nouvelIndex);
             setAnimPhase("idle-pending");
         }, 220);
@@ -255,10 +264,12 @@ function Test() {
 
         if (index < total - 1) {
             const nouvelIndex = index + 1;
-            verifierJalons(Math.round(((nouvelIndex + 1) / total) * 100));
+            /* Vérifier les jalons APRÈS avoir enregistré la réponse actuelle */
+            const nbAprès = reponses.filter(Boolean).length;
+            verifierJalons(nbAprès, total);
             naviguer(nouvelIndex);
         } else {
-            verifierJalons(100);
+            /* Dernière question : afficher le message de fin PUIS lancer l'analyse */
             soumettre();
         }
     }
@@ -273,13 +284,23 @@ function Test() {
     ========================= */
 
     function soumettre() {
-        setAnalyseEnCours(true);
-        setEtapeAnalyse(1);
-
         const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
         (async () => {
             try {
+                /* 1. Afficher le message "Test terminé" sur la page de test */
+                if (!milestoneRef.current.has(100)) {
+                    milestoneRef.current.add(100);
+                    afficherNotif({ icon: "🏆", texte: "Félicitations ! Test terminé 🎉" });
+                }
+
+                /* 2. Laisser la notification visible un instant */
+                await sleep(1600);
+
+                /* 3. Basculer vers l'écran d'analyse */
+                setAnalyseEnCours(true);
+                setEtapeAnalyse(1);
+
                 const apiPromise = envoyerReponses(reponses);
                 await sleep(400); setEtapeAnalyse(2);
                 await sleep(700); setEtapeAnalyse(3);
@@ -358,10 +379,13 @@ function Test() {
                     {/* QUESTION */}
                     <div className="nxt-question">
                         <div className="nxt-question__meta">
-                            <span className="nxt-question__count">
-                                {index + 1} <span>/ {total}</span>
+                            <span className="nxt-question__label">
+                                Question <strong>{index + 1}</strong>
+                                <span className="nxt-question__total"> sur {total}</span>
                             </span>
-                            <span className="nxt-question__pct">{progression}%</span>
+                            <span className="nxt-question__pct">
+                                {nbRepondues} répondu{nbRepondues > 1 ? "es" : nbRepondues === 1 ? "e" : ""}
+                            </span>
                         </div>
 
                         <h2 className="nxt-question__text">{question.texte}</h2>
