@@ -1,0 +1,16 @@
+nextori-db
+
+host=db.qkyjpjfqcwmiyhyqstrz.supabase.co
+port=5432
+database=postgres
+user=postgres
+mot de passe : NSetXEtp02...
+
+PostgreSQL windows
+Mot de passe super utilisateur: NSetXEtp02...
+
+Exportations:
+PS C:\Users\LAURENT> $env:PGPASSWORD="[MON_MOT_DE_PASSE]"
+PS C:\Users\LAURENT> & "C:\Program Files\PostgreSQL\18\bin\pg_dump.exe" -h "aws-1-eu-west-1.pooler.supabase.com" -p 5432 -U "postgres.qkyjpjfqcwmiyhyqstrz" -d "postgres" --format=plain --no-owner --no-privileges -f "C:\Users\LAURENT\Downloads\NextOri-main\NextOri-main\database-backup\nextori_supabase.sql"
+
+

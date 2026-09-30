@@ -1,15 +1,70 @@
 /* =========================================================
-   NEXTORI — TEST RIASEC
+   NEXTORI — TEST RIASEC  (refonte)
    ========================================================= */
 
-.nextori-test-page {
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.nxt-test {
     min-height: 100vh;
     background: #F2F4F7;
     color: #0D1B2A;
     font-family: inherit;
-
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   NOTIFICATION FLOTTANTE
+   ========================================================= */
+
+.nxt-notif {
+    position: fixed;
+    top: 90px;
+    right: 28px;
+    z-index: 500;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 10px 16px;
+
+    background: #0D1B2A;
+    color: #FFFFFF;
+
+    border-radius: 40px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    box-shadow: 0 8px 24px rgba(13, 27, 42, 0.22);
+
+    pointer-events: none;
+
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s ease;
+}
+
+.nxt-notif--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.nxt-notif__icon {
+    display: flex;
+    align-items: center;
+    color: #F4B400;
+}
+
+.nxt-notif__texte {
+    white-space: nowrap;
 }
 
 
@@ -17,8 +72,8 @@
    HEADER
    ========================================================= */
 
-.nextori-test-header {
-    height: 72px;
+.nxt-header {
+    height: 68px;
     flex-shrink: 0;
 
     background: #FFFFFF;
@@ -28,58 +83,44 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
 
-    padding: 0 48px;
+    padding: 0 40px;
 }
 
-
-.nextori-test-header-left {
-    display: flex;
-    justify-content: flex-start;
-}
-
-
-.nextori-test-home-link {
-    border: none;
-    background: transparent;
-
-    color: #0D1B2A;
+.nxt-header__back {
+    justify-self: start;
 
     display: inline-flex;
     align-items: center;
-    gap: 9px;
+    gap: 8px;
 
-    padding: 9px 0;
+    border: none;
+    background: transparent;
 
-    font-size: 15px;
+    color: rgba(13, 27, 42, 0.65);
+
+    font-size: 14px;
     font-weight: 600;
+
+    padding: 8px 0;
 
     cursor: pointer;
 
     transition: color 0.2s ease;
 }
 
-
-.nextori-test-home-link:hover {
-    color: #1E3A8A;
+.nxt-header__back:hover {
+    color: #0D1B2A;
 }
 
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
-.nextori-test-brand {
+.nxt-header__brand {
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    gap: 11px;
+    gap: 10px;
 }
 
-
-.nextori-test-brand-mark {
-    width: 40px;
-    height: 40px;
+.nxt-header__logo {
+    width: 36px;
+    height: 36px;
 
     display: flex;
     align-items: center;
@@ -88,469 +129,325 @@
     background: #0D1B2A;
     color: #F4B400;
 
-    border-radius: 11px;
+    border-radius: 10px;
 }
 
-
-.nextori-test-brand>div:last-child {
-    display: flex;
-    flex-direction: column;
-
-    line-height: 1.1;
-}
-
-
-.nextori-test-brand strong {
+.nxt-header__brand strong {
     color: #0D1B2A;
-
-    font-size: 19px;
+    font-size: 18px;
     letter-spacing: -0.4px;
 }
 
+.nxt-header__badge {
+    justify-self: end;
 
-.nextori-test-brand span {
-    margin-top: 4px;
-
-    color: #1E3A8A;
-
-    font-size: 10px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-    letter-spacing: 1.1px;
-}
-
-
-/* =========================================================
-   HEADER RIGHT
-   ========================================================= */
-
-.nextori-test-header-right {
-    display: flex;
-    justify-content: flex-end;
-}
-
-
-.nextori-test-header-right span {
-    color: #1E3A8A;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    padding: 8px 14px;
+    padding: 6px 14px;
 
     background: #F2F4F7;
+    color: #1E3A8A;
 
     border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: 700;
 }
 
 
 /* =========================================================
-   MAIN
+   BARRE DE PROGRESSION
    ========================================================= */
 
-.nextori-test-main {
-    width: min(1120px, calc(100% - 64px));
+.nxt-progress-bar {
+    height: 5px;
+    flex-shrink: 0;
+
+    background: rgba(13, 27, 42, 0.07);
+}
+
+.nxt-progress-bar__fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1E3A8A, #F4B400);
+    border-radius: 0 4px 4px 0;
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+
+/* =========================================================
+   LAYOUT PRINCIPAL (2 colonnes)
+   ========================================================= */
+
+.nxt-main {
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 0;
+
+    max-width: 1200px;
+    width: 100%;
 
     margin: 0 auto;
 
-    padding: 30px 0 32px;
+    padding: 0 40px;
 
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
+    /* Hauteur exacte restante → pas de scroll */
+    height: calc(100vh - 68px - 5px);
+    overflow: hidden;
 }
 
 
 /* =========================================================
-   INTRODUCTION
+   COLONNE GAUCHE — QUESTION
    ========================================================= */
 
-.nextori-test-intro {
+.nxt-question-col {
     display: flex;
-    align-items: center;
-
-    gap: 18px;
-
-    margin-bottom: 19px;
-}
-
-
-.nextori-test-intro-icon {
-    width: 52px;
-    height: 52px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
 
-    color: #F4B400;
-    background: #0D1B2A;
+    padding: 36px 52px 36px 0;
 
-    border-radius: 14px;
+    border-right: 1px solid rgba(13, 27, 42, 0.08);
+
+    /* animation */
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nxt-question-col--next {
+    opacity: 0;
+    transform: translateX(-18px);
+}
+
+.nxt-question-col--prev {
+    opacity: 0;
+    transform: translateX(18px);
 }
 
 
-.nextori-test-intro-content {
-    min-width: 0;
+/* Compteur */
+.nxt-counter {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 20px;
 }
 
-
-.nextori-test-eyebrow {
-    display: block;
-
-    margin-bottom: 5px;
-
-    color: #1E3A8A;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    letter-spacing: 1.6px;
-}
-
-
-.nextori-test-intro h1 {
-    margin: 0;
-
+.nxt-counter__num {
+    font-size: 42px;
+    font-weight: 900;
     color: #0D1B2A;
+    line-height: 1;
+    letter-spacing: -2px;
+}
 
-    font-size: clamp(28px, 3vw, 35px);
-    line-height: 1.12;
+.nxt-counter__sep {
+    font-size: 22px;
+    color: rgba(13, 27, 42, 0.25);
+    font-weight: 300;
+}
 
-    letter-spacing: -1px;
+.nxt-counter__total {
+    font-size: 22px;
+    color: rgba(13, 27, 42, 0.35);
+    font-weight: 600;
+}
+
+.nxt-counter__pct {
+    font-size: 14px;
+    color: #1E3A8A;
+    font-weight: 700;
+    margin-left: 6px;
 }
 
 
-.nextori-test-intro p {
-    margin: 6px 0 0;
+/* Texte question */
+.nxt-question__text {
+    margin: 0 0 14px;
+    color: #0D1B2A;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
 
-    color: rgba(13, 27, 42, 0.62);
-
+.nxt-question__hint {
+    margin: 0 0 32px;
+    color: rgba(13, 27, 42, 0.50);
     font-size: 14px;
     line-height: 1.5;
 }
 
 
 /* =========================================================
-   INFORMATION
+   NAVIGATION DESKTOP
    ========================================================= */
 
-.nextori-test-information {
-    min-height: 58px;
-
+.nxt-nav {
     display: flex;
     align-items: center;
+    gap: 12px;
+}
 
-    gap: 13px;
-
-    margin-bottom: 18px;
-    padding: 10px 14px;
-
-    background: #FFFFFF;
-
-    border: 1px solid rgba(244, 180, 0, 0.30);
-    border-left: 4px solid #F4B400;
-
-    border-radius: 11px;
+.nxt-nav--mobile {
+    display: none;
 }
 
 
-.nextori-test-information-icon {
-    width: 30px;
-    height: 30px;
+/* =========================================================
+   BOUTONS
+   ========================================================= */
 
-    flex-shrink: 0;
-
-    display: flex;
+.nxt-btn {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    background: #F4B400;
-    color: #0D1B2A;
-
-    border-radius: 50%;
-
-    font-size: 14px;
-    font-weight: 900;
-}
-
-
-.nextori-test-information-content {
-    min-width: 0;
-
-    display: flex;
-    align-items: baseline;
-
     gap: 8px;
 
-    flex: 1;
-}
+    height: 46px;
+    padding: 0 20px;
 
+    border-radius: 11px;
 
-.nextori-test-information-content strong {
-    color: #0D1B2A;
-
-    font-size: 13px;
-
-    white-space: nowrap;
-}
-
-
-.nextori-test-information-content span {
-    color: rgba(13, 27, 42, 0.62);
-
-    font-size: 13px;
-    line-height: 1.45;
-}
-
-
-.nextori-test-information-close {
-    width: 32px;
-    height: 32px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-
-    background: transparent;
-    color: rgba(13, 27, 42, 0.50);
-
-    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
 
     cursor: pointer;
 
     transition:
         background 0.2s ease,
-        color 0.2s ease;
+        border-color 0.2s ease,
+        transform 0.18s ease,
+        opacity 0.2s ease;
 }
 
-
-.nextori-test-information-close:hover {
-    background: #F2F4F7;
-    color: #0D1B2A;
-}
-
-
-/* =========================================================
-   PROGRESSION
-   ========================================================= */
-
-.nextori-test-progress {
-    margin-bottom: 17px;
-}
-
-
-.nextori-test-progress-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 8px;
-
-    font-size: 14px;
-}
-
-
-.nextori-test-progress-top>div {
-    display: flex;
-    align-items: baseline;
-
-    gap: 5px;
-}
-
-
-.nextori-test-progress-label {
-    color: rgba(13, 27, 42, 0.55);
-}
-
-
-.nextori-test-progress-top strong {
-    color: #0D1B2A;
-
-    font-size: 14px;
-}
-
-
-.nextori-test-progress-percent {
-    color: #1E3A8A !important;
-}
-
-
-.nextori-test-progress-track {
-    width: 100%;
-    height: 6px;
-
-    overflow: hidden;
-
+.nxt-btn--secondary {
     background: #FFFFFF;
-
-    border-radius: 10px;
+    color: #0D1B2A;
+    border: 1.5px solid rgba(13, 27, 42, 0.14);
 }
 
-
-.nextori-test-progress-fill {
-    height: 100%;
-
-    background: #F4B400;
-
-    border-radius: inherit;
-
-    transition: width 0.35s ease;
-}
-
-
-/* =========================================================
-   QUESTION
-   ========================================================= */
-
-.nextori-test-question-card {
-    display: flex;
-    align-items: center;
-
-    gap: 19px;
-
-    margin-bottom: 15px;
-    padding: 19px 22px;
-
-    background: #FFFFFF;
-
-    border: 1px solid rgba(13, 27, 42, 0.07);
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 6px 20px rgba(13, 27, 42, 0.05);
-}
-
-
-.nextori-test-question-number {
-    width: 52px;
-    height: 52px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #0D1B2A;
-    color: #F4B400;
-
-    border-radius: 12px;
-
-    font-size: 18px;
-    font-weight: 800;
-}
-
-
-.nextori-test-question-content {
-    min-width: 0;
-}
-
-
-.nextori-test-question-label {
-    display: block;
-
-    margin-bottom: 5px;
-
+.nxt-btn--secondary:hover:not(:disabled) {
+    border-color: #1E3A8A;
     color: #1E3A8A;
-
-    font-size: 10px;
-    font-weight: 800;
-
-    letter-spacing: 1.4px;
 }
 
-
-.nextori-test-question-content h2 {
-    margin: 0;
-
-    color: #0D1B2A;
-
-    font-size: clamp(20px, 2.2vw, 24px);
-    line-height: 1.3;
-
-    font-weight: 700;
+.nxt-btn--secondary:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
 }
 
+.nxt-btn--primary {
+    background: #0D1B2A;
+    color: #FFFFFF;
+    border: 1.5px solid #0D1B2A;
+}
 
-.nextori-test-question-helper {
-    margin: 5px 0 0;
+.nxt-btn--primary:hover:not(:disabled) {
+    background: #1E3A8A;
+    border-color: #1E3A8A;
+    transform: translateY(-1px);
+}
 
-    color: rgba(13, 27, 42, 0.50);
-
-    font-size: 13px;
+.nxt-btn--primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
 
 /* =========================================================
-   RÉPONSES
+   COLONNE DROITE — RÉPONSES
    ========================================================= */
 
-.nextori-test-answers {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
+.nxt-answers-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     gap: 11px;
 
-    margin-bottom: 17px;
+    padding: 36px 0 36px 52px;
+
+    /* animation */
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nxt-answers-col--next {
+    opacity: 0;
+    transform: translateX(18px);
+}
+
+.nxt-answers-col--prev {
+    opacity: 0;
+    transform: translateX(-18px);
 }
 
 
-.nextori-test-answer {
-    min-height: 66px;
+/* =========================================================
+   RÉPONSE
+   ========================================================= */
 
-    position: relative;
-
+.nxt-answer {
     display: flex;
     align-items: center;
+    gap: 14px;
 
-    gap: 13px;
-
-    padding: 10px 15px;
-
-    border: 1.5px solid rgba(13, 27, 42, 0.11);
-
-    border-radius: 12px;
+    min-height: 62px;
+    padding: 12px 16px;
 
     background: #FFFFFF;
     color: #0D1B2A;
 
-    text-align: left;
+    border: 1.5px solid rgba(13, 27, 42, 0.10);
+    border-radius: 13px;
 
+    text-align: left;
     cursor: pointer;
 
+    animation: nxtAnswerIn 0.28s ease both;
+
     transition:
-        transform 0.18s ease,
         border-color 0.18s ease,
         box-shadow 0.18s ease,
-        background 0.18s ease;
+        background 0.18s ease,
+        transform 0.18s ease;
 }
 
+@keyframes nxtAnswerIn {
+    from {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 
-.nextori-test-answer:hover {
-    transform: translateY(-1px);
-
+.nxt-answer:hover {
     border-color: #1E3A8A;
-
-    box-shadow:
-        0 6px 16px rgba(13, 27, 42, 0.07);
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.10);
+    transform: translateX(3px);
 }
 
+.nxt-answer--active {
+    background: #0D1B2A;
+    border-color: #0D1B2A;
+    box-shadow: 0 8px 22px rgba(13, 27, 42, 0.18);
+    transform: none;
+}
 
-.nextori-test-answer-letter {
+.nxt-answer--active:hover {
+    border-color: #0D1B2A;
+    transform: none;
+}
+
+.nxt-answer__letter {
     width: 38px;
     height: 38px;
-
     flex-shrink: 0;
 
     display: flex;
@@ -570,37 +467,40 @@
         color 0.18s ease;
 }
 
-
-.nextori-test-answer-text {
-    flex: 1;
-
+.nxt-answer--active .nxt-answer__letter {
+    background: #F4B400;
     color: #0D1B2A;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    line-height: 1.4;
 }
 
+.nxt-answer__text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #0D1B2A;
 
-.nextori-test-answer-check {
-    width: 23px;
-    height: 23px;
+    transition: color 0.18s ease;
+}
 
+.nxt-answer--active .nxt-answer__text {
+    color: #FFFFFF;
+}
+
+.nxt-answer__check {
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border: 1.5px solid rgba(13, 27, 42, 0.16);
-
+    border: 1.5px solid rgba(13, 27, 42, 0.15);
     border-radius: 50%;
-
-    color: transparent;
 
     font-size: 11px;
     font-weight: 900;
+    color: transparent;
 
     transition:
         background 0.18s ease,
@@ -608,148 +508,24 @@
         color 0.18s ease;
 }
 
-
-/* =========================================================
-   RÉPONSE ACTIVE
-   ========================================================= */
-
-.nextori-test-answer-active {
-    background: #0D1B2A;
-
-    border-color: #0D1B2A;
-
-    box-shadow:
-        0 8px 20px rgba(13, 27, 42, 0.15);
-}
-
-
-.nextori-test-answer-active:hover {
-    border-color: #0D1B2A;
-}
-
-
-.nextori-test-answer-active .nextori-test-answer-letter {
-    background: #F4B400;
-    color: #0D1B2A;
-}
-
-
-.nextori-test-answer-active .nextori-test-answer-text {
-    color: #FFFFFF;
-}
-
-
-.nextori-test-answer-active .nextori-test-answer-check {
+.nxt-answer--active .nxt-answer__check {
     background: #F4B400;
     border-color: #F4B400;
-
     color: #0D1B2A;
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-.nextori-test-navigation {
-    display: grid;
-
-    grid-template-columns: 1fr auto 1fr;
-
-    align-items: center;
-
-    margin-top: auto;
-}
-
-
-.nextori-test-previous,
-.nextori-test-next {
-    min-height: 46px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 9px;
-
-    border-radius: 10px;
-
-    padding: 0 18px;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.18s ease,
-        background 0.18s ease,
-        border-color 0.18s ease,
-        opacity 0.18s ease;
-}
-
-
-.nextori-test-previous {
-    justify-self: start;
-
-    border: 1px solid rgba(13, 27, 42, 0.13);
-
-    background: #FFFFFF;
-    color: #0D1B2A;
-}
-
-
-.nextori-test-previous:hover:not(:disabled) {
-    border-color: #1E3A8A;
-    color: #1E3A8A;
-}
-
-
-.nextori-test-previous:disabled {
-    opacity: 0.35;
-
-    cursor: not-allowed;
-}
-
-
-.nextori-test-navigation-status {
-    color: rgba(13, 27, 42, 0.48);
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-
-.nextori-test-next {
-    justify-self: end;
-
-    border: 1px solid #0D1B2A;
-
-    background: #0D1B2A;
-    color: #FFFFFF;
-}
-
-
-.nextori-test-next:hover {
-    background: #1E3A8A;
-    border-color: #1E3A8A;
-
-    transform: translateY(-1px);
 }
 
 
 /* =========================================================
    LOADING / EMPTY
+   (conservés pour compatibilité)
    ========================================================= */
 
 .nextori-test-loading,
 .nextori-test-empty {
     align-items: center;
     justify-content: center;
-
     padding: 30px;
 }
-
 
 .nextori-test-loading-card,
 .nextori-test-empty-card {
@@ -767,20 +543,15 @@
 
     border-radius: 17px;
 
-    box-shadow:
-        0 10px 35px rgba(13, 27, 42, 0.08);
+    box-shadow: 0 10px 35px rgba(13, 27, 42, 0.08);
 }
-
 
 .nextori-test-loading-card p,
 .nextori-test-empty-card p {
     margin: 16px 0 0;
-
     color: rgba(13, 27, 42, 0.60);
-
     font-size: 15px;
 }
-
 
 .nextori-test-loading-spinner {
     width: 34px;
@@ -791,43 +562,32 @@
 
     border-radius: 50%;
 
-    animation: nextoriTestSpin 0.8s linear infinite;
+    animation: nxtSpin 0.8s linear infinite;
 }
 
-
-@keyframes nextoriTestSpin {
-
-    to {
-        transform: rotate(360deg);
-    }
-
+@keyframes nxtSpin {
+    to { transform: rotate(360deg); }
 }
-
 
 .nextori-test-empty-card {
     color: #0D1B2A;
 }
 
-
 .nextori-test-empty-card h2 {
     margin: 15px 0 0;
-
     font-size: 22px;
 }
-
 
 .nextori-test-home-button {
     margin-top: 22px;
 
     display: inline-flex;
     align-items: center;
-
     gap: 8px;
 
     padding: 12px 18px;
 
     border: none;
-
     border-radius: 9px;
 
     background: #0D1B2A;
@@ -841,230 +601,8 @@
 
 
 /* =========================================================
-   ÉCRANS MOYENS
-   ========================================================= */
-
-@media (max-width: 900px) {
-
-    .nextori-test-header {
-        padding: 0 28px;
-    }
-
-
-    .nextori-test-main {
-        width: min(100% - 44px, 760px);
-
-        padding-top: 25px;
-    }
-
-
-    .nextori-test-intro h1 {
-        font-size: 29px;
-    }
-
-
-    .nextori-test-answer-text {
-        font-size: 13px;
-    }
-
-}
-
-
-/* =========================================================
-   TABLETTE
-   ========================================================= */
-
-@media (max-width: 800px) {
-
-    .nextori-test-header {
-        grid-template-columns: 1fr auto;
-
-        padding: 0 20px;
-    }
-
-
-    .nextori-test-header-right {
-        display: none;
-    }
-
-
-    .nextori-test-brand {
-        grid-column: 2;
-        grid-row: 1;
-    }
-
-
-    .nextori-test-header-left {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-
-    .nextori-test-main {
-        width: min(100% - 28px, 650px);
-
-        padding-top: 20px;
-    }
-
-
-    .nextori-test-intro h1 {
-        font-size: 26px;
-    }
-
-
-    .nextori-test-information-content {
-        flex-direction: column;
-
-        gap: 2px;
-    }
-
-
-    .nextori-test-answer {
-        min-height: 62px;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 560px) {
-
-    .nextori-test-header {
-        height: 60px;
-
-        padding: 0 15px;
-    }
-
-
-    .nextori-test-home-link span {
-        display: none;
-    }
-
-
-    .nextori-test-brand-mark {
-        width: 32px;
-        height: 32px;
-    }
-
-
-    .nextori-test-brand strong {
-        font-size: 15px;
-    }
-
-
-    .nextori-test-main {
-        width: calc(100% - 22px);
-
-        padding: 16px 0 20px;
-    }
-
-
-    .nextori-test-intro {
-        align-items: flex-start;
-
-        gap: 11px;
-
-        margin-bottom: 12px;
-    }
-
-
-    .nextori-test-intro-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-
-    .nextori-test-intro h1 {
-        font-size: 21px;
-    }
-
-
-    .nextori-test-intro p {
-        font-size: 11px;
-    }
-
-
-    .nextori-test-information {
-        align-items: flex-start;
-
-        padding: 9px;
-    }
-
-
-    .nextori-test-information-content strong {
-        white-space: normal;
-    }
-
-
-    .nextori-test-question-card {
-        align-items: flex-start;
-
-        gap: 11px;
-
-        padding: 13px;
-    }
-
-
-    .nextori-test-question-number {
-        width: 38px;
-        height: 38px;
-
-        font-size: 13px;
-    }
-
-
-    .nextori-test-question-content h2 {
-        font-size: 16px;
-    }
-
-
-    .nextori-test-question-helper {
-        display: none;
-    }
-
-
-    .nextori-test-answers {
-        grid-template-columns: 1fr;
-
-        gap: 7px;
-    }
-
-
-    .nextori-test-answer {
-        min-height: 53px;
-    }
-
-
-    .nextori-test-answer-text {
-        font-size: 12px;
-    }
-
-
-    .nextori-test-navigation {
-        grid-template-columns: 1fr 1fr;
-
-        gap: 8px;
-    }
-
-
-    .nextori-test-navigation-status {
-        display: none;
-    }
-
-
-    .nextori-test-previous,
-    .nextori-test-next {
-        width: 100%;
-    }
-
-}
-
-/* =========================================================
    ANALYSE DU RÉSULTAT
-========================================================= */
+   ========================================================= */
 
 .nextori-analysis-page {
     min-height: 100vh;
@@ -1081,7 +619,6 @@
     padding: 32px 20px;
 }
 
-
 .nextori-analysis-card {
     width: min(620px, 100%);
 
@@ -1095,27 +632,21 @@
 
     text-align: center;
 
-    box-shadow:
-        0 24px 70px rgba(13, 27, 42, 0.10);
+    box-shadow: 0 24px 70px rgba(13, 27, 42, 0.10);
 
     animation: nextoriAnalysisAppear 0.45s ease;
 }
 
-
 @keyframes nextoriAnalysisAppear {
-
     from {
         opacity: 0;
         transform: translateY(12px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
-
 }
-
 
 .nextori-analysis-icon {
     width: 72px;
@@ -1132,7 +663,6 @@
     justify-content: center;
 }
 
-
 .nextori-analysis-spinner {
     width: 30px;
     height: 30px;
@@ -1145,159 +675,86 @@
     animation: nextoriAnalysisSpin 0.9s linear infinite;
 }
 
-
 @keyframes nextoriAnalysisSpin {
-
-    to {
-        transform: rotate(360deg);
-    }
-
+    to { transform: rotate(360deg); }
 }
-
 
 .nextori-analysis-eyebrow {
     display: block;
-
     margin-bottom: 10px;
-
     color: #1E3A8A;
-
     font-size: 12px;
     font-weight: 800;
-
     letter-spacing: 0.12em;
 }
 
-
 .nextori-analysis-card h1 {
     margin: 0 0 14px;
-
     color: #0D1B2A;
-
     font-size: clamp(26px, 4vw, 34px);
-
     line-height: 1.15;
 }
 
-
-.nextori-analysis-card>p {
+.nextori-analysis-card > p {
     max-width: 500px;
-
     margin: 0 auto;
-
     color: #667085;
-
     font-size: 15px;
-
     line-height: 1.7;
 }
-
-
-/* =========================================================
-   PROGRESSION
-========================================================= */
 
 .nextori-analysis-progress {
     margin: 32px 0 28px;
 }
 
-
 .nextori-analysis-progress-track {
     width: 100%;
     height: 6px;
-
     overflow: hidden;
-
     border-radius: 999px;
-
     background: #F2F4F7;
 }
 
-
 .nextori-analysis-progress-fill {
-    width: 45%;
     height: 100%;
-
     border-radius: inherit;
-
     background: #F4B400;
-
-    animation:
-        nextoriAnalysisProgress 2.8s ease-in-out infinite;
 }
-
-
-@keyframes nextoriAnalysisProgress {
-
-    0% {
-        transform: translateX(-100%);
-    }
-
-    50% {
-        transform: translateX(80%);
-    }
-
-    100% {
-        transform: translateX(220%);
-    }
-
-}
-
-
-/* =========================================================
-   ÉTAPES
-========================================================= */
 
 .nextori-analysis-steps {
     display: flex;
     flex-direction: column;
-
     gap: 14px;
-
     text-align: left;
-
     margin-top: 26px;
 }
-
 
 .nextori-analysis-step {
     display: flex;
     align-items: center;
-
     gap: 12px;
-
     color: #98A2B3;
-
     font-size: 14px;
 }
-
 
 .nextori-analysis-step span:first-child {
     width: 26px;
     height: 26px;
-
     flex: 0 0 26px;
-
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #F2F4F7;
-
     color: #98A2B3;
-
     font-size: 12px;
     font-weight: 800;
 }
-
 
 .nextori-analysis-step.active,
 .nextori-analysis-step.completed {
     color: #0D1B2A;
 }
-
 
 .nextori-analysis-step.active span:first-child,
 .nextori-analysis-step.completed span:first-child {
@@ -1305,18 +762,15 @@
     color: #FFFFFF;
 }
 
-
 .nextori-analysis-step.completed span:first-child {
     background: #F4B400;
     color: #FFFFFF;
 }
 
-
 .nextori-analysis-step p {
     margin: 0;
     transition: color 0.3s ease;
 }
-
 
 .nextori-analysis-dot-pending {
     width: 6px;
@@ -1326,63 +780,166 @@
     display: inline-block;
 }
 
-
 .nextori-analysis-dot {
     width: 8px !important;
     height: 8px !important;
-
     margin: 0 9px;
-
     border-radius: 50%;
-
     background: #D0D5DD !important;
 }
 
-
 .nextori-analysis-step.active .nextori-analysis-dot {
     background: #F4B400 !important;
-
     animation: nextoriAnalysisPulse 1.2s ease-in-out infinite;
 }
 
-
 @keyframes nextoriAnalysisPulse {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 0.4;
         transform: scale(0.8);
     }
-
     50% {
         opacity: 1;
         transform: scale(1);
     }
-
 }
-
 
 .nextori-analysis-card small {
     display: block;
-
     margin-top: 28px;
-
     color: #98A2B3;
-
     font-size: 12px;
 }
 
 
 /* =========================================================
-   MOBILE
-========================================================= */
+   RESPONSIVE — TABLETTE (≤ 900px)
+   ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
 
-    .nextori-analysis-page {
-        padding: 20px 14px;
+    .nxt-header {
+        padding: 0 24px;
     }
 
+    .nxt-main {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        height: auto;
+        overflow: visible;
+        padding: 0 20px;
+        max-width: 680px;
+        gap: 0;
+    }
+
+    .nxt-question-col {
+        border-right: none;
+        border-bottom: 1px solid rgba(13, 27, 42, 0.08);
+        padding: 24px 0 20px;
+    }
+
+    .nxt-question__hint {
+        margin-bottom: 0;
+    }
+
+    .nxt-nav--desktop {
+        display: none;
+    }
+
+    .nxt-answers-col {
+        padding: 20px 0;
+    }
+
+    .nxt-nav--mobile {
+        display: flex;
+        padding: 16px 0 24px;
+        justify-content: space-between;
+    }
+
+    .nxt-btn {
+        flex: 1;
+    }
+
+    .nxt-counter__num {
+        font-size: 32px;
+    }
+
+    .nxt-question__text {
+        font-size: 20px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE (≤ 560px)
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+    .nxt-header {
+        height: 58px;
+        padding: 0 14px;
+    }
+
+    .nxt-header__back span {
+        display: none;
+    }
+
+    .nxt-header__logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .nxt-header__brand strong {
+        font-size: 15px;
+    }
+
+    .nxt-header__badge {
+        display: none;
+    }
+
+    .nxt-main {
+        padding: 0 12px;
+    }
+
+    .nxt-counter {
+        margin-bottom: 14px;
+    }
+
+    .nxt-counter__num {
+        font-size: 26px;
+    }
+
+    .nxt-question__text {
+        font-size: 17px;
+    }
+
+    .nxt-answers-col {
+        gap: 8px;
+    }
+
+    .nxt-answer {
+        min-height: 54px;
+        padding: 10px 12px;
+    }
+
+    .nxt-answer__text {
+        font-size: 13px;
+    }
+
+    .nxt-notif {
+        top: 70px;
+        right: 12px;
+        left: 12px;
+        justify-content: center;
+    }
+
+    .nxt-notif__texte {
+        white-space: normal;
+    }
+
+    /* Analyse */
     .nextori-analysis-card {
         padding: 38px 24px;
         border-radius: 20px;
@@ -1392,7 +949,7 @@
         font-size: 27px;
     }
 
-    .nextori-analysis-card>p {
+    .nextori-analysis-card > p {
         font-size: 14px;
     }
 

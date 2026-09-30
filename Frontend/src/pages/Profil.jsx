@@ -87,7 +87,7 @@ function Profil() {
                 try {
                     localStorage.setItem("utilisateur", JSON.stringify(updatedUser));
                     window.dispatchEvent(new Event("storage"));
-                } catch (_) {}
+                } catch (_) { }
             };
             img.src = event.target.result;
         };
@@ -102,7 +102,7 @@ function Profil() {
         try {
             localStorage.setItem("utilisateur", JSON.stringify(updatedUser));
             window.dispatchEvent(new Event("storage"));
-        } catch (_) {}
+        } catch (_) { }
     };
 
     useEffect(() => {
@@ -112,7 +112,7 @@ function Profil() {
                 try {
                     const u = JSON.parse(localStorage.getItem("utilisateur") || "{}");
                     if (u?.id_user) idUserQuery = `?id_user=${u.id_user}`;
-                } catch (_) {}
+                } catch (_) { }
 
                 const response = await fetch(
                     `${API_ROUTES_URL}/historique-tests${idUserQuery}`,

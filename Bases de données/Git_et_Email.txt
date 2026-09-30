@@ -1,11 +1,13 @@
-Git:
+Github:
 email: nextori.platform@gmail.com
 mot de passe: NSetXEtp02...
 username: NextOri
 
 Supabase:
 email: nextori.platform@gmail.com
-mot de passe: NSetXEtp02...
+username: NextOri
+mot de passe nextori-db: NSetXEtp02...
+
 
 nextstep.platform2026@gmail.con
 mot de passe: NSetXEtp02...
@@ -22,3 +24,9 @@ Postman
 email: nextori.platform@gmail.com
 mot de passe: NOerXIt02...
 username: NextOri
+
+
+Vercel 
+Github: extori.platform@gmail.com
+username: NextOri
+mot de passe: NSetXEtp02...

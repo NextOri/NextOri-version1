@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, ArrowLeft, ArrowRight, Home, Compass } from "lucide-react";
+import { X, ArrowLeft, ArrowRight, Home, Compass, BarChart2, Sparkles, Zap, Star, Heart, Trophy } from "lucide-react";
 
 import {
     getQuestions,
@@ -13,17 +13,42 @@ import "../styles/Test.css";
 import { enregistrerAction } from "../services/historiqueService";
 
 
+/* =====================================================================
+   MESSAGES D'ENCOURAGEMENT
+===================================================================== */
+
+const ENCOURAGEMENTS = [
+    { icon: <Zap size={15} />,    texte: "Super ! Continue comme ça 🚀" },
+    { icon: <Star size={15} />,   texte: "Tu avances très bien !" },
+    { icon: <Heart size={15} />,  texte: "Chaque réponse te rapproche de ton profil !" },
+    { icon: <Sparkles size={15} />, texte: "Réponse enregistrée ✓" },
+    { icon: <Trophy size={15} />, texte: "Tu es sur la bonne voie !" },
+    { icon: <Zap size={15} />,    texte: "Parfait ! Presque là !" },
+];
+
+const MILESTONES = [
+    { seuil: 25, texte: "25 % complété — bon départ !", icon: <Zap size={15} /> },
+    { seuil: 50, texte: "Mi-chemin atteint ! Tu assures 💪", icon: <Star size={15} /> },
+    { seuil: 75, texte: "Plus que quelques questions !", icon: <Sparkles size={15} /> },
+    { seuil: 100, texte: "Félicitations ! Test terminé 🎉", icon: <Trophy size={15} /> },
+];
+
+
 function Test() {
 
-    const [questions, setQuestions] = useState([]);
-    const [propositions, setPropositions] = useState([]);
-    const [index, setIndex] = useState(0);
-    const [reponses, setReponses] = useState([]);
-    const [choix, setChoix] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [afficherInformation, setAfficherInformation] = useState(true);
-    const [analyseEnCours, setAnalyseEnCours] = useState(false);
-    const [etapeAnalyse, setEtapeAnalyse] = useState(1);
+    const [questions, setQuestions]             = useState([]);
+    const [propositions, setPropositions]       = useState([]);
+    const [index, setIndex]                     = useState(0);
+    const [reponses, setReponses]               = useState([]);
+    const [loading, setLoading]                 = useState(true);
+    const [analyseEnCours, setAnalyseEnCours]   = useState(false);
+    const [etapeAnalyse, setEtapeAnalyse]       = useState(1);
+    const [notification, setNotification]       = useState(null);
+    const [notifVisible, setNotifVisible]       = useState(false);
+    const [animDirection, setAnimDirection]     = useState("next"); // "next" | "prev"
+    const [animating, setAnimating]             = useState(false);
+    const milestoneRef                          = useRef(new Set());
+    const notifTimerRef                         = useRef(null);
     const navigate = useNavigate();
 
 
@@ -32,49 +57,60 @@ function Test() {
     ========================= */
 
     useEffect(() => {
-
         getQuestions()
             .then((data) => {
-
                 setQuestions(data);
                 setLoading(false);
-
             })
             .catch((error) => {
-
                 console.error(error);
                 setLoading(false);
-
             });
-
     }, []);
 
 
     /* =========================
-       RÉCUPÉRATION DES RÉPONSES
+       RÉCUPÉRATION DES PROPOSITIONS
     ========================= */
 
     useEffect(() => {
-
         if (questions.length > 0) {
-
-            getPropositions(
-                questions[index].id_question
-            )
-                .then((data) => {
-
-                    setPropositions(data);
-
-                })
-                .catch((error) => {
-
-                    console.error(error);
-
-                });
-
+            getPropositions(questions[index].id_question)
+                .then((data) => setPropositions(data))
+                .catch(console.error);
         }
-
     }, [index, questions]);
+
+
+    /* =========================
+       AFFICHER UNE NOTIFICATION
+    ========================= */
+
+    function afficherNotification(notif) {
+        if (notifTimerRef.current) clearTimeout(notifTimerRef.current);
+
+        setNotification(notif);
+        setNotifVisible(true);
+
+        notifTimerRef.current = setTimeout(() => {
+            setNotifVisible(false);
+        }, 2400);
+    }
+
+
+    /* =========================
+       VÉRIFIER LES JALONS
+    ========================= */
+
+    function verifierJalons(progression) {
+        for (const m of MILESTONES) {
+            if (progression >= m.seuil && !milestoneRef.current.has(m.seuil)) {
+                milestoneRef.current.add(m.seuil);
+                afficherNotification(m);
+                return;
+            }
+        }
+    }
 
 
     /* =========================
@@ -82,31 +118,22 @@ function Test() {
     ========================= */
 
     if (loading) {
-
         return (
-            <div className="nextori-test-page nextori-test-loading">
-
+            <div className="nxt-test nextori-test-loading">
                 <div className="nextori-test-loading-card">
-
                     <div className="nextori-test-loading-spinner"></div>
-
-                    <p>
-                        Préparation de ton test...
-                    </p>
-
+                    <p>Préparation de ton test...</p>
                 </div>
-
             </div>
         );
-
     }
 
+
     /* =========================
-   ANALYSE DU RÉSULTAT
-========================= */
+       ANALYSE DU RÉSULTAT
+    ========================= */
 
     if (analyseEnCours) {
-
         const pourcentageProgress =
             etapeAnalyse === 1 ? 25 :
             etapeAnalyse === 2 ? 50 :
@@ -115,9 +142,7 @@ function Test() {
 
         return (
             <div className="nextori-analysis-page">
-
                 <div className="nextori-analysis-card">
-
                     <div className="nextori-analysis-icon">
                         <div className="nextori-analysis-spinner"></div>
                     </div>
@@ -126,9 +151,7 @@ function Test() {
                         NEXTORI · ANALYSE
                     </span>
 
-                    <h1>
-                        Analyse de tes réponses...
-                    </h1>
+                    <h1>Analyse de tes réponses...</h1>
 
                     <p>
                         Nous étudions tes réponses pour identifier
@@ -137,7 +160,6 @@ function Test() {
                     </p>
 
                     <div className="nextori-analysis-progress">
-
                         <div className="nextori-analysis-progress-track">
                             <div
                                 className="nextori-analysis-progress-fill"
@@ -147,24 +169,21 @@ function Test() {
                                 }}
                             ></div>
                         </div>
-
                     </div>
 
                     <div className="nextori-analysis-steps">
 
-                        {/* Étape 1 : Réponses enregistrées */}
+                        {/* Étape 1 */}
                         <div className={`nextori-analysis-step ${etapeAnalyse > 1 ? "completed" : "active"}`}>
                             {etapeAnalyse > 1 ? (
                                 <span>✓</span>
                             ) : (
                                 <span><span className="nextori-analysis-dot"></span></span>
                             )}
-                            <p>
-                                Réponses enregistrées
-                            </p>
+                            <p>Réponses enregistrées</p>
                         </div>
 
-                        {/* Étape 2 : Analyse du profil RIASEC */}
+                        {/* Étape 2 */}
                         <div className={`nextori-analysis-step ${etapeAnalyse > 2 ? "completed" : etapeAnalyse === 2 ? "active" : ""}`}>
                             {etapeAnalyse > 2 ? (
                                 <span>✓</span>
@@ -173,12 +192,10 @@ function Test() {
                             ) : (
                                 <span><span className="nextori-analysis-dot-pending"></span></span>
                             )}
-                            <p>
-                                Analyse de ton profil RIASEC
-                            </p>
+                            <p>Analyse de ton profil RIASEC</p>
                         </div>
 
-                        {/* Étape 3 : Identification des métiers */}
+                        {/* Étape 3 */}
                         <div className={`nextori-analysis-step ${etapeAnalyse > 3 ? "completed" : etapeAnalyse === 3 ? "active" : ""}`}>
                             {etapeAnalyse > 3 ? (
                                 <span>✓</span>
@@ -187,12 +204,10 @@ function Test() {
                             ) : (
                                 <span><span className="nextori-analysis-dot-pending"></span></span>
                             )}
-                            <p>
-                                Identification des métiers
-                            </p>
+                            <p>Identification des métiers</p>
                         </div>
 
-                        {/* Étape 4 : Préparation des résultats */}
+                        {/* Étape 4 */}
                         <div className={`nextori-analysis-step ${etapeAnalyse >= 5 ? "completed" : etapeAnalyse === 4 ? "active" : ""}`}>
                             {etapeAnalyse >= 5 ? (
                                 <span>✓</span>
@@ -201,42 +216,26 @@ function Test() {
                             ) : (
                                 <span><span className="nextori-analysis-dot-pending"></span></span>
                             )}
-                            <p>
-                                Préparation de tes résultats
-                            </p>
+                            <p>Préparation de tes résultats</p>
                         </div>
 
                     </div>
 
-                    <small>
-                        Cela peut prendre quelques instants.
-                    </small>
+                    <small>Cela peut prendre quelques instants.</small>
 
                 </div>
-
             </div>
         );
-
     }
 
 
     if (!questions.length) {
-
         return (
-            <div className="nextori-test-page nextori-test-empty">
-
+            <div className="nxt-test nextori-test-empty">
                 <div className="nextori-test-empty-card">
-
                     <Compass size={40} />
-
-                    <h2>
-                        Le test n'est pas disponible
-                    </h2>
-
-                    <p>
-                        Impossible de charger les questions pour le moment.
-                    </p>
-
+                    <h2>Le test n'est pas disponible</h2>
+                    <p>Impossible de charger les questions pour le moment.</p>
                     <button
                         className="nextori-test-home-button"
                         onClick={() => navigate("/dashboard")}
@@ -244,20 +243,16 @@ function Test() {
                         <Home size={18} />
                         Retour à l'accueil
                     </button>
-
                 </div>
-
             </div>
         );
-
     }
 
 
-    const question = questions[index];
-
-    const progression = Math.round(
-        ((index + 1) / questions.length) * 100
-    );
+    const question   = questions[index];
+    const total      = questions.length;
+    const progression = Math.round(((index + 1) / total) * 100);
+    const reponseActuelle = reponses[index]?.id_proposition ?? null;
 
 
     /* =========================
@@ -266,17 +261,20 @@ function Test() {
 
     function choisirReponse(idProposition) {
 
-        setChoix(idProposition);
+        const dejaRepondu = reponseActuelle !== null;
 
         const nouvellesReponses = [...reponses];
-
         nouvellesReponses[index] = {
             id_question: question.id_question,
             id_proposition: idProposition
         };
-
         setReponses(nouvellesReponses);
 
+        // Encouragement aléatoire (pas si déjà répondu à cette question)
+        if (!dejaRepondu) {
+            const randomIndex = Math.floor(Math.random() * ENCOURAGEMENTS.length);
+            afficherNotification(ENCOURAGEMENTS[randomIndex]);
+        }
     }
 
 
@@ -286,28 +284,31 @@ function Test() {
 
     function suivant() {
 
-        if (choix === null) {
-
-            alert("Veuillez choisir une réponse.");
-
+        if (reponseActuelle === null) {
+            afficherNotification({ icon: <Zap size={15} />, texte: "Sélectionne une réponse avant de continuer !" });
             return;
-
         }
 
+        if (index < total - 1) {
 
-        if (index < questions.length - 1) {
+            const nouvelIndex = index + 1;
+            const prog = Math.round(((nouvelIndex + 1) / total) * 100);
 
-            setIndex(index + 1);
+            setAnimDirection("next");
+            setAnimating(true);
 
-            const prochaineReponse = reponses[index + 1];
+            setTimeout(() => {
+                setIndex(nouvelIndex);
+                setAnimating(false);
 
-            setChoix(
-                prochaineReponse
-                    ? prochaineReponse.id_proposition
-                    : null
-            );
+                // Vérifier les jalons après changement
+                verifierJalons(prog);
+            }, 200);
 
         } else {
+
+            // Dernier jalon
+            verifierJalons(100);
 
             setAnalyseEnCours(true);
             setEtapeAnalyse(1);
@@ -315,58 +316,37 @@ function Test() {
             const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
             const executerAnalyse = async () => {
-
                 try {
-
-                    // Lancement immédiat de l'appel backend
                     const apiPromise = envoyerReponses(reponses);
 
-                    // Étape 1 validée -> Étape 2 en cours (Analyse profil RIASEC)
                     await sleep(400);
                     setEtapeAnalyse(2);
 
-                    // Étape 2 validée -> Étape 3 en cours (Identification métiers)
                     await sleep(700);
                     setEtapeAnalyse(3);
 
-                    // On attend la réponse du calcul serveur
                     const resultat = await apiPromise;
 
-                    // Étape 3 validée -> Étape 4 en cours (Préparation résultats)
                     setEtapeAnalyse(4);
                     await sleep(600);
 
-                    // Étape finale validée
                     setEtapeAnalyse(5);
                     await sleep(300);
 
-                    await enregistrerAction(
-                        "METIERS_CONSULTES"
-                    );
+                    await enregistrerAction("METIERS_CONSULTES");
 
-                    navigate("/result", {
-                        state: {
-                            data: resultat
-                        }
-                    });
+                    navigate("/result", { state: { data: resultat } });
 
                 } catch (error) {
-
                     console.error(error);
-
                     setAnalyseEnCours(false);
                     setEtapeAnalyse(1);
-
                     alert("Erreur lors du calcul.");
-
                 }
-
             };
 
             executerAnalyse();
-
         }
-
     }
 
 
@@ -375,340 +355,200 @@ function Test() {
     ========================= */
 
     function precedent() {
-
         if (index > 0) {
-
-            const nouvelIndex = index - 1;
-
-            setIndex(nouvelIndex);
-
-            const ancienneReponse =
-                reponses[nouvelIndex];
-
-            setChoix(
-                ancienneReponse
-                    ? ancienneReponse.id_proposition
-                    : null
-            );
-
+            setAnimDirection("prev");
+            setAnimating(true);
+            setTimeout(() => {
+                setIndex(index - 1);
+                setAnimating(false);
+            }, 200);
         }
-
     }
 
 
     return (
+        <div className="nxt-test">
 
-        <div className="nextori-test-page">
+            {/* ==========================================
+                NOTIFICATION FLOTTANTE
+            ========================================== */}
 
-            {/* =========================
+            <div className={`nxt-notif ${notifVisible ? "nxt-notif--visible" : ""}`}>
+                {notification && (
+                    <>
+                        <span className="nxt-notif__icon">{notification.icon}</span>
+                        <span className="nxt-notif__texte">{notification.texte}</span>
+                    </>
+                )}
+            </div>
+
+
+            {/* ==========================================
                 HEADER
-            ========================= */}
+            ========================================== */}
 
-            <header className="nextori-test-header">
+            <header className="nxt-header">
 
-                <div className="nextori-test-header-left">
+                <button
+                    type="button"
+                    className="nxt-header__back"
+                    onClick={() => navigate("/dashboard")}
+                >
+                    <ArrowLeft size={16} />
+                    <span>Accueil</span>
+                </button>
 
-                    <button
-                        type="button"
-                        className="nextori-test-home-link"
-                        onClick={() => navigate("/dashboard")}
-                    >
-                        <ArrowLeft size={17} />
-
-                        <span>
-                            Retour à l'accueil
-                        </span>
-                    </button>
-
+                <div className="nxt-header__brand">
+                    <div className="nxt-header__logo">
+                        <Compass size={18} />
+                    </div>
+                    <strong>NextOri</strong>
                 </div>
 
-
-                <div className="nextori-test-brand">
-
-                    <div className="nextori-test-brand-mark">
-                        <Compass size={20} />
-                    </div>
-
-                    <div>
-
-                        <strong>
-                            NextOri
-                        </strong>
-
-                        <span>
-                            Orientation
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div className="nextori-test-header-right">
-
-                    <span>
-                        Test RIASEC
-                    </span>
-
+                <div className="nxt-header__badge">
+                    Test RIASEC
                 </div>
 
             </header>
 
 
-            {/* =========================
-                CONTENU PRINCIPAL
-            ========================= */}
+            {/* ==========================================
+                BARRE DE PROGRESSION
+            ========================================== */}
 
-            <main className="nextori-test-main">
+            <div className="nxt-progress-bar">
+                <div
+                    className="nxt-progress-bar__fill"
+                    style={{ width: `${progression}%` }}
+                />
+            </div>
 
 
-                {/* INTRODUCTION COMPACTE */}
+            {/* ==========================================
+                CORPS PRINCIPAL (layout 2 colonnes)
+            ========================================== */}
 
-                <section className="nextori-test-intro">
+            <main className="nxt-main">
 
-                    <div className="nextori-test-intro-icon">
-                        <Compass size={23} />
+                {/* ---- COLONNE GAUCHE : Question ---- */}
+                <div className={`nxt-question-col ${animating ? `nxt-question-col--${animDirection}` : ""}`}>
+
+                    {/* Compteur */}
+                    <div className="nxt-counter">
+                        <span className="nxt-counter__num">{index + 1}</span>
+                        <span className="nxt-counter__sep">/</span>
+                        <span className="nxt-counter__total">{total}</span>
+                        <span className="nxt-counter__pct">· {progression}%</span>
                     </div>
 
-                    <div className="nextori-test-intro-content">
+                    {/* Texte de la question */}
+                    <h2 className="nxt-question__text">
+                        {question.texte}
+                    </h2>
 
-                        <span className="nextori-test-eyebrow">
-                            TON ORIENTATION
-                        </span>
+                    <p className="nxt-question__hint">
+                        Choisis la réponse qui te correspond le mieux.
+                    </p>
 
-                        <h1>
-                            Découvre ton profil professionnel
-                        </h1>
-
-                        <p>
-                            Réponds spontanément aux questions pour
-                            découvrir les domaines et métiers qui
-                            correspondent le mieux à tes intérêts.
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-                {/* =========================
-                    INFORMATION
-                ========================= */}
-
-                {afficherInformation && (
-
-                    <div className="nextori-test-information">
-
-                        <div className="nextori-test-information-icon">
-                            ✓
-                        </div>
-
-                        <div className="nextori-test-information-content">
-
-                            <strong>
-                                Réponds naturellement
-                            </strong>
-
-                            <span>
-                                Il n'y a pas de bonne ou de mauvaise réponse.
-                                Choisis simplement ce qui te correspond le mieux.
-                            </span>
-
-                        </div>
+                    {/* Navigation desktop */}
+                    <div className="nxt-nav nxt-nav--desktop">
+                        <button
+                            type="button"
+                            className="nxt-btn nxt-btn--secondary"
+                            onClick={precedent}
+                            disabled={index === 0}
+                        >
+                            <ArrowLeft size={16} />
+                            Précédent
+                        </button>
 
                         <button
                             type="button"
-                            className="nextori-test-information-close"
-                            onClick={() =>
-                                setAfficherInformation(false)
-                            }
-                            aria-label="Fermer l'information"
+                            className="nxt-btn nxt-btn--primary"
+                            onClick={suivant}
+                            disabled={analyseEnCours}
                         >
-                            <X size={17} />
+                            {index === total - 1 ? (
+                                <>
+                                    <BarChart2 size={16} />
+                                    Voir mes résultats
+                                </>
+                            ) : (
+                                <>
+                                    Question suivante
+                                    <ArrowRight size={16} />
+                                </>
+                            )}
                         </button>
-
                     </div>
 
-                )}
+                </div>
 
 
-                {/* =========================
-                    PROGRESSION
-                ========================= */}
+                {/* ---- COLONNE DROITE : Réponses ---- */}
+                <div className={`nxt-answers-col ${animating ? `nxt-answers-col--${animDirection}` : ""}`}>
 
-                <section className="nextori-test-progress">
-
-                    <div className="nextori-test-progress-top">
-
-                        <div>
-
-                            <span className="nextori-test-progress-label">
-                                Question
-                            </span>
-
-                            <strong>
-                                {index + 1}
-                            </strong>
-
-                            <span>
-                                / {questions.length}
-                            </span>
-
-                        </div>
-
-                        <strong className="nextori-test-progress-percent">
-                            {progression}%
-                        </strong>
-
-                    </div>
-
-
-                    <div className="nextori-test-progress-track">
-
-                        <div
-                            className="nextori-test-progress-fill"
-                            style={{
-                                width: `${progression}%`
-                            }}
-                        />
-
-                    </div>
-
-                </section>
-
-
-                {/* =========================
-                    QUESTION
-                ========================= */}
-
-                <section className="nextori-test-question-card">
-
-                    <div className="nextori-test-question-number">
-
-                        {String(index + 1).padStart(2, "0")}
-
-                    </div>
-
-                    <div className="nextori-test-question-content">
-
-                        <span className="nextori-test-question-label">
-                            QUESTION {index + 1}
-                        </span>
-
-                        <h2>
-                            {question.texte}
-                        </h2>
-
-                        <p className="nextori-test-question-helper">
-                            Sélectionne la réponse qui te ressemble le plus.
-                        </p>
-
-                    </div>
-
-                </section>
-
-
-                {/* =========================
-                    RÉPONSES
-                ========================= */}
-
-                <section className="nextori-test-answers">
-
-                    {propositions.map((proposition) => {
-
-                        const estActive =
-                            reponses[index]?.id_proposition ===
-                            proposition.id_proposition;
-
+                    {propositions.map((proposition, i) => {
+                        const estActive = reponseActuelle === proposition.id_proposition;
                         return (
-
                             <button
                                 key={proposition.id_proposition}
                                 type="button"
-                                className={`nextori-test-answer ${estActive
-                                        ? "nextori-test-answer-active"
-                                        : ""
-                                    }`}
-                                onClick={() =>
-                                    choisirReponse(
-                                        proposition.id_proposition
-                                    )
-                                }
+                                className={`nxt-answer ${estActive ? "nxt-answer--active" : ""}`}
+                                onClick={() => choisirReponse(proposition.id_proposition)}
+                                style={{ animationDelay: `${i * 0.06}s` }}
                             >
-
-                                <span className="nextori-test-answer-letter">
+                                <span className="nxt-answer__letter">
                                     {proposition.lettre}
                                 </span>
-
-                                <span className="nextori-test-answer-text">
+                                <span className="nxt-answer__text">
                                     {proposition.libelle}
                                 </span>
-
-                                <span className="nextori-test-answer-check">
-                                    ✓
+                                <span className="nxt-answer__check">
+                                    {estActive && <span>✓</span>}
                                 </span>
-
                             </button>
-
                         );
-
                     })}
 
-                </section>
+                </div>
 
 
-                {/* =========================
-                    NAVIGATION
-                ========================= */}
-
-                <div className="nextori-test-navigation">
-
+                {/* Navigation mobile */}
+                <div className="nxt-nav nxt-nav--mobile">
                     <button
                         type="button"
-                        className="nextori-test-previous"
+                        className="nxt-btn nxt-btn--secondary"
                         onClick={precedent}
                         disabled={index === 0}
                     >
-
-                        <ArrowLeft size={17} />
-
-                        <span>
-                            Précédent
-                        </span>
-
+                        <ArrowLeft size={16} />
+                        Précédent
                     </button>
-
-
-                    <span className="nextori-test-navigation-status">
-
-                        {index + 1} / {questions.length}
-
-                    </span>
-
 
                     <button
                         type="button"
-                        className="nextori-test-next"
+                        className="nxt-btn nxt-btn--primary"
                         onClick={suivant}
                         disabled={analyseEnCours}
                     >
-
-                        <span>
-                            {index === questions.length - 1
-                                ? "Voir mes résultats"
-                                : "Question suivante"}
-                        </span>
-
-                        <ArrowRight size={18} />
-
+                        {index === total - 1 ? (
+                            <>
+                                <BarChart2 size={16} />
+                                Résultats
+                            </>
+                        ) : (
+                            <>
+                                Suivant
+                                <ArrowRight size={16} />
+                            </>
+                        )}
                     </button>
-
                 </div>
 
             </main>
 
         </div>
-
     );
 
 }
