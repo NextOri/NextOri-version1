@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { Star, MessageSquare, ArrowRight, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -244,9 +244,15 @@ function Temoignages() {
                                     <div className="temoignage-author">
 
     <div className="temoignage-avatar">
-        {temoignage.nom_utilisateur
-            ?.charAt(0)
-            ?.toUpperCase() || "N"}
+        {temoignage.photo ? (
+            <img
+                src={temoignage.photo}
+                alt={temoignage.nom_utilisateur || "Membre NextOri"}
+                className="temoignage-avatar-img"
+            />
+        ) : (
+            temoignage.nom_utilisateur?.charAt(0)?.toUpperCase() || "N"
+        )}
     </div>
 
     <div>

@@ -11,7 +11,8 @@ import {
     ClipboardList,
     ArrowRight,
     BarChart3,
-    Sparkles
+    Camera,
+    Trash2
 } from "lucide-react";
 import "../styles/Profil.css";
 import FooterNavigation from "../components/FooterNavigation";
@@ -37,6 +38,71 @@ function Profil() {
             setUtilisateur(null);
             navigate("/connexion");
         }
+    };
+
+    const handlePhotoUpload = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            alert("Veuillez sélectionner un fichier image valide (JPG, PNG, WebP).");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                // Redimensionner et compresser l'image via canvas pour un stockage ultra léger
+                const canvas = document.createElement("canvas");
+                const maxSize = 260;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxSize) {
+                        height = Math.round((height * maxSize) / width);
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width = Math.round((width * maxSize) / height);
+                        height = maxSize;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const photoData = canvas.toDataURL("image/jpeg", 0.85);
+
+                const updatedUser = {
+                    ...utilisateur,
+                    photo: photoData
+                };
+
+                setUtilisateur(updatedUser);
+                try {
+                    localStorage.setItem("utilisateur", JSON.stringify(updatedUser));
+                    window.dispatchEvent(new Event("storage"));
+                } catch (_) {}
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleRemovePhoto = (e) => {
+        e.stopPropagation();
+        const updatedUser = { ...utilisateur };
+        delete updatedUser.photo;
+        setUtilisateur(updatedUser);
+        try {
+            localStorage.setItem("utilisateur", JSON.stringify(updatedUser));
+            window.dispatchEvent(new Event("storage"));
+        } catch (_) {}
     };
 
     useEffect(() => {
@@ -112,11 +178,46 @@ function Profil() {
         <div className="profile-page">
             <div className="profile-container">
 
-                {/* En-tête profil compact & prestigieux */}
+                {/* En-tête profil compact & épuré avec photo de profil personnalisable */}
                 <section className="profile-header">
                     <div className="profile-header-main">
-                        <div className="profile-avatar">
-                            {getInitiales(utilisateur.nom)}
+                        <div className="profile-avatar-wrapper">
+                            <div className="profile-avatar">
+                                {utilisateur.photo ? (
+                                    <img
+                                        src={utilisateur.photo}
+                                        alt={utilisateur.nom}
+                                        className="profile-avatar-img"
+                                    />
+                                ) : (
+                                    <span>{getInitiales(utilisateur.nom)}</span>
+                                )}
+                            </div>
+
+                            <label
+                                className="profile-avatar-upload-btn"
+                                title="Changer votre photo de profil"
+                            >
+                                <Camera size={13} />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handlePhotoUpload}
+                                    style={{ display: "none" }}
+                                />
+                            </label>
+
+                            {utilisateur.photo && (
+                                <button
+                                    type="button"
+                                    className="profile-avatar-remove-btn"
+                                    onClick={handleRemovePhoto}
+                                    title="Supprimer la photo"
+                                    aria-label="Supprimer la photo de profil"
+                                >
+                                    <Trash2 size={11} />
+                                </button>
+                            )}
                         </div>
 
                         <div className="profile-header-info">
@@ -129,11 +230,6 @@ function Profil() {
                                     </span>
                                 )}
                             </div>
-
-                            <p className="profile-header-email">
-                                <Mail size={13} />
-                                <span>{utilisateur.email}</span>
-                            </p>
 
                             <div className="profile-header-meta">
                                 {utilisateur.pays && (
@@ -151,7 +247,7 @@ function Profil() {
                     </div>
                 </section>
 
-                {/* Informations personnelles compactes en grille 2 colonnes */}
+                {/* Informations personnelles : Grille 2x2 symétrique (4 éléments) */}
                 <section className="profile-section">
                     <div className="profile-section-header">
                         <div className="profile-section-icon">
@@ -196,16 +292,6 @@ function Profil() {
 
                         <div className="info-card">
                             <div className="info-card-icon">
-                                <GraduationCap size={18} />
-                            </div>
-                            <div className="info-card-body">
-                                <span className="info-card-label">Niveau d'étude</span>
-                                <strong className="info-card-value">{utilisateur.niveau_etude || "Non renseigné"}</strong>
-                            </div>
-                        </div>
-
-                        <div className="info-card info-card-full">
-                            <div className="info-card-icon">
                                 <Calendar size={18} />
                             </div>
                             <div className="info-card-body">
@@ -216,7 +302,7 @@ function Profil() {
                     </div>
                 </section>
 
-                {/* Historique des tests (au même standing de design) */}
+                {/* Historique des tests (même signature visuelle) */}
                 <section className="profil-tests-history">
                     <div className="profil-tests-history-header">
                         <div className="profil-tests-history-title">
