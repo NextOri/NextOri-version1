@@ -68,6 +68,59 @@
     animation: nxtSpin 0.8s linear infinite;
 }
 
+.nxt-spinner--gold {
+    border-color: rgba(244, 180, 0, 0.2);
+    border-top-color: #F4B400;
+    width: 40px;
+    height: 40px;
+    margin-top: 8px;
+}
+
+
+/* =========================================================
+   ÉCRAN DE FIN (🎉 avant l'analyse)
+   ========================================================= */
+
+.nxt-card-fin {
+    width: min(420px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 48px 40px;
+    background: #FFFFFF;
+    border-radius: 22px;
+    box-shadow: 0 16px 50px rgba(13, 27, 42, 0.10);
+    animation: nxtIn 0.4s ease;
+}
+
+.nxt-card-fin__emoji {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 4px;
+    animation: nxtPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes nxtPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.nxt-card-fin h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #0D1B2A;
+    font-weight: 800;
+}
+
+.nxt-card-fin p {
+    margin: 0;
+    color: rgba(13, 27, 42, 0.55);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
 @keyframes nxtSpin {
     to { transform: rotate(360deg); }
 }
@@ -269,41 +322,53 @@
 
 .nxt-question__meta {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
-/* "Question 3 sur 20" */
-.nxt-question__label {
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(13, 27, 42, 0.50);
+/* Compteur : Q. 3 / 20 */
+.nxt-question__counter {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
 }
 
-.nxt-question__label strong {
+.nxt-question__counter-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(13, 27, 42, 0.40);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-right: 2px;
+}
+
+.nxt-question__counter-num {
     font-size: 20px;
     font-weight: 900;
     color: #0D1B2A;
     letter-spacing: -0.5px;
-    margin: 0 2px 0 4px;
+    line-height: 1;
 }
 
-.nxt-question__total {
+.nxt-question__counter-sep {
     font-size: 14px;
-    font-weight: 500;
-    color: rgba(13, 27, 42, 0.40);
+    font-weight: 400;
+    color: rgba(13, 27, 42, 0.25);
+    line-height: 1;
 }
 
-/* badge "X répondues" */
+.nxt-question__counter-tot {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(13, 27, 42, 0.40);
+    line-height: 1;
+}
+
 .nxt-question__pct {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #1E3A8A;
-    background: rgba(30, 58, 138, 0.08);
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
 }
 
 .nxt-question__text {
