@@ -1,19 +1,75 @@
 /* =========================================================
-   NEXTORI — TEST RIASEC  (refonte)
+   NEXTORI — TEST RIASEC (layout vertical compact)
    ========================================================= */
+
+/* Variables internes */
+:root {
+    --nxt-header:   64px;
+    --nxt-progress: 5px;
+    --nxt-nav:      68px;
+    --nxt-body:     calc(100vh - var(--nxt-header) - var(--nxt-progress));
+}
+
 
 /* =========================================================
    BASE
    ========================================================= */
 
 .nxt-test {
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+
     background: #F2F4F7;
     color: #0D1B2A;
     font-family: inherit;
+
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+}
+
+/* Variante centrée pour loading/empty */
+.nxt-test--center {
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.nxt-card-center {
+    width: min(420px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 40px;
+    background: #FFFFFF;
+    border-radius: 18px;
+    box-shadow: 0 12px 40px rgba(13, 27, 42, 0.08);
+}
+
+.nxt-card-center h2 {
+    margin: 0;
+    font-size: 21px;
+    color: #0D1B2A;
+}
+
+.nxt-card-center p {
+    margin: 0;
+    color: rgba(13, 27, 42, 0.55);
+    font-size: 14px;
+}
+
+.nxt-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid #F2F4F7;
+    border-top-color: #F4B400;
+    border-radius: 50%;
+    animation: nxtSpin 0.8s linear infinite;
+}
+
+@keyframes nxtSpin {
+    to { transform: rotate(360deg); }
 }
 
 
@@ -23,15 +79,15 @@
 
 .nxt-notif {
     position: fixed;
-    top: 90px;
-    right: 28px;
-    z-index: 500;
+    top: 80px;
+    right: 24px;
+    z-index: 999;
 
     display: inline-flex;
     align-items: center;
-    gap: 9px;
+    gap: 8px;
 
-    padding: 10px 16px;
+    padding: 10px 18px;
 
     background: #0D1B2A;
     color: #FFFFFF;
@@ -41,15 +97,15 @@
     font-size: 13px;
     font-weight: 600;
 
-    box-shadow: 0 8px 24px rgba(13, 27, 42, 0.22);
+    box-shadow: 0 8px 28px rgba(13, 27, 42, 0.25);
 
     pointer-events: none;
 
     opacity: 0;
-    transform: translateY(-10px) scale(0.95);
+    transform: translateY(-8px) scale(0.96);
     transition:
-        opacity 0.28s ease,
-        transform 0.28s ease;
+        opacity 0.25s ease,
+        transform 0.25s ease;
 }
 
 .nxt-notif--visible {
@@ -57,23 +113,13 @@
     transform: translateY(0) scale(1);
 }
 
-.nxt-notif__icon {
-    display: flex;
-    align-items: center;
-    color: #F4B400;
-}
-
-.nxt-notif__texte {
-    white-space: nowrap;
-}
-
 
 /* =========================================================
-   HEADER
+   HEADER  (hauteur fixe)
    ========================================================= */
 
 .nxt-header {
-    height: 68px;
+    height: var(--nxt-header);
     flex-shrink: 0;
 
     background: #FFFFFF;
@@ -82,217 +128,298 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-
-    padding: 0 40px;
+    padding: 0 36px;
 }
 
 .nxt-header__back {
     justify-self: start;
-
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-
+    gap: 7px;
     border: none;
     background: transparent;
-
-    color: rgba(13, 27, 42, 0.65);
-
+    color: rgba(13, 27, 42, 0.55);
     font-size: 14px;
     font-weight: 600;
-
     padding: 8px 0;
-
     cursor: pointer;
-
-    transition: color 0.2s ease;
+    transition: color 0.2s;
 }
-
-.nxt-header__back:hover {
-    color: #0D1B2A;
-}
+.nxt-header__back:hover { color: #0D1B2A; }
 
 .nxt-header__brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
 }
-
 .nxt-header__logo {
-    width: 36px;
-    height: 36px;
-
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #0D1B2A;
     color: #F4B400;
-
-    border-radius: 10px;
+    border-radius: 9px;
 }
-
 .nxt-header__brand strong {
     color: #0D1B2A;
-    font-size: 18px;
+    font-size: 17px;
     letter-spacing: -0.4px;
 }
 
 .nxt-header__badge {
     justify-self: end;
-
-    padding: 6px 14px;
-
+    padding: 5px 13px;
     background: #F2F4F7;
     color: #1E3A8A;
-
     border-radius: 20px;
-
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
 }
 
 
 /* =========================================================
-   BARRE DE PROGRESSION
+   BARRE DE PROGRESSION  (hauteur fixe)
    ========================================================= */
 
 .nxt-progress-bar {
-    height: 5px;
+    height: var(--nxt-progress);
     flex-shrink: 0;
-
-    background: rgba(13, 27, 42, 0.07);
+    background: rgba(13, 27, 42, 0.08);
 }
 
 .nxt-progress-bar__fill {
     height: 100%;
-    background: linear-gradient(90deg, #1E3A8A, #F4B400);
-    border-radius: 0 4px 4px 0;
-    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: linear-gradient(90deg, #1E3A8A 0%, #F4B400 100%);
+    border-radius: 0 3px 3px 0;
+    transition: width 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 
 /* =========================================================
-   LAYOUT PRINCIPAL (2 colonnes)
+   MAIN  — occupe exactement le reste de l'écran
    ========================================================= */
 
 .nxt-main {
     flex: 1;
+    min-height: 0;          /* empêche le débordement */
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
-    gap: 0;
-
-    max-width: 1200px;
-    width: 100%;
-
-    margin: 0 auto;
-
-    padding: 0 40px;
-
-    /* Hauteur exacte restante → pas de scroll */
-    height: calc(100vh - 68px - 5px);
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   COLONNE GAUCHE — QUESTION
-   ========================================================= */
-
-.nxt-question-col {
     display: flex;
     flex-direction: column;
-    justify-content: center;
 
-    padding: 36px 52px 36px 0;
-
-    border-right: 1px solid rgba(13, 27, 42, 0.08);
-
-    /* animation */
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-}
-
-.nxt-question-col--next {
-    opacity: 0;
-    transform: translateX(-18px);
-}
-
-.nxt-question-col--prev {
-    opacity: 0;
-    transform: translateX(18px);
-}
-
-
-/* Compteur */
-.nxt-counter {
-    display: flex;
-    align-items: baseline;
-    gap: 5px;
-    margin-bottom: 20px;
-}
-
-.nxt-counter__num {
-    font-size: 42px;
-    font-weight: 900;
-    color: #0D1B2A;
-    line-height: 1;
-    letter-spacing: -2px;
-}
-
-.nxt-counter__sep {
-    font-size: 22px;
-    color: rgba(13, 27, 42, 0.25);
-    font-weight: 300;
-}
-
-.nxt-counter__total {
-    font-size: 22px;
-    color: rgba(13, 27, 42, 0.35);
-    font-weight: 600;
-}
-
-.nxt-counter__pct {
-    font-size: 14px;
-    color: #1E3A8A;
-    font-weight: 700;
-    margin-left: 6px;
-}
-
-
-/* Texte question */
-.nxt-question__text {
-    margin: 0 0 14px;
-    color: #0D1B2A;
-    font-size: clamp(20px, 2.2vw, 28px);
-    line-height: 1.35;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.nxt-question__hint {
-    margin: 0 0 32px;
-    color: rgba(13, 27, 42, 0.50);
-    font-size: 14px;
-    line-height: 1.5;
+    width: min(680px, 100%);
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
 }
 
 
 /* =========================================================
-   NAVIGATION DESKTOP
+   ZONE ANIMÉE  (question + réponses)
    ========================================================= */
 
-.nxt-nav {
+.nxt-content {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-top: 20px;
+    padding-bottom: 14px;
+}
+
+/* --- Animations de transition --- */
+.nxt-anim--out {
+    animation: nxtOut 0.2s ease forwards;
+}
+
+.nxt-anim--in {
+    animation: nxtIn 0.26s ease forwards;
+}
+
+@keyframes nxtOut {
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes nxtIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   QUESTION
+   ========================================================= */
+
+.nxt-question {
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+.nxt-question__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.nxt-question__count {
+    font-size: 22px;
+    font-weight: 900;
+    color: #0D1B2A;
+    letter-spacing: -1px;
+}
+
+.nxt-question__count span {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(13, 27, 42, 0.35);
+}
+
+.nxt-question__pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1E3A8A;
+}
+
+.nxt-question__text {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: clamp(17px, 2.2vw, 22px);
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+
+/* =========================================================
+   RÉPONSES  — remplissent l'espace disponible
+   ========================================================= */
+
+.nxt-answers {
+    flex: 1;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.nxt-answer {
+    flex: 1;                /* chaque réponse prend sa part égale */
+    min-height: 0;
+
     display: flex;
     align-items: center;
     gap: 12px;
+
+    padding: 0 16px;
+
+    background: #FFFFFF;
+    color: #0D1B2A;
+
+    border: 1.5px solid rgba(13, 27, 42, 0.09);
+    border-radius: 12px;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        transform 0.18s ease;
 }
 
-.nxt-nav--mobile {
-    display: none;
+.nxt-answer:hover {
+    border-color: #1E3A8A;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.10);
+    transform: translateX(3px);
+}
+
+.nxt-answer--active {
+    background: #0D1B2A;
+    border-color: #0D1B2A;
+    box-shadow: 0 6px 20px rgba(13, 27, 42, 0.16);
+    transform: none;
+}
+.nxt-answer--active:hover {
+    transform: none;
+    border-color: #0D1B2A;
+}
+
+.nxt-answer__letter {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    transition: background 0.18s, color 0.18s;
+}
+
+.nxt-answer--active .nxt-answer__letter {
+    background: #F4B400;
+    color: #0D1B2A;
+}
+
+.nxt-answer__text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #0D1B2A;
+    transition: color 0.18s;
+}
+
+.nxt-answer--active .nxt-answer__text {
+    color: #FFFFFF;
+}
+
+.nxt-answer__check {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F4B400;
+    color: #0D1B2A;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   NAVIGATION  (hauteur fixe en bas)
+   ========================================================= */
+
+.nxt-nav {
+    flex-shrink: 0;
+    height: var(--nxt-nav);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    border-top: 1px solid rgba(13, 27, 42, 0.07);
 }
 
 
@@ -306,8 +433,8 @@
     justify-content: center;
     gap: 8px;
 
-    height: 46px;
-    padding: 0 20px;
+    height: 44px;
+    padding: 0 22px;
 
     border-radius: 11px;
 
@@ -317,10 +444,10 @@
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.18s ease,
-        opacity 0.2s ease;
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.18s,
+        opacity 0.2s;
 }
 
 .nxt-btn--secondary {
@@ -328,14 +455,12 @@
     color: #0D1B2A;
     border: 1.5px solid rgba(13, 27, 42, 0.14);
 }
-
 .nxt-btn--secondary:hover:not(:disabled) {
     border-color: #1E3A8A;
     color: #1E3A8A;
 }
-
 .nxt-btn--secondary:disabled {
-    opacity: 0.35;
+    opacity: 0.32;
     cursor: not-allowed;
 }
 
@@ -344,259 +469,14 @@
     color: #FFFFFF;
     border: 1.5px solid #0D1B2A;
 }
-
 .nxt-btn--primary:hover:not(:disabled) {
     background: #1E3A8A;
     border-color: #1E3A8A;
     transform: translateY(-1px);
 }
-
 .nxt-btn--primary:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
     cursor: not-allowed;
-}
-
-
-/* =========================================================
-   COLONNE DROITE — RÉPONSES
-   ========================================================= */
-
-.nxt-answers-col {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 11px;
-
-    padding: 36px 0 36px 52px;
-
-    /* animation */
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-}
-
-.nxt-answers-col--next {
-    opacity: 0;
-    transform: translateX(18px);
-}
-
-.nxt-answers-col--prev {
-    opacity: 0;
-    transform: translateX(-18px);
-}
-
-
-/* =========================================================
-   RÉPONSE
-   ========================================================= */
-
-.nxt-answer {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    min-height: 62px;
-    padding: 12px 16px;
-
-    background: #FFFFFF;
-    color: #0D1B2A;
-
-    border: 1.5px solid rgba(13, 27, 42, 0.10);
-    border-radius: 13px;
-
-    text-align: left;
-    cursor: pointer;
-
-    animation: nxtAnswerIn 0.28s ease both;
-
-    transition:
-        border-color 0.18s ease,
-        box-shadow 0.18s ease,
-        background 0.18s ease,
-        transform 0.18s ease;
-}
-
-@keyframes nxtAnswerIn {
-    from {
-        opacity: 0;
-        transform: translateX(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.nxt-answer:hover {
-    border-color: #1E3A8A;
-    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.10);
-    transform: translateX(3px);
-}
-
-.nxt-answer--active {
-    background: #0D1B2A;
-    border-color: #0D1B2A;
-    box-shadow: 0 8px 22px rgba(13, 27, 42, 0.18);
-    transform: none;
-}
-
-.nxt-answer--active:hover {
-    border-color: #0D1B2A;
-    transform: none;
-}
-
-.nxt-answer__letter {
-    width: 38px;
-    height: 38px;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #F2F4F7;
-    color: #1E3A8A;
-
-    border-radius: 9px;
-
-    font-size: 14px;
-    font-weight: 800;
-
-    transition:
-        background 0.18s ease,
-        color 0.18s ease;
-}
-
-.nxt-answer--active .nxt-answer__letter {
-    background: #F4B400;
-    color: #0D1B2A;
-}
-
-.nxt-answer__text {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
-    color: #0D1B2A;
-
-    transition: color 0.18s ease;
-}
-
-.nxt-answer--active .nxt-answer__text {
-    color: #FFFFFF;
-}
-
-.nxt-answer__check {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1.5px solid rgba(13, 27, 42, 0.15);
-    border-radius: 50%;
-
-    font-size: 11px;
-    font-weight: 900;
-    color: transparent;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        color 0.18s ease;
-}
-
-.nxt-answer--active .nxt-answer__check {
-    background: #F4B400;
-    border-color: #F4B400;
-    color: #0D1B2A;
-}
-
-
-/* =========================================================
-   LOADING / EMPTY
-   (conservés pour compatibilité)
-   ========================================================= */
-
-.nextori-test-loading,
-.nextori-test-empty {
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-}
-
-.nextori-test-loading-card,
-.nextori-test-empty-card {
-    width: min(440px, 100%);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    text-align: center;
-
-    padding: 40px;
-
-    background: #FFFFFF;
-
-    border-radius: 17px;
-
-    box-shadow: 0 10px 35px rgba(13, 27, 42, 0.08);
-}
-
-.nextori-test-loading-card p,
-.nextori-test-empty-card p {
-    margin: 16px 0 0;
-    color: rgba(13, 27, 42, 0.60);
-    font-size: 15px;
-}
-
-.nextori-test-loading-spinner {
-    width: 34px;
-    height: 34px;
-
-    border: 3px solid #F2F4F7;
-    border-top-color: #F4B400;
-
-    border-radius: 50%;
-
-    animation: nxtSpin 0.8s linear infinite;
-}
-
-@keyframes nxtSpin {
-    to { transform: rotate(360deg); }
-}
-
-.nextori-test-empty-card {
-    color: #0D1B2A;
-}
-
-.nextori-test-empty-card h2 {
-    margin: 15px 0 0;
-    font-size: 22px;
-}
-
-.nextori-test-home-button {
-    margin-top: 22px;
-
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 12px 18px;
-
-    border: none;
-    border-radius: 9px;
-
-    background: #0D1B2A;
-    color: #FFFFFF;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    cursor: pointer;
 }
 
 
@@ -607,104 +487,76 @@
 .nextori-analysis-page {
     min-height: 100vh;
     background:
-        radial-gradient(circle at top,
-            rgba(30, 58, 138, 0.12),
-            transparent 45%),
+        radial-gradient(circle at top, rgba(30,58,138,0.12), transparent 45%),
         #F2F4F7;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 32px 20px;
 }
 
 .nextori-analysis-card {
-    width: min(620px, 100%);
-
+    width: min(600px, 100%);
     background: #FFFFFF;
-
-    border: 1px solid rgba(13, 27, 42, 0.08);
-
+    border: 1px solid rgba(13,27,42,0.08);
     border-radius: 24px;
-
     padding: 48px 42px;
-
     text-align: center;
-
-    box-shadow: 0 24px 70px rgba(13, 27, 42, 0.10);
-
-    animation: nextoriAnalysisAppear 0.45s ease;
+    box-shadow: 0 24px 70px rgba(13,27,42,0.10);
+    animation: nxtAnalysisIn 0.4s ease;
 }
 
-@keyframes nextoriAnalysisAppear {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+@keyframes nxtAnalysisIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .nextori-analysis-icon {
-    width: 72px;
-    height: 72px;
-
-    margin: 0 auto 24px;
-
-    border-radius: 20px;
-
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 22px;
+    border-radius: 18px;
     background: #0D1B2A;
-
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .nextori-analysis-spinner {
-    width: 30px;
-    height: 30px;
-
-    border: 3px solid rgba(255, 255, 255, 0.25);
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(255,255,255,0.2);
     border-top-color: #F4B400;
-
     border-radius: 50%;
-
-    animation: nextoriAnalysisSpin 0.9s linear infinite;
-}
-
-@keyframes nextoriAnalysisSpin {
-    to { transform: rotate(360deg); }
+    animation: nxtSpin 0.9s linear infinite;
 }
 
 .nextori-analysis-eyebrow {
     display: block;
     margin-bottom: 10px;
     color: #1E3A8A;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.12em;
 }
 
 .nextori-analysis-card h1 {
-    margin: 0 0 14px;
+    margin: 0 0 12px;
     color: #0D1B2A;
-    font-size: clamp(26px, 4vw, 34px);
+    font-size: clamp(24px, 4vw, 32px);
     line-height: 1.15;
 }
 
 .nextori-analysis-card > p {
-    max-width: 500px;
+    max-width: 480px;
     margin: 0 auto;
     color: #667085;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.7;
 }
 
 .nextori-analysis-progress {
-    margin: 32px 0 28px;
+    margin: 28px 0 24px;
 }
 
 .nextori-analysis-progress-track {
@@ -724,23 +576,23 @@
 .nextori-analysis-steps {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 13px;
     text-align: left;
-    margin-top: 26px;
+    margin-top: 22px;
 }
 
 .nextori-analysis-step {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 11px;
     color: #98A2B3;
     font-size: 14px;
 }
 
-.nextori-analysis-step span:first-child {
+.nextori-analysis-step > span:first-child {
     width: 26px;
     height: 26px;
-    flex: 0 0 26px;
+    flex-shrink: 0;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -756,135 +608,100 @@
     color: #0D1B2A;
 }
 
-.nextori-analysis-step.active span:first-child,
-.nextori-analysis-step.completed span:first-child {
+.nextori-analysis-step.active > span:first-child,
+.nextori-analysis-step.completed > span:first-child {
     background: #0D1B2A;
     color: #FFFFFF;
 }
 
-.nextori-analysis-step.completed span:first-child {
+.nextori-analysis-step.completed > span:first-child {
     background: #F4B400;
-    color: #FFFFFF;
+    color: #0D1B2A;
 }
 
-.nextori-analysis-step p {
-    margin: 0;
-    transition: color 0.3s ease;
-}
+.nextori-analysis-step p { margin: 0; }
 
 .nextori-analysis-dot-pending {
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: #D0D5DD;
     display: inline-block;
 }
 
 .nextori-analysis-dot {
-    width: 8px !important;
-    height: 8px !important;
-    margin: 0 9px;
+    width: 8px; height: 8px;
     border-radius: 50%;
-    background: #D0D5DD !important;
+    background: #F4B400;
+    display: inline-block;
+    animation: nxtPulse 1.2s ease-in-out infinite;
 }
 
-.nextori-analysis-step.active .nextori-analysis-dot {
-    background: #F4B400 !important;
-    animation: nextoriAnalysisPulse 1.2s ease-in-out infinite;
-}
-
-@keyframes nextoriAnalysisPulse {
-    0%, 100% {
-        opacity: 0.4;
-        transform: scale(0.8);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1);
-    }
+@keyframes nxtPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50%       { opacity: 1;   transform: scale(1); }
 }
 
 .nextori-analysis-card small {
     display: block;
-    margin-top: 28px;
+    margin-top: 26px;
     color: #98A2B3;
     font-size: 12px;
 }
 
 
 /* =========================================================
-   RESPONSIVE — TABLETTE (≤ 900px)
+   RESPONSIVE — tablette (≤ 768px)
    ========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+
+    :root {
+        --nxt-header: 58px;
+        --nxt-nav:    62px;
+    }
 
     .nxt-header {
-        padding: 0 24px;
+        padding: 0 16px;
     }
 
     .nxt-main {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-        height: auto;
-        overflow: visible;
-        padding: 0 20px;
-        max-width: 680px;
-        gap: 0;
+        padding: 0 14px;
+        width: 100%;
     }
 
-    .nxt-question-col {
-        border-right: none;
-        border-bottom: 1px solid rgba(13, 27, 42, 0.08);
-        padding: 24px 0 20px;
+    .nxt-content {
+        padding-top: 14px;
+        padding-bottom: 10px;
     }
 
-    .nxt-question__hint {
-        margin-bottom: 0;
+    .nxt-question {
+        margin-bottom: 12px;
     }
 
-    .nxt-nav--desktop {
-        display: none;
+    .nxt-answers {
+        gap: 7px;
     }
 
-    .nxt-answers-col {
-        padding: 20px 0;
-    }
-
-    .nxt-nav--mobile {
-        display: flex;
-        padding: 16px 0 24px;
-        justify-content: space-between;
-    }
-
-    .nxt-btn {
-        flex: 1;
-    }
-
-    .nxt-counter__num {
-        font-size: 32px;
-    }
-
-    .nxt-question__text {
-        font-size: 20px;
+    .nxt-answer__text {
+        font-size: 13px;
     }
 
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE (≤ 560px)
+   RESPONSIVE — mobile (≤ 480px)
    ========================================================= */
 
-@media (max-width: 560px) {
+@media (max-width: 480px) {
 
-    .nxt-header {
-        height: 58px;
-        padding: 0 14px;
+    :root {
+        --nxt-header: 54px;
+        --nxt-nav:    58px;
     }
 
-    .nxt-header__back span {
-        display: none;
-    }
+    .nxt-header__back span { display: none; }
+    .nxt-header__badge     { display: none; }
 
     .nxt-header__logo {
         width: 30px;
@@ -895,62 +712,54 @@
         font-size: 15px;
     }
 
-    .nxt-header__badge {
-        display: none;
-    }
-
     .nxt-main {
-        padding: 0 12px;
+        padding: 0 10px;
     }
 
-    .nxt-counter {
-        margin-bottom: 14px;
+    .nxt-content {
+        padding-top: 10px;
+        padding-bottom: 8px;
     }
 
-    .nxt-counter__num {
-        font-size: 26px;
+    .nxt-question {
+        margin-bottom: 10px;
     }
 
     .nxt-question__text {
-        font-size: 17px;
+        font-size: 16px;
     }
 
-    .nxt-answers-col {
-        gap: 8px;
+    .nxt-answers {
+        gap: 6px;
     }
 
-    .nxt-answer {
-        min-height: 54px;
-        padding: 10px 12px;
+    .nxt-answer__letter {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
     }
 
     .nxt-answer__text {
+        font-size: 12px;
+    }
+
+    .nxt-btn {
         font-size: 13px;
+        padding: 0 14px;
+        height: 40px;
     }
 
     .nxt-notif {
-        top: 70px;
-        right: 12px;
-        left: 12px;
+        top: 65px;
+        right: 10px;
+        left: 10px;
+        font-size: 12px;
         justify-content: center;
-    }
-
-    .nxt-notif__texte {
-        white-space: normal;
     }
 
     /* Analyse */
     .nextori-analysis-card {
-        padding: 38px 24px;
-        border-radius: 20px;
-    }
-
-    .nextori-analysis-card h1 {
-        font-size: 27px;
-    }
-
-    .nextori-analysis-card > p {
-        font-size: 14px;
+        padding: 34px 20px;
     }
 
 }
