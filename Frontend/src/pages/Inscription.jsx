@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { register } from "../services/AuthService";
 import { useNavigate } from "react-router-dom";
 import { recupererSeries } from "../services/SerieService";
+import { Eye, EyeOff, Info } from "lucide-react";
 import "../styles/Auth.css";
 
 function Inscription() {
@@ -16,6 +17,7 @@ function Inscription() {
         id_serie: null
     });
 
+    const [showPassword, setShowPassword] = useState(false);
     const [series, setSeries] = useState([]);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState(""); // "error" ou "success"
@@ -152,15 +154,34 @@ function Inscription() {
                         required
                     />
 
-                    <input
-                        className="auth-input"
-                        type="password"
-                        name="mot_de_passe"
-                        placeholder="Mot de passe (au moins 6 caractères)"
-                        value={formData.mot_de_passe}
-                        onChange={handleChange}
-                        required
-                    />
+                    <div className="auth-field-group">
+                        <div className="auth-input-wrapper">
+                            <input
+                                className="auth-input auth-input-with-icon"
+                                type={showPassword ? "text" : "password"}
+                                name="mot_de_passe"
+                                placeholder="Créez votre mot de passe (au moins 6 car.)"
+                                value={formData.mot_de_passe}
+                                onChange={handleChange}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="auth-password-toggle"
+                                onClick={() => setShowPassword(!showPassword)}
+                                aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                        <div className="auth-helper-box">
+                            <Info size={16} className="auth-helper-icon" />
+                            <span>
+                                <strong>Important :</strong> Créez un mot de passe pour votre compte NextOri (ce n'est <u>pas</u> le mot de passe de votre boîte email Google / Gmail).
+                            </span>
+                        </div>
+                    </div>
 
                     <select
                         className="auth-input"
