@@ -118,7 +118,7 @@ function Universites() {
                 const data = await reponse.json();
 
 
-                console.log("Universités reçues :", data);
+               
 
 
                 if (data.success) {

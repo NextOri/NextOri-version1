@@ -32,7 +32,7 @@ function ResultatHistorique() {
 
     const { id_test } = useParams();
     const navigate = useNavigate();
-    console.log("ID TEST REÇU PAR RESULTAT HISTORIQUE :", id_test);
+    
 
     const [test, setTest] = useState(null);
     const [chargement, setChargement] = useState(true);
@@ -82,7 +82,7 @@ function ResultatHistorique() {
 
                 const data = await response.json();
 
-console.log("RÉSULTAT API HISTORIQUE :", data);
+
 
 if (!data.success) {
     throw new Error(
@@ -90,7 +90,7 @@ if (!data.success) {
     );
 }
 
-console.log("TEST REÇU PAR REACT :", data.data);
+
 
 setTest(data.data);
 

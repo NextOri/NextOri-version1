@@ -70,8 +70,7 @@ function Result(){
             return null;
         })();
 
-    console.log("STATE RESULT :", location.state);
-    console.log("DATA RESULT :", resultatInitial);
+   
 
     const [resultat, setResultat] = useState(resultatInitial);
     const [chargement, setChargement] = useState(!resultatInitial);

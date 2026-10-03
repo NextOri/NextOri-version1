@@ -95,7 +95,8 @@ export default async function handler(req, res) {
       }
     }
 
-    const routeHandler = routes[endpoint];
+    const baseEndpoint = endpoint.split("/")[0];
+    const routeHandler = routes[endpoint] || routes[baseEndpoint];
 
     if (routeHandler) {
       return await routeHandler(req, res);

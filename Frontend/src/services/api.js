@@ -83,7 +83,7 @@ export async function envoyerReponses(reponses){
     const texte = await response.text();
 
 
-    console.log("REPONSE COMPLETE BACKEND :", texte);
+    
 
 
 

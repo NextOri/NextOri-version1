@@ -28,33 +28,33 @@ const ENCOURAGEMENTS = [
 
 /* Jalons : déclenchés uniquement lors du clic Suivant, jamais à l'affichage */
 const MILESTONES = [
-    { seuil: 25, texte: "25 % accompli — bon départ !",      icon: "⚡" },
+    { seuil: 25, texte: "25 % accompli — bon départ !", icon: "⚡" },
     { seuil: 50, texte: "Mi-chemin atteint ! Tu assures 💪", icon: "⭐" },
-    { seuil: 75, texte: "Presque fini, continue !",           icon: "✨" },
+    { seuil: 75, texte: "Presque fini, continue !", icon: "✨" },
 ];
 /* Le seuil 100 est géré séparément dans soumettre() */
 
 
 function Test() {
 
-    const [questions, setQuestions]           = useState([]);
-    const [propositions, setPropositions]     = useState([]);
-    const [index, setIndex]                   = useState(0);
-    const [reponses, setReponses]             = useState([]);
-    const [loading, setLoading]               = useState(true);
+    const [questions, setQuestions] = useState([]);
+    const [propositions, setPropositions] = useState([]);
+    const [index, setIndex] = useState(0);
+    const [reponses, setReponses] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [analyseEnCours, setAnalyseEnCours] = useState(false);
-    const [etapeAnalyse, setEtapeAnalyse]     = useState(1);
-    const [notification, setNotification]     = useState(null);
-    const [notifVisible, setNotifVisible]     = useState(false);
-    const [finMessage, setFinMessage]         = useState(false); // popup 100% avant analyse
+    const [etapeAnalyse, setEtapeAnalyse] = useState(1);
+    const [notification, setNotification] = useState(null);
+    const [notifVisible, setNotifVisible] = useState(false);
+    const [finMessage, setFinMessage] = useState(false); // popup 100% avant analyse
 
     /* "idle" | "out" | "idle-pending" | "in" */
-    const [animPhase, setAnimPhase]           = useState("idle");
+    const [animPhase, setAnimPhase] = useState("idle");
 
-    const milestoneRef   = useRef(new Set());
-    const notifTimer     = useRef(null);
+    const milestoneRef = useRef(new Set());
+    const notifTimer = useRef(null);
     const pendingNotifRef = useRef(null); // notif à afficher APRÈS la transition
-    const navigate       = useNavigate();
+    const navigate = useNavigate();
 
 
     /* =========================
@@ -98,7 +98,7 @@ function Test() {
             })
             .catch(console.error);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index, questions]);
 
 
@@ -171,9 +171,9 @@ function Test() {
     if (analyseEnCours) {
         const pct =
             etapeAnalyse === 1 ? 25 :
-            etapeAnalyse === 2 ? 50 :
-            etapeAnalyse === 3 ? 75 :
-            etapeAnalyse === 4 ? 90 : 100;
+                etapeAnalyse === 2 ? 50 :
+                    etapeAnalyse === 3 ? 75 :
+                        etapeAnalyse === 4 ? 90 : 100;
 
         return (
             <div className="nextori-analysis-page">
@@ -221,8 +221,8 @@ function Test() {
        DONNÉES DE LA QUESTION EN COURS
     ========================= */
 
-    const question    = questions[index];
-    const total       = questions.length;
+    const question = questions[index];
+    const total = questions.length;
 
     /* Progression = réponses validées / total (commence à 0%) */
     const nbRepondues = reponses.filter(Boolean).length;
@@ -239,7 +239,7 @@ function Test() {
     function choisirReponse(idProposition) {
         const nouvellesReponses = [...reponses];
         nouvellesReponses[index] = {
-            id_question:   question.id_question,
+            id_question: question.id_question,
             id_proposition: idProposition
         };
         setReponses(nouvellesReponses);
@@ -370,7 +370,7 @@ function Test() {
 
     const animClass =
         animPhase === "out" ? "nxt-anim--out" :
-        animPhase === "in"  ? "nxt-anim--in"  : "";
+            animPhase === "in" ? "nxt-anim--in" : "";
 
 
     return (
@@ -425,7 +425,7 @@ function Test() {
                         <div className="nxt-question__meta">
                             {/* Compteur : Q. 3 / 20 */}
                             <div className="nxt-question__counter">
-                                <span className="nxt-question__counter-label">Q.</span>
+                                <span className="nxt-question__counter-label">Question.</span>
                                 <span className="nxt-question__counter-num">{index + 1}</span>
                                 <span className="nxt-question__counter-sep">/</span>
                                 <span className="nxt-question__counter-tot">{total}</span>
