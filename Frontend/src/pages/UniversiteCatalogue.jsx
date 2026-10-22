@@ -1,4 +1,4 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -114,9 +114,11 @@ useEffect(() => {
 
     return [
       ...new Set(
-        universites.map((u) => u.region)
+        universites
+          .map((u) => u.region?.trim())
+          .filter(Boolean)
       )
-    ].sort();
+    ].sort((a, b) => a.localeCompare(b, "fr", { sensitivity: "base" }));
 
   }, [universites]);
 
@@ -400,9 +402,7 @@ useEffect(() => {
 
           <span>
 
-            {universite.ville}
-            {" • "}
-            {universite.region}
+            {[universite.ville, universite.region].filter(Boolean).join(" • ")}
 
           </span>
 

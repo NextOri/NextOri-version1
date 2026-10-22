@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   try {
     const { data: universites, error } = await supabase
       .from("universite")
-      .select("id_universite, nom, description, type, pays, ville, site_web, logo")
+      .select("id_universite, nom, description, type, pays, ville, region, site_web, logo")
       .order("nom", { ascending: true });
 
     if (error) throw error;

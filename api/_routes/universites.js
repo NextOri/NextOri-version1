@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
     const { data: links, error } = await supabase
       .from("universite_filiere")
-      .select("universite(id_universite, nom, description, type, pays, ville, site_web, logo)")
+      .select("universite(id_universite, nom, description, type, pays, ville, region, site_web, logo)")
       .eq("id_filiere", parseInt(idFiliere, 10));
 
     if (error) throw error;
