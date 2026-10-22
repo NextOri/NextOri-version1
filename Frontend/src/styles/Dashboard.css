@@ -15,7 +15,7 @@
 
     background:var(--nextori-mist);
 
-    padding-bottom:75px;
+    padding-bottom: 110px;
 
 }
 
@@ -1810,7 +1810,7 @@ padding:18px;
 
         overflow-x: hidden;
 
-        padding-bottom: 75px;
+        padding-bottom: 110px;
 
     }
 
@@ -2686,9 +2686,33 @@ padding:18px;
 @media (max-width: 360px) {
 
     .statistics-section {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
 
-        grid-template-columns: 1fr;
+    .stat-card {
+        padding: 10px 4px;
+    }
 
+    .stat-card h3 {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        margin: 0 auto 6px;
+    }
+
+    .stat-card h3 svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .stat-card h2 {
+        font-size: 16px;
+        margin: 0 0 2px;
+    }
+
+    .stat-card p {
+        font-size: 10.5px;
     }
 
 
