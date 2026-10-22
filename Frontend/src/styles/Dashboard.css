@@ -2620,44 +2620,49 @@ padding:18px;
 
 
     .actions-grid {
-
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
-
     }
 
 
     .action-card {
+        padding: 14px 8px;
+        min-width: 0;
+        border-radius: 16px;
+    }
 
-        padding: 15px 7px;
 
+    .action-card > svg {
+        width: 26px;
+        height: 26px;
+        margin-bottom: 6px;
     }
 
 
     .action-card h3 {
-
-        font-size: 14px;
-
+        font-size: 13.5px;
+        margin: 4px 0 2px;
     }
 
 
     .action-card p {
-
         font-size: 11px;
-
+        line-height: 1.35;
     }
 
 
     .badges-container {
-
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
-
     }
 
 
     .badge-card {
-
         padding: 14px 6px;
-
+        min-width: 0;
+        border-radius: 16px;
     }
 
 
@@ -2717,16 +2722,61 @@ padding:18px;
 
 
     .actions-grid {
-
-        grid-template-columns: 1fr;
-
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
     }
 
+    .action-card {
+        padding: 12px 6px;
+        border-radius: 14px;
+        border-top-width: 3px;
+    }
+
+    .action-card > svg {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 4px;
+    }
+
+    .action-card h3 {
+        font-size: 13px;
+        margin: 3px 0 2px;
+    }
+
+    .action-card p {
+        font-size: 10.5px;
+        line-height: 1.3;
+    }
 
     .badges-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
 
-        grid-template-columns: 1fr;
+    .badge-card {
+        padding: 12px 5px;
+        border-radius: 14px;
+    }
 
+    .badge-icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 6px;
+        font-size: 20px;
+    }
+
+    .badge-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .badge-name {
+        font-size: 11.5px;
+        margin: 0 0 2px;
+    }
+
+    .badge-status {
+        font-size: 10px;
     }
 
 
