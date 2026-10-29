@@ -1,7 +1,8 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import FooterNavigation from "../components/FooterNavigation";
+import PisteButton from "../components/PisteButton";
 import {
     FaGraduationCap,
     FaFolderOpen,
@@ -137,6 +138,11 @@ function FiliereDetail() {
                     <FaArrowLeft />
                     <span>Retour aux filières</span>
                 </button>
+
+                <PisteButton
+                    typePiste="filiere"
+                    id={filiere.id_filiere}
+                />
             </div>
 
             {/* ================================

@@ -25,6 +25,8 @@ import DepartagerHesitation from "./pages/DepartagerHesitation";
 import Avis from "./pages/Avis";
 import Temoignages from "./pages/Temoignages";
 import ScrollToTop from "./components/ScrollToTop";
+import MesPistes from "./pages/MesPistes";
+import QuestionnaireComparaisonPistes from "./pages/QuestionnaireComparaisonPistes";
 
 
 function App() {
@@ -66,11 +68,15 @@ function App() {
 
     <Route path="/profil" element={<Profil />} />
 
+    <Route path="/mes-pistes" element={<MesPistes />} />
+
     <Route path="/historique-tests" element={<HistoriqueTests />} />
     
     <Route path="/resultat-test/:id_test" element={<ResultatHistorique />} />
 
     <Route path="/hesitation" element={<Hesitation />} />
+
+    <Route path="/comparaison-pistes/questions" element={<QuestionnaireComparaisonPistes />}/>
 
     <Route path="/resultat-hesitation" element={<ResultatHesitation />} />
 
@@ -79,6 +85,8 @@ function App() {
     <Route path="/avis" element={<Avis />} />
 
     <Route path="/temoignages" element={<Temoignages />} />
+
+    
 
     </Route>
 

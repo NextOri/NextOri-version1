@@ -1,6 +1,7 @@
 import { API_ROUTES_URL } from "../config/api";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import PisteButton from "../components/PisteButton";
 
 import {
     FaArrowLeft,
@@ -693,7 +694,12 @@ setTest(data.data);
 
                                 <div className="resultat-historique-metier-details">
 
-                                    {metier.description && (
+                                    <PisteButton
+                                   typePiste="metier"
+                                 id={metier.id_metier}
+                                             />
+
+                                  {metier.description && (
 
                                         <div className="resultat-historique-description">
 

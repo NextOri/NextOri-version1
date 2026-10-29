@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict h5UKgP9ys5gz39OhcDurLRwjEg834tBWjWkZSxaVM4QHYKqiWXlFbFRdwhAWUXj
+\restrict eL4PldSOjxCE25kdFOjlLjmOFNiZIFSNYcRZiSCLopj6YpA9WiTRumKbZAbJWLc
 
 -- Dumped from database version 17.6
 -- Dumped by pg_dump version 18.6
@@ -1118,6 +1118,75 @@ $$;
 
 
 --
+-- Name: authorize(text, text, text, text, text, text[], text[]); Type: FUNCTION; Schema: realtime; Owner: -
+--
+
+CREATE FUNCTION realtime.authorize(role_name text, topic_name text, claims text, sub text, headers text, read_extensions text[], write_extensions text[], OUT read_allowed boolean[], OUT write_allowed boolean[]) RETURNS record
+    LANGUAGE plpgsql
+    AS $$
+declare
+  probe_ids uuid[];
+  probe_inserted_at timestamp := now() at time zone 'utc';
+  visible_ids uuid[];
+  ext text;
+  allowed boolean;
+begin
+  -- The probe inserts are rolled back, but they still give the transaction an xid, so it ends
+  -- in a commit. Nothing durable was written, so skip waiting on the WAL flush and sync standbys.
+  -- Set outside the block below, whose rollback would undo it.
+  perform set_config('synchronous_commit', 'off', true);
+
+  -- The RAISE at the end of this block rolls back everything in it.
+  begin
+    probe_ids := array(select gen_random_uuid() from unnest(read_extensions));
+
+    insert into realtime.messages (id, topic, extension, inserted_at, updated_at)
+    select p.id, topic_name, p.extension, probe_inserted_at, probe_inserted_at
+    from unnest(probe_ids, read_extensions) as p(id, extension);
+
+    perform set_config('role', role_name, true),
+            set_config('realtime.topic', topic_name, true),
+            set_config('request.jwt.claims', claims, true),
+            set_config('request.jwt.claim.sub', sub, true),
+            set_config('request.jwt.claim.role', role_name, true),
+            set_config('request.headers', headers, true);
+
+    -- One lookup for every probe, by the full primary key.
+    visible_ids := array(
+      select m.id
+      from realtime.messages m
+      where m.inserted_at = probe_inserted_at
+        and m.id = any(probe_ids));
+
+    read_allowed := array(
+      select p.id = any(visible_ids)
+      from unnest(probe_ids) with ordinality as p(id, n)
+      order by p.n);
+
+    write_allowed := '{}';
+
+    foreach ext in array write_extensions loop
+      begin
+        insert into realtime.messages (topic, extension, inserted_at, updated_at)
+        values (topic_name, ext, now() at time zone 'utc', now() at time zone 'utc');
+
+        allowed := true;
+      exception when insufficient_privilege then
+        allowed := false;
+      end;
+
+      write_allowed := write_allowed || allowed;
+    end loop;
+
+    raise sqlstate 'RTA01';
+  exception when sqlstate 'RTA01' then
+    null;
+  end;
+end;
+$$;
+
+
+--
 -- Name: broadcast_changes(text, text, text, text, text, record, record, text); Type: FUNCTION; Schema: realtime; Owner: -
 --
 
@@ -1410,6 +1479,76 @@ $$;
 
 
 --
+-- Name: list_changes_sync(name, name, integer, integer); Type: FUNCTION; Schema: realtime; Owner: -
+--
+
+CREATE FUNCTION realtime.list_changes_sync(publication name, slot_name name, max_changes integer, max_record_bytes integer) RETURNS TABLE(wal jsonb, is_rls_enabled boolean, subscription_ids uuid[], errors text[], slot_changes_count bigint)
+    LANGUAGE sql
+    SET log_min_messages TO 'fatal'
+    AS $$
+  WITH pub AS (
+    SELECT
+      concat_ws(
+        ',',
+        CASE WHEN bool_or(pubinsert) THEN 'insert' ELSE NULL END,
+        CASE WHEN bool_or(pubupdate) THEN 'update' ELSE NULL END,
+        CASE WHEN bool_or(pubdelete) THEN 'delete' ELSE NULL END
+      ) AS w2j_actions,
+      coalesce(
+        string_agg(
+          realtime.quote_wal2json(format('%I.%I', schemaname, tablename)::regclass),
+          ','
+        ) filter (WHERE ppt.tablename IS NOT NULL),
+        ''
+      ) AS w2j_add_tables
+    FROM pg_publication pp
+    LEFT JOIN pg_publication_tables ppt ON pp.pubname = ppt.pubname
+    WHERE pp.pubname = publication
+    GROUP BY pp.pubname
+    LIMIT 1
+  ),
+  -- MATERIALIZED ensures the slot is read exactly once.
+  consumed AS MATERIALIZED (
+    SELECT x.*, pub.w2j_add_tables
+    FROM pub,
+         realtime.settled_changes(
+           slot_name, max_changes,
+           'include-pk', 'true',
+           'include-transaction', 'false',
+           'include-timestamp', 'true',
+           'include-type-oids', 'true',
+           'format-version', '2',
+           'actions', pub.w2j_actions,
+           'add-tables', pub.w2j_add_tables
+         ) x
+  ),
+  slot_count AS (
+    SELECT count(*)::bigint AS cnt
+    FROM consumed
+    WHERE consumed.w2j_add_tables <> ''
+  ),
+  rls_filtered AS (
+    SELECT xyz.wal, xyz.is_rls_enabled, xyz.subscription_ids, xyz.errors
+    FROM consumed,
+         realtime.apply_rls(
+           wal := consumed.data::jsonb,
+           max_record_bytes := max_record_bytes
+         ) xyz(wal, is_rls_enabled, subscription_ids, errors)
+    WHERE consumed.w2j_add_tables <> ''
+      AND xyz.subscription_ids[1] IS NOT NULL
+  )
+  SELECT rf.wal, rf.is_rls_enabled, rf.subscription_ids, rf.errors, sc.cnt
+  FROM rls_filtered rf, slot_count sc
+
+  UNION ALL
+
+  SELECT null, null, null, null, sc.cnt
+  FROM slot_count sc
+  WHERE NOT EXISTS (SELECT 1 FROM rls_filtered)
+$$;
+
+
+--
 -- Name: quote_wal2json(regclass); Type: FUNCTION; Schema: realtime; Owner: -
 --
 
@@ -1482,6 +1621,97 @@ BEGIN
       RAISE WARNING 'WarnSendingBroadcastMessage: %', SQLERRM;
   END;
 END;
+$$;
+
+
+--
+-- Name: settled_changes(name, integer, text[]); Type: FUNCTION; Schema: realtime; Owner: -
+--
+
+CREATE FUNCTION realtime.settled_changes(slot_name name, max_changes integer, VARIADIC opts text[]) RETURNS TABLE(lsn pg_lsn, xid xid, data text)
+    LANGUAGE plpgsql
+    AS $$
+declare
+  upto pg_lsn;
+  total bigint;
+  xids xid[];
+  starts bigint[];
+  snapshot pg_snapshot;
+  running_xids xid[];
+  xmax_age int;
+  cut bigint;
+begin
+  -- Each statement in a volatile function takes its own snapshot, which is what lets the
+  -- check below see a writer that was still in flight when the peek ran. Under REPEATABLE
+  -- READ the snapshot never advances, so a deferred change would never be released.
+  if current_setting('transaction_isolation') <> 'read committed' then
+    raise exception 'realtime.settled_changes requires READ COMMITTED';
+  end if;
+
+  -- The peek and the read below cover the same WAL, so the read cannot reach a commit the
+  -- check never saw.
+  upto := pg_current_wal_flush_lsn();
+
+  -- One entry per transaction, in commit order: its xid and the position of its first
+  -- change. The peek uses the caller's own options, so max_changes counts exactly what the
+  -- read counts. A non-transactional logical message is emitted as soon as it is decoded,
+  -- tagged with the xid of whatever transaction wrote it, so it does not mark where that
+  -- transaction starts.
+  select coalesce(sum(g.n), 0),
+         array_agg(g.x order by g.first) filter (where g.first is not null),
+         array_agg(g.first order by g.first) filter (where g.first is not null)
+    into total, xids, starts
+    from (
+      select p.xid as x, count(*) as n,
+             min(p.ord) filter (where not case
+               when starts_with(p.data, '{"action":"M"') then (p.data::jsonb->>'transactional')::boolean is false
+               else false
+             end) as first
+      from pg_logical_slot_peek_changes(slot_name, upto, max_changes, variadic opts)
+           with ordinality as p(lsn, xid, data, ord)
+      group by p.xid
+    ) g;
+
+  -- Nothing for the caller, but the slot still has to move past what the peek covered.
+  if total = 0 then
+    perform pg_replication_slot_advance(slot_name, upto);
+    return;
+  end if;
+
+  if xids is not null then
+    -- Taken after the peek is materialized, so a writer that was still in flight during
+    -- decoding is guaranteed to show up here.
+    snapshot := pg_current_snapshot();
+
+    -- A commit record reaches the WAL before the writer leaves the proc array, so a change
+    -- can be decoded while its row is invisible. apply_rls would resolve a policy against a
+    -- row it cannot see and authorize it for nobody, while the read consumed it regardless.
+    --
+    -- xip lists transactions running when the snapshot was taken. It does not cover a writer
+    -- whose xid sits at or beyond xmax, which never appears there, so the horizon is checked
+    -- too. age() counts backwards from the current xid and so compares correctly across
+    -- wraparound.
+    select coalesce(array_agg(running.x::xid), array[]::xid[])
+      into running_xids
+      from pg_snapshot_xip(snapshot) running(x);
+    xmax_age := age(pg_snapshot_xmax(snapshot)::xid);
+
+    select min(u.s) into cut
+      from unnest(xids, starts) as u(x, s)
+      where u.x = any(running_xids) or age(u.x) <= xmax_age;
+  end if;
+
+  -- The read stops right after the commit that brings its count to upto_nchanges, so the
+  -- count of changes in front of the first unsettled transaction stops it just before that
+  -- transaction.
+  if cut is null then
+    return query
+      select p.* from pg_logical_slot_get_changes(slot_name, upto, max_changes, variadic opts) p;
+  elsif cut > 1 then
+    return query
+      select p.* from pg_logical_slot_get_changes(slot_name, upto, (cut - 1)::int, variadic opts) p;
+  end if;
+end;
 $$;
 
 
@@ -4455,6 +4685,77 @@ ALTER SEQUENCE public.filiere_id_filiere_seq OWNED BY public.filiere.id_filiere;
 
 
 --
+-- Name: hesitation_analyse; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hesitation_analyse (
+    id_analyse integer NOT NULL,
+    id_hesitation_test integer NOT NULL,
+    id_test_riasec integer,
+    id_piste_dominante integer,
+    version_moteur character varying(30) DEFAULT 'v1.2.0'::character varying NOT NULL,
+    niveau_confiance numeric(5,2),
+    synthese text,
+    date_analyse timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT hesitation_analyse_confiance_check CHECK (((niveau_confiance IS NULL) OR ((niveau_confiance >= (0)::numeric) AND (niveau_confiance <= (100)::numeric))))
+);
+
+
+--
+-- Name: hesitation_analyse_id_analyse_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_analyse ALTER COLUMN id_analyse ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.hesitation_analyse_id_analyse_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: hesitation_analyse_piste; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hesitation_analyse_piste (
+    id_analyse_piste integer NOT NULL,
+    id_analyse integer NOT NULL,
+    id_piste integer NOT NULL,
+    score_riasec numeric(6,2),
+    score_criteres numeric(6,2),
+    score_convergence numeric(6,2),
+    score_information numeric(6,2),
+    score_differenciation numeric(6,2),
+    score_global numeric(6,2),
+    rang integer,
+    niveau_confiance numeric(5,2),
+    "position" character varying(30) DEFAULT 'a_verifier'::character varying NOT NULL,
+    raisons jsonb DEFAULT '[]'::jsonb NOT NULL,
+    points_vigilance jsonb DEFAULT '[]'::jsonb NOT NULL,
+    prochaines_etapes jsonb DEFAULT '[]'::jsonb NOT NULL,
+    features_snapshot jsonb DEFAULT '{}'::jsonb NOT NULL,
+    CONSTRAINT hesitation_analyse_piste_position_check CHECK ((("position")::text = ANY ((ARRAY['dominante'::character varying, 'forte'::character varying, 'proche'::character varying, 'a_verifier'::character varying])::text[]))),
+    CONSTRAINT hesitation_analyse_piste_scores_check CHECK ((((score_riasec IS NULL) OR ((score_riasec >= (0)::numeric) AND (score_riasec <= (100)::numeric))) AND ((score_criteres IS NULL) OR ((score_criteres >= (0)::numeric) AND (score_criteres <= (100)::numeric))) AND ((score_convergence IS NULL) OR ((score_convergence >= (0)::numeric) AND (score_convergence <= (100)::numeric))) AND ((score_information IS NULL) OR ((score_information >= (0)::numeric) AND (score_information <= (100)::numeric))) AND ((score_differenciation IS NULL) OR ((score_differenciation >= (0)::numeric) AND (score_differenciation <= (100)::numeric))) AND ((score_global IS NULL) OR ((score_global >= (0)::numeric) AND (score_global <= (100)::numeric))) AND ((niveau_confiance IS NULL) OR ((niveau_confiance >= (0)::numeric) AND (niveau_confiance <= (100)::numeric)))))
+);
+
+
+--
+-- Name: hesitation_analyse_piste_id_analyse_piste_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_analyse_piste ALTER COLUMN id_analyse_piste ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.hesitation_analyse_piste_id_analyse_piste_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Name: hesitation_critere; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4485,6 +4786,35 @@ CREATE SEQUENCE public.hesitation_critere_id_critere_seq
 --
 
 ALTER SEQUENCE public.hesitation_critere_id_critere_seq OWNED BY public.hesitation_critere.id_critere;
+
+
+--
+-- Name: hesitation_evenement; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.hesitation_evenement (
+    id_evenement bigint NOT NULL,
+    id_user integer NOT NULL,
+    id_piste integer,
+    id_hesitation_test integer,
+    type_evenement character varying(50) NOT NULL,
+    date_evenement timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    contexte jsonb DEFAULT '{}'::jsonb NOT NULL
+);
+
+
+--
+-- Name: hesitation_evenement_id_evenement_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_evenement ALTER COLUMN id_evenement ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.hesitation_evenement_id_evenement_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
 
 
 --
@@ -4772,6 +5102,38 @@ CREATE TABLE public.metier_serie (
     id_metier integer NOT NULL,
     id_serie integer NOT NULL,
     niveau_compatibilite character varying(50) DEFAULT 'directe'::character varying
+);
+
+
+--
+-- Name: piste_utilisateur; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.piste_utilisateur (
+    id_piste integer NOT NULL,
+    id_user integer NOT NULL,
+    type_piste character varying(20) NOT NULL,
+    id_metier integer,
+    id_filiere integer,
+    date_ajout timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    statut character varying(20) DEFAULT 'active'::character varying NOT NULL,
+    CONSTRAINT piste_utilisateur_cible_check CHECK (((((type_piste)::text = 'metier'::text) AND (id_metier IS NOT NULL) AND (id_filiere IS NULL)) OR (((type_piste)::text = 'filiere'::text) AND (id_filiere IS NOT NULL) AND (id_metier IS NULL)))),
+    CONSTRAINT piste_utilisateur_statut_check CHECK (((statut)::text = ANY ((ARRAY['active'::character varying, 'archive'::character varying])::text[]))),
+    CONSTRAINT piste_utilisateur_type_check CHECK (((type_piste)::text = ANY ((ARRAY['metier'::character varying, 'filiere'::character varying])::text[])))
+);
+
+
+--
+-- Name: piste_utilisateur_id_piste_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+ALTER TABLE public.piste_utilisateur ALTER COLUMN id_piste ADD GENERATED BY DEFAULT AS IDENTITY (
+    SEQUENCE NAME public.piste_utilisateur_id_piste_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
 );
 
 
@@ -5166,8 +5528,8 @@ CREATE TABLE realtime.messages (
     payload jsonb,
     event text,
     private boolean DEFAULT false,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    inserted_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT timezone('utc'::text, clock_timestamp()) NOT NULL,
+    inserted_at timestamp without time zone DEFAULT timezone('utc'::text, clock_timestamp()) NOT NULL,
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     binary_payload bytea,
     skip_broadcast boolean DEFAULT false NOT NULL
@@ -5882,6 +6244,7 @@ COPY public.attente_fonctionnalite (id_attente, id_user, fonctionnalite, date_in
 9	50	COACHING_PERSONNALISE	2026-09-22 22:10:25.161	EN_ATTENTE	\N
 10	24	COACHING_PERSONNALISE	2026-09-24 17:54:53.57	EN_ATTENTE	\N
 11	64	COACHING_PERSONNALISE	2026-09-25 19:33:23.87	EN_ATTENTE	\N
+12	34	COACHING_PERSONNALISE	2026-10-09 22:11:26.628	EN_ATTENTE	\N
 \.
 
 
@@ -5943,6 +6306,7 @@ COPY public.badge_utilisateur (id_badge_utilisateur, id_user, id_badge, date_obt
 101	26	5	2026-09-12
 102	26	6	2026-09-12
 103	26	7	2026-09-12
+87	24	3	2026-09-30
 105	28	2	2026-09-12
 106	29	2	2026-09-12
 107	29	3	2026-09-12
@@ -6081,9 +6445,33 @@ COPY public.badge_utilisateur (id_badge_utilisateur, id_user, id_badge, date_obt
 251	74	2	2026-09-28
 252	74	3	2026-09-28
 253	24	1	2026-09-28
-254	52	3	2026-09-28
 255	52	5	2026-09-28
-87	24	3	2026-09-29
+262	76	2	2026-10-03
+257	75	2	2026-09-30
+263	76	3	2026-10-03
+264	76	4	2026-10-03
+267	76	7	2026-10-03
+265	76	5	2026-10-03
+266	76	6	2026-10-03
+268	77	2	2026-10-03
+269	78	2	2026-10-04
+270	78	3	2026-10-04
+271	79	2	2026-10-10
+272	80	2	2026-10-10
+273	80	3	2026-10-10
+274	81	2	2026-10-10
+275	81	3	2026-10-10
+276	82	2	2026-10-11
+277	83	2	2026-10-22
+278	83	6	2026-10-22
+279	83	7	2026-10-22
+280	84	2	2026-10-23
+281	84	3	2026-10-23
+282	84	4	2026-10-23
+283	84	5	2026-10-23
+284	84	6	2026-10-24
+285	84	7	2026-10-24
+254	52	3	2026-10-25
 \.
 
 
@@ -6093,7 +6481,10 @@ COPY public.badge_utilisateur (id_badge_utilisateur, id_user, id_badge, date_obt
 
 COPY public.connexion_utilisateur (id_connexion, id_user, date_connexion) FROM stdin;
 272	26	2026-09-22
+451	34	2026-10-09
+460	79	2026-10-10
 267	50	2026-09-22
+459	26	2026-10-10
 279	24	2026-09-23
 352	24	2026-09-28
 277	34	2026-09-23
@@ -6102,6 +6493,9 @@ COPY public.connexion_utilisateur (id_connexion, id_user, date_connexion) FROM s
 287	53	2026-09-23
 288	54	2026-09-23
 291	56	2026-09-23
+462	80	2026-10-10
+463	81	2026-10-10
+464	82	2026-10-11
 290	55	2026-09-23
 297	57	2026-09-23
 298	58	2026-09-23
@@ -6148,7 +6542,9 @@ COPY public.connexion_utilisateur (id_connexion, id_user, date_connexion) FROM s
 211	35	2026-09-12
 213	36	2026-09-13
 214	37	2026-09-13
+466	34	2026-10-12
 263	26	2026-09-19
+470	34	2026-10-21
 307	24	2026-09-24
 319	62	2026-09-24
 304	26	2026-09-24
@@ -6157,16 +6553,46 @@ COPY public.connexion_utilisateur (id_connexion, id_user, date_connexion) FROM s
 325	66	2026-09-25
 326	34	2026-09-25
 327	67	2026-09-25
+388	75	2026-09-30
 323	64	2026-09-25
+474	26	2026-10-21
+382	24	2026-09-30
 330	68	2026-09-25
 335	69	2026-09-26
 337	70	2026-09-27
 338	71	2026-09-27
 341	72	2026-09-27
+476	24	2026-10-22
+375	26	2026-09-30
 342	71	2026-09-28
 349	74	2026-09-28
 343	73	2026-09-28
+398	52	2026-10-01
+399	55	2026-10-01
+400	26	2026-10-01
+478	76	2026-10-22
+404	26	2026-10-02
 346	52	2026-09-28
+487	26	2026-10-22
+415	77	2026-10-03
+407	76	2026-10-03
+420	26	2026-10-03
+423	78	2026-10-04
+424	34	2026-10-05
+425	26	2026-10-05
+426	34	2026-10-06
+482	83	2026-10-22
+495	34	2026-10-23
+428	76	2026-10-07
+434	34	2026-10-08
+497	84	2026-10-23
+501	84	2026-10-24
+504	26	2026-10-24
+437	76	2026-10-08
+503	34	2026-10-24
+512	26	2026-10-25
+514	52	2026-10-25
+520	34	2026-10-26
 \.
 
 
@@ -10185,6 +10611,22 @@ COPY public.filiere_critere (id_filiere_critere, id_filiere, id_critere, valeur)
 
 
 --
+-- Data for Name: hesitation_analyse; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hesitation_analyse (id_analyse, id_hesitation_test, id_test_riasec, id_piste_dominante, version_moteur, niveau_confiance, synthese, date_analyse) FROM stdin;
+\.
+
+
+--
+-- Data for Name: hesitation_analyse_piste; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hesitation_analyse_piste (id_analyse_piste, id_analyse, id_piste, score_riasec, score_criteres, score_convergence, score_information, score_differenciation, score_global, rang, niveau_confiance, "position", raisons, points_vigilance, prochaines_etapes, features_snapshot) FROM stdin;
+\.
+
+
+--
 -- Data for Name: hesitation_critere; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -10202,6 +10644,14 @@ COPY public.hesitation_critere (id_critere, code, nom, categorie, actif) FROM st
 11	interet	Intérêt personnel	attente	t
 12	capacites	Capacités et points forts	attente	t
 13	stabilite	Stabilité et sécurité	attente	t
+\.
+
+
+--
+-- Data for Name: hesitation_evenement; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.hesitation_evenement (id_evenement, id_user, id_piste, id_hesitation_test, type_evenement, date_evenement, contexte) FROM stdin;
 \.
 
 
@@ -10333,6 +10783,56 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 904	24	METIER_CONSULTE: Infirmier	2026-09-28 19:30:46.923
 906	24	METIER_CONSULTE: Infirmier	2026-09-28 19:30:56.958
 908	24	PROFIL_CONSULTE	2026-09-28 19:31:06.608
+914	26	METIER_CONSULTE: Infirmier	2026-09-30 10:43:06.972
+917	26	FORMATION_CONSULTEE: Sciences infirmières	2026-09-30 10:43:19.005
+918	26	UNIVERSITES_CONSULTEES	2026-09-30 10:43:20.15
+921	26	UNIVERSITE_CONSULTEE:  IPD Thomas Sankara	2026-09-30 10:48:09.541
+926	24	METIERS_CONSULTES	2026-09-30 13:57:50.075
+933	24	TEST_EFFECTUE	2026-09-30 14:35:51.271
+934	24	METIERS_CONSULTES	2026-09-30 14:35:51.271
+940	26	METIER_CONSULTE: Comptable	2026-10-01 20:08:26.537
+941	26	UNIVERSITE_CONSULTEE: IPG/ISTI	2026-10-01 20:10:15.274
+942	26	UNIVERSITE_CONSULTEE: IPG/ISTI	2026-10-01 20:10:21.51
+943	26	UNIVERSITE_CONSULTEE: IPG/ISTI	2026-10-01 20:10:28.506
+944	26	UNIVERSITE_CONSULTEE: IPG/ISTI	2026-10-01 20:10:30.427
+945	26	UNIVERSITE_CONSULTEE: IPG/ISTI	2026-10-01 20:10:31.411
+960	77	FORMATION_CONSULTEE: Droit	2026-10-03 14:13:52.485
+966	78	METIER_CONSULTE: Sociologue	2026-10-04 20:15:08.043
+967	78	METIER_CONSULTE: Biologiste Médical	2026-10-04 20:15:40.944
+971	78	FORMATION_CONSULTEE: Informatique	2026-10-04 20:21:34.988
+975	76	METIER_CONSULTE: Dessinateur-Projeteur BTP	2026-10-08 13:23:22.859
+979	76	METIER_CONSULTE: UX/UI Designer	2026-10-08 13:30:43.884
+983	34	METIER_CONSULTE: Administrateur Réseau	2026-10-09 22:07:14.178
+991	80	PROFIL_CONSULTE	2026-10-10 15:56:34.643
+998	34	METIER_CONSULTE: Urbaniste	2026-10-12 14:28:54.509
+1007	34	UNIVERSITE_CONSULTEE:  AFI-UE	2026-10-12 17:22:28.826
+1010	65	FORMATION_CONSULTEE: Génie des industries agroalimentaires	2026-10-16 20:17:11.223
+1013	34	UNIVERSITE_CONSULTEE:  AFI-UE	2026-10-21 12:41:45.672
+1018	26	UNIVERSITE_CONSULTEE: BEM Dakar	2026-10-21 18:48:01.763
+1023	24	UNIVERSITE_CONSULTEE:  BATISUP	2026-10-22 16:52:05.995
+1026	24	FORMATION_CONSULTEE: Administration des Affaires	2026-10-22 16:58:32.861
+1029	76	FORMATION_CONSULTEE	2026-10-22 17:06:35.955
+1033	24	FORMATION_CONSULTEE: Administration des Affaires	2026-10-22 17:12:45.421
+1036	83	FORMATION_CONSULTEE: Actuariat	2026-10-22 17:27:53.827
+1039	26	FORMATION_CONSULTEE: Comptabilité et Gestion	2026-10-22 17:35:34.246
+1041	26	UNIVERSITE_CONSULTEE:  UCAO Saint-Michel	2026-10-22 17:38:06.874
+1044	34	UNIVERSITE_CONSULTEE: UCAD	2026-10-23 17:07:49.074
+1047	84	METIERS_CONSULTES	2026-10-23 23:45:29.005
+1048	84	METIERS_CONSULTES	2026-10-23 23:45:46.908
+1050	84	METIER_CONSULTE: Spécialiste développement organisationnel	2026-10-23 23:53:07.936
+1051	84	FORMATION_CONSULTEE	2026-10-23 23:53:08.35
+1055	84	METIER_CONSULTE: Avocat	2026-10-23 23:55:13.612
+1056	84	FORMATION_CONSULTEE	2026-10-23 23:55:14.3
+1057	84	UNIVERSITES_CONSULTEES	2026-10-23 23:55:42.425
+1058	84	UNIVERSITES_CONSULTEES	2026-10-23 23:55:42.784
+1059	84	FORMATION_CONSULTEE: Droit des affaires	2026-10-23 23:55:43.025
+1060	84	FORMATION_CONSULTEE: Droit des affaires	2026-10-23 23:55:43.327
+1061	84	UNIVERSITES_CONSULTEES	2026-10-23 23:55:43.865
+1062	84	UNIVERSITES_CONSULTEES	2026-10-23 23:55:44.355
+1063	84	UNIVERSITES_CONSULTEES	2026-10-23 23:56:08.018
+1064	84	METIER_CONSULTE: Responsable Import-Export	2026-10-23 23:56:43.249
+1065	84	FORMATION_CONSULTEE	2026-10-23 23:56:43.581
+1068	84	FORMATION_CONSULTEE: Management des affaires internationales	2026-10-23 23:57:53.705
 611	46	UNIVERSITE_CONSULTEE: EMIA	2026-09-18 14:36:23.656
 619	26	UNIVERSITE_CONSULTEE: EPT	2026-09-19 19:59:33.439
 639	26	UNIVERSITE_CONSULTEE: BEM TECH	2026-09-22 22:54:53.307
@@ -10391,9 +10891,55 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 900	24	FORMATION_CONSULTEE: Actuariat	2026-09-28 19:25:06.22
 902	24	UNIVERSITE_CONSULTEE:  AFI-UE	2026-09-28 19:25:19.376
 909	63	FORMATION_CONSULTEE: Transport logistique	2026-09-28 20:52:10.485
+915	26	FORMATION_CONSULTEE	2026-09-30 10:43:07.628
+916	26	UNIVERSITES_CONSULTEES	2026-09-30 10:43:18.661
+922	26	UNIVERSITE_CONSULTEE: BEM School of Law	2026-09-30 10:49:12.511
+927	24	TEST_EFFECTUE	2026-09-30 14:06:04.781
+928	24	METIERS_CONSULTES	2026-09-30 14:06:04.781
+929	24	METIERS_CONSULTES	2026-09-30 14:06:26.654
+935	24	METIERS_CONSULTES	2026-09-30 14:36:03.836
+946	76	TEST_EFFECTUE	2026-10-03 13:28:58.375
+947	76	METIERS_CONSULTES	2026-10-03 13:28:58.375
+948	76	METIERS_CONSULTES	2026-10-03 13:29:09.817
+949	76	PROFIL_CONSULTE	2026-10-03 13:29:33.082
+950	76	METIER_CONSULTE: Dessinateur-Projeteur BTP	2026-10-03 13:29:45.731
+951	76	FORMATION_CONSULTEE	2026-10-03 13:29:46.27
+952	76	METIER_CONSULTE: UX/UI Designer	2026-10-03 13:29:57.799
+953	76	FORMATION_CONSULTEE	2026-10-03 13:29:57.915
+961	26	UNIVERSITE_CONSULTEE: UAM	2026-10-03 17:31:36.397
+968	78	METIER_CONSULTE: Actuaire	2026-10-04 20:16:20.431
+976	76	FORMATION_CONSULTEE	2026-10-08 13:23:25.104
 209	20	METIER_CONSULTE: Administrateur Systèmes	2026-09-02 14:21:35
 210	20	UNIVERSITE_CONSULTEE: ESGE	2026-09-02 14:23:44
 211	20	/UNIVERSITE_CONSULTEE:  UAHB	2026-09-02 14:27:58
+980	76	FORMATION_CONSULTEE	2026-10-08 13:30:44.425
+984	26	UNIVERSITE_CONSULTEE: ISM	2026-10-10 13:37:54.633
+986	26	UNIVERSITE_CONSULTEE: ISM	2026-10-10 13:38:16.743
+992	80	METIER_CONSULTE: Formateur professionnel	2026-10-10 15:58:37.566
+993	80	FORMATION_CONSULTEE	2026-10-10 15:58:38.272
+999	34	UNIVERSITE_CONSULTEE:  AFI-UE	2026-10-12 15:00:49.75
+1008	65	METIER_CONSULTE: Actuaire	2026-10-16 20:14:38.022
+1011	77	UNIVERSITE_CONSULTEE:  AFI-UE	2026-10-18 17:00:55.203
+1014	34	UNIVERSITE_CONSULTEE: BEM Dakar	2026-10-21 12:43:19.816
+1019	26	UNIVERSITE_CONSULTEE:  DIT	2026-10-21 18:49:12.845
+1020	26	FORMATION_CONSULTEE: Data Science	2026-10-21 18:49:22.651
+1024	24	FORMATION_CONSULTEE: Administration Économique et Sociale (AES)	2026-10-22 16:52:16.579
+1027	76	FORMATION_CONSULTEE: Administration des Affaires	2026-10-22 17:02:51.809
+1030	76	FORMATION_CONSULTEE: Actuariat	2026-10-22 17:07:20.435
+1031	76	METIER_CONSULTE: Actuaire	2026-10-22 17:07:51.429
+1034	76	METIER_CONSULTE: Administrateur Base de Données	2026-10-22 17:27:23.371
+1037	83	UNIVERSITE_CONSULTEE:  DIT	2026-10-22 17:31:29.002
+1040	26	UNIVERSITE_CONSULTEE: BEM TECH	2026-10-22 17:37:42.197
+1042	34	UNIVERSITE_CONSULTEE: UCAD	2026-10-23 17:06:15.539
+1043	34	FORMATION_CONSULTEE: Gestion	2026-10-23 17:06:37.209
+1045	34	FORMATION_CONSULTEE: Comptabilité et Gestion	2026-10-23 17:15:04.472
+1049	84	PROFIL_CONSULTE	2026-10-23 23:50:49.924
+1052	84	UNIVERSITES_CONSULTEES	2026-10-23 23:53:41.161
+1053	84	FORMATION_CONSULTEE: Gestion des ressources humaines	2026-10-23 23:53:41.891
+1054	84	UNIVERSITES_CONSULTEES	2026-10-23 23:53:43.204
+1066	84	UNIVERSITES_CONSULTEES	2026-10-23 23:57:53.142
+1067	84	UNIVERSITES_CONSULTEES	2026-10-23 23:57:53.147
+1071	84	UNIVERSITES_CONSULTEES	2026-10-24 00:02:55.513
 612	46	FORMATION_CONSULTEE: Management appliqué	2026-09-18 14:38:03.911
 620	50	TEST_EFFECTUE	2026-09-22 22:16:12.66
 621	50	METIERS_CONSULTES	2026-09-22 22:16:12.66
@@ -10457,6 +11003,30 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 910	24	TEST_EFFECTUE	2026-09-29 10:32:02.129
 911	24	METIERS_CONSULTES	2026-09-29 10:32:02.129
 912	24	METIERS_CONSULTES	2026-09-29 10:32:21.286
+919	26	METIER_CONSULTE: Architecte réseaux	2026-09-30 10:46:31.291
+923	75	METIER_CONSULTE: Vétérinaire	2026-09-30 13:02:52.631
+930	24	TEST_EFFECTUE	2026-09-30 14:13:47.114
+931	24	METIERS_CONSULTES	2026-09-30 14:13:47.114
+936	52	UNIVERSITE_CONSULTEE: UCAD	2026-10-01 15:38:30.839
+937	52	FORMATION_CONSULTEE: Odontologie	2026-10-01 15:38:44.335
+954	76	METIER_CONSULTE: UX/UI Designer	2026-10-03 13:31:16.941
+956	76	UNIVERSITES_CONSULTEES	2026-10-03 13:31:20.341
+958	76	UNIVERSITES_CONSULTEES	2026-10-03 13:31:21.393
+962	78	TEST_EFFECTUE	2026-10-04 20:08:27.04
+963	78	METIERS_CONSULTES	2026-10-04 20:08:27.04
+964	78	METIERS_CONSULTES	2026-10-04 20:08:39.81
+969	78	METIER_CONSULTE: Pharmacien	2026-10-04 20:17:24.821
+973	76	METIER_CONSULTE: Actuaire	2026-10-08 13:08:50.743
+977	76	METIER_CONSULTE: Dessinateur-Projeteur BTP	2026-10-08 13:24:41.883
+981	34	UNIVERSITE_CONSULTEE: EMIA	2026-10-09 22:03:53.06
+985	26	UNIVERSITE_CONSULTEE: ISM	2026-10-10 13:38:00.129
+987	26	UNIVERSITE_CONSULTEE: EISMV	2026-10-10 13:38:18.015
+994	81	TEST_EFFECTUE	2026-10-10 19:56:45.114
+995	81	METIERS_CONSULTES	2026-10-10 19:56:45.114
+996	81	METIERS_CONSULTES	2026-10-10 19:56:54.459
+1000	34	METIER_CONSULTE: Dessinateur-Projeteur BTP	2026-10-12 16:00:25.152
+1003	34	FORMATION_CONSULTEE: Génie Civil	2026-10-12 16:00:35.072
+1004	34	UNIVERSITES_CONSULTEES	2026-10-12 16:00:36.223
 319	24	METIERS_CONSULTES	2026-09-12 11:43:54.876
 320	24	PROFIL_CONSULTE	2026-09-12 11:44:03.866
 321	24	METIER_CONSULTE: Dessinateur-Projeteur BTP	2026-09-12 11:44:11.99
@@ -10477,6 +11047,7 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 336	24	UNIVERSITE_CONSULTEE:  AFI-UE	2026-09-12 12:03:39.757
 337	24	UNIVERSITE_CONSULTEE:  AFI-UE	2026-09-12 12:03:46.18
 338	24	UNIVERSITE_CONSULTEE:  ESGIB	2026-09-12 12:03:58.357
+1006	34	UNIVERSITE_CONSULTEE: UAM	2026-10-12 16:00:43.363
 339	24	UNIVERSITE_CONSULTEE: UCAD	2026-09-12 12:05:05.559
 340	26	FORMATION_CONSULTEE: Data Science	2026-09-12 12:05:50.105
 341	24	FORMATION_CONSULTEE: Odontologie	2026-09-12 12:07:15.307
@@ -10663,6 +11234,40 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 905	24	FORMATION_CONSULTEE	2026-09-28 19:30:47.599
 907	24	FORMATION_CONSULTEE	2026-09-28 19:30:57.313
 913	24	PROFIL_CONSULTE	2026-09-29 10:32:57.633
+920	26	FORMATION_CONSULTEE: Actuariat	2026-09-30 10:46:48.331
+924	24	TEST_EFFECTUE	2026-09-30 13:57:43.229
+925	24	METIERS_CONSULTES	2026-09-30 13:57:43.229
+932	24	METIERS_CONSULTES	2026-09-30 14:13:58.129
+938	55	FORMATION_CONSULTEE: Biologie	2026-10-01 16:38:47.804
+939	55	UNIVERSITE_CONSULTEE: UCAD	2026-10-01 16:39:28.666
+955	76	FORMATION_CONSULTEE	2026-10-03 13:31:17.498
+957	76	FORMATION_CONSULTEE: Informatique	2026-10-03 13:31:20.457
+959	76	UNIVERSITES_CONSULTEES	2026-10-03 13:31:21.645
+965	78	PROFIL_CONSULTE	2026-10-04 20:09:41.759
+970	78	FORMATION_CONSULTEE: Odontologie	2026-10-04 20:20:09.159
+974	76	METIER_CONSULTE: Actuaire	2026-10-08 13:21:01.15
+978	76	FORMATION_CONSULTEE	2026-10-08 13:24:42.335
+982	34	METIER_CONSULTE: Administrateur Réseau	2026-10-09 22:06:15.878
+988	80	TEST_EFFECTUE	2026-10-10 15:55:31.662
+989	80	METIERS_CONSULTES	2026-10-10 15:55:31.662
+990	80	METIERS_CONSULTES	2026-10-10 15:55:36.756
+997	34	METIER_CONSULTE: Actuaire	2026-10-12 14:28:08.652
+1001	34	FORMATION_CONSULTEE	2026-10-12 16:00:25.8
+1002	34	UNIVERSITES_CONSULTEES	2026-10-12 16:00:34.546
+1005	34	UNIVERSITE_CONSULTEE:  UNI-PRO	2026-10-12 16:00:39.823
+1009	65	UNIVERSITE_CONSULTEE:  ESGIB	2026-10-16 20:16:31.687
+1012	34	FORMATION_CONSULTEE: Administration des Affaires	2026-10-21 12:24:37.726
+1015	26	UNIVERSITE_CONSULTEE: BEM Dakar	2026-10-21 18:45:36.012
+1016	26	UNIVERSITE_CONSULTEE: BEM Dakar	2026-10-21 18:46:00.744
+1017	26	UNIVERSITE_CONSULTEE: BEM Dakar	2026-10-21 18:46:28.058
+1021	26	UNIVERSITE_CONSULTEE:  ESTG 	2026-10-21 18:50:52.605
+1022	26	UNIVERSITE_CONSULTEE:  ESTG 	2026-10-21 18:51:03.06
+1025	24	FORMATION_CONSULTEE: Actuariat	2026-10-22 16:55:32.054
+1028	76	METIER_CONSULTE: UX/UI Designer	2026-10-22 17:06:35.818
+1032	76	FORMATION_CONSULTEE: Administration des Affaires	2026-10-22 17:08:04.861
+1035	76	FORMATION_CONSULTEE: Actuariat	2026-10-22 17:27:38.19
+1038	26	UNIVERSITE_CONSULTEE:  CEFAS	2026-10-22 17:34:08.93
+1046	84	TEST_EFFECTUE	2026-10-23 23:45:29.005
 450	32	FORMATION_CONSULTEE: Économie et Gestion	2026-09-12 21:25:05.32
 451	32	UNIVERSITES_CONSULTEES	2026-09-12 21:25:06.031
 456	34	TEST_EFFECTUE	2026-09-12 21:26:46.939
@@ -10877,6 +11482,53 @@ COPY public.historique (id_historique, id_user, action, date_action) FROM stdin;
 864	74	UNIVERSITES_CONSULTEES	2026-09-28 13:48:52.813
 874	24	METIER_CONSULTE: Actuaire	2026-09-28 16:32:26.085
 876	24	METIER_CONSULTE: Actuaire	2026-09-28 16:32:34.509
+1069	84	FORMATION_CONSULTEE: Management des affaires internationales	2026-10-23 23:57:53.745
+1070	84	UNIVERSITES_CONSULTEES	2026-10-23 23:57:54.626
+1072	84	UNIVERSITES_CONSULTEES	2026-10-24 00:03:04.66
+1073	84	FORMATION_CONSULTEE: Commerce international	2026-10-24 00:03:05.317
+1074	84	UNIVERSITES_CONSULTEES	2026-10-24 00:03:06.213
+1075	84	UNIVERSITES_CONSULTEES	2026-10-24 00:03:36.388
+1076	84	METIER_CONSULTE: Juriste d’entreprise	2026-10-24 00:04:09.888
+1077	84	FORMATION_CONSULTEE	2026-10-24 00:04:10.425
+1078	84	UNIVERSITES_CONSULTEES	2026-10-24 00:04:49.074
+1079	84	FORMATION_CONSULTEE: Droit des affaires	2026-10-24 00:04:49.764
+1080	84	UNIVERSITES_CONSULTEES	2026-10-24 00:04:50.593
+1081	84	METIER_CONSULTE: Chargé de Clientèle Banque	2026-10-24 00:05:32.655
+1082	84	FORMATION_CONSULTEE	2026-10-24 00:05:33.198
+1083	84	METIER_CONSULTE: Magistrat	2026-10-24 00:06:23.471
+1084	84	FORMATION_CONSULTEE	2026-10-24 00:06:24.11
+1085	84	UNIVERSITES_CONSULTEES	2026-10-24 00:06:58.231
+1086	84	FORMATION_CONSULTEE: Sciences Politiques et Relations Internationales	2026-10-24 00:06:58.9
+1087	84	UNIVERSITES_CONSULTEES	2026-10-24 00:07:00.121
+1088	84	METIER_CONSULTE: Magistrat	2026-10-24 00:07:17.816
+1089	84	FORMATION_CONSULTEE	2026-10-24 00:07:18.412
+1090	84	METIER_CONSULTE: Spécialiste développement organisationnel	2026-10-24 00:07:40.292
+1091	84	FORMATION_CONSULTEE	2026-10-24 00:07:40.662
+1092	84	UNIVERSITES_CONSULTEES	2026-10-24 00:07:48.637
+1093	84	FORMATION_CONSULTEE: Gestion des ressources humaines	2026-10-24 00:07:49.284
+1094	84	UNIVERSITES_CONSULTEES	2026-10-24 00:07:50.252
+1095	84	UNIVERSITE_CONSULTEE: ESTM	2026-10-24 00:07:58.878
+1096	84	UNIVERSITES_CONSULTEES	2026-10-24 00:08:19.291
+1097	84	UNIVERSITES_CONSULTEES	2026-10-24 00:08:22.437
+1098	84	UNIVERSITES_CONSULTEES	2026-10-24 00:08:26.769
+1099	84	UNIVERSITES_CONSULTEES	2026-10-24 00:08:30.756
+1100	34	UNIVERSITE_CONSULTEE: BEM TECH	2026-10-24 10:15:24.314
+1101	26	METIER_CONSULTE: Actuaire	2026-10-24 14:24:32.333
+1102	26	FORMATION_CONSULTEE: Administration Économique et Sociale (AES)	2026-10-24 14:24:57.443
+1103	26	UNIVERSITE_CONSULTEE:  AFI-UE	2026-10-24 14:25:17.197
+1104	34	METIER_CONSULTE: Agripreneur	2026-10-24 18:39:44.87
+1105	34	UNIVERSITE_CONSULTEE: ISEP Mbacké	2026-10-24 18:40:20.711
+1106	26	UNIVERSITE_CONSULTEE: UGB	2026-10-25 01:42:35.378
+1107	26	FORMATION_CONSULTEE: Gestion d’entreprise	2026-10-25 01:43:16.728
+1108	26	FORMATION_CONSULTEE: Transport logistique	2026-10-25 01:44:18.168
+1109	52	TEST_EFFECTUE	2026-10-25 22:51:15.854
+1110	52	METIERS_CONSULTES	2026-10-25 22:51:15.854
+1111	52	METIERS_CONSULTES	2026-10-25 22:51:31.128
+1112	52	UNIVERSITE_CONSULTEE: UIDT	2026-10-25 22:53:07.136
+1113	52	FORMATION_CONSULTEE: Informatique	2026-10-25 22:53:46.753
+1114	76	METIER_CONSULTE: Actuaire	2026-10-26 13:06:27.55
+1115	76	METIER_CONSULTE: Administrateur public	2026-10-26 13:06:37.931
+1116	76	FORMATION_CONSULTEE: Administration des Affaires	2026-10-26 13:06:50.597
 \.
 
 
@@ -14065,6 +14717,22 @@ COPY public.metier_serie (id_metier, id_serie, niveau_compatibilite) FROM stdin;
 
 
 --
+-- Data for Name: piste_utilisateur; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.piste_utilisateur (id_piste, id_user, type_piste, id_metier, id_filiere, date_ajout, statut) FROM stdin;
+2	76	metier	1	\N	2026-10-08 12:25:38.860441	active
+3	76	metier	2	\N	2026-10-08 12:41:19.302	active
+5	76	metier	47	\N	2026-10-08 13:28:39.871309	archive
+6	76	metier	9	\N	2026-10-20 14:20:40.698174	active
+7	76	metier	107	\N	2026-10-22 17:11:11.715139	active
+8	76	filiere	\N	262	2026-10-22 17:11:25.642939	active
+9	76	filiere	\N	108	2026-10-22 17:21:18.827279	active
+4	76	filiere	\N	1	2026-10-08 12:31:19.247719	archive
+\.
+
+
+--
 -- Data for Name: profil_riasec; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -14340,6 +15008,35 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1535	85	108
 1536	85	114
 1537	85	119
+1617	90	94
+1618	90	100
+1619	90	108
+1620	90	114
+1621	90	120
+1702	95	2
+1703	95	9
+1704	95	16
+1705	95	23
+1706	95	26
+1707	95	33
+1708	95	42
+1709	95	43
+1710	95	53
+1711	95	56
+1712	95	64
+1713	95	68
+1714	95	78
+1715	95	79
+1716	95	87
+1717	95	95
+1718	95	99
+1719	95	104
+1720	95	113
+1721	95	118
+1798	99	98
+1799	99	106
+1800	99	113
+1801	99	117
 1298	74	3
 1299	74	11
 1300	74	14
@@ -14400,6 +15097,46 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1555	86	103
 1556	86	112
 1557	86	116
+1622	91	4
+1623	91	9
+1624	91	15
+1625	91	22
+1626	91	28
+1627	91	33
+1628	91	42
+1629	91	47
+1630	91	53
+1631	91	59
+1632	91	65
+1633	91	71
+1634	91	77
+1635	91	83
+1636	91	89
+1637	91	94
+1638	91	100
+1639	91	106
+1640	91	113
+1641	91	119
+1722	96	2
+1723	96	10
+1724	96	14
+1725	96	20
+1726	96	30
+1727	96	36
+1728	96	42
+1729	96	48
+1730	96	49
+1731	96	55
+1732	96	65
+1733	96	67
+1734	96	73
+1735	96	83
+1736	96	87
+1737	96	95
+1738	96	97
+1739	96	107
+1740	96	114
+1741	96	118
 1318	75	2
 1319	75	9
 1320	75	16
@@ -14460,6 +15197,46 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1575	87	106
 1576	87	114
 1577	87	118
+1642	92	5
+1643	92	9
+1644	92	16
+1645	92	23
+1646	92	28
+1647	92	33
+1648	92	37
+1649	92	46
+1650	92	51
+1651	92	57
+1652	92	63
+1653	92	69
+1654	92	76
+1655	92	82
+1656	92	88
+1657	92	94
+1658	92	100
+1659	92	106
+1660	92	111
+1661	92	119
+1742	97	3
+1743	97	10
+1744	97	16
+1745	97	24
+1746	97	29
+1747	97	33
+1748	97	40
+1749	97	43
+1750	97	49
+1751	97	59
+1752	97	66
+1753	97	68
+1754	97	74
+1755	97	80
+1756	97	86
+1757	97	92
+1758	97	97
+1759	97	104
+1760	97	114
+1761	97	118
 1338	76	2
 1339	76	10
 1340	76	16
@@ -14520,6 +15297,46 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1595	88	106
 1596	88	114
 1597	88	118
+1662	93	3
+1663	93	11
+1664	93	16
+1665	93	22
+1666	93	27
+1667	93	33
+1668	93	42
+1669	93	46
+1670	93	53
+1671	93	58
+1672	93	63
+1673	93	71
+1674	93	75
+1675	93	82
+1676	93	87
+1677	93	94
+1678	93	98
+1679	93	106
+1680	93	112
+1681	93	118
+1762	98	2
+1763	98	10
+1764	98	16
+1765	98	19
+1766	98	29
+1767	98	36
+1768	98	42
+1769	98	48
+1770	98	51
+1771	98	60
+1772	98	64
+1773	98	69
+1774	98	73
+1775	98	79
+1776	98	89
+1777	98	95
+1778	98	97
+1779	98	106
+1780	98	114
+1781	98	118
 1358	77	2
 1359	77	9
 1360	77	17
@@ -14560,6 +15377,42 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1495	83	108
 1496	83	114
 1497	83	118
+1682	94	4
+1683	94	11
+1684	94	16
+1685	94	22
+1686	94	28
+1687	94	35
+1688	94	38
+1689	94	47
+1690	94	52
+1691	94	57
+1692	94	62
+1693	94	70
+1694	94	77
+1695	94	82
+1696	94	88
+1697	94	94
+1698	94	99
+1699	94	106
+1700	94	113
+1701	94	119
+1782	99	3
+1783	99	11
+1784	99	13
+1785	99	19
+1786	99	26
+1787	99	36
+1788	99	41
+1789	99	45
+1790	99	49
+1791	99	56
+1792	99	63
+1793	99	69
+1794	99	75
+1795	99	83
+1796	99	90
+1797	99	94
 1238	71	1
 1239	71	8
 1240	71	14
@@ -15020,6 +15873,21 @@ COPY public.reponse (id_reponse, id_test, id_proposition) FROM stdin;
 1515	84	104
 1516	84	110
 1517	84	116
+1602	90	6
+1603	90	11
+1604	90	16
+1605	90	24
+1606	90	28
+1607	90	36
+1608	90	37
+1609	90	48
+1610	90	52
+1611	90	60
+1612	90	66
+1613	90	70
+1614	90	76
+1615	90	82
+1616	90	88
 \.
 
 
@@ -15087,6 +15955,16 @@ COPY public.test_riasec (id_test, id_user, id_questionnaire, date_test, score_r,
 87	74	1	2026-09-28 13:38:11.646	2	2	3	3	9	1	EA
 88	52	1	2026-09-28 17:25:46.544	1	10	3	1	4	1	IE
 89	24	1	2026-09-29 10:32:01.023	0	5	4	1	5	4	IE
+90	24	1	2026-09-30 13:57:42.067	2	2	3	4	7	2	ES
+91	24	1	2026-09-30 14:06:01.801	2	1	6	3	2	6	AC
+92	24	1	2026-09-30 14:13:45.168	2	3	7	6	1	1	AS
+93	24	1	2026-09-30 14:35:49.788	4	3	7	2	3	1	AR
+94	76	1	2026-10-03 13:28:57.857	1	2	8	2	1	6	AC
+95	78	1	2026-10-04 20:08:25.707	5	3	1	4	6	1	ER
+96	80	1	2026-10-10 15:55:30.522	1	1	0	3	12	3	ES
+97	81	1	2026-10-10 19:56:44.002	6	2	3	1	5	3	RE
+98	84	1	2026-10-23 23:45:27.687	1	3	2	3	10	1	EI
+99	52	1	2026-10-25 22:51:14.7	3	8	2	0	4	3	IE
 \.
 
 
@@ -15123,7 +16001,6 @@ COPY public.universite (id_universite, nom, description, type, pays, ville, regi
 23	ISEP Bignona	Institut Supérieur d'Enseignement Professionnel de Bignona	publique	Sénégal	Bignona	Ziguinchor	HLM Médina Plateau, Villa N°2501, Bignona	+221 33 994 07 81	admin@isep-bignona.edu.sn	https://isep-bignona.edu.sn/	/assets/logo/universites/ISEP_Bignona.png
 24	ISEP Matam	Institut Supérieur d'Enseignement Professionnel de Matam	publique	Sénégal	Matam	Matam	Quartier Tantadji, Lot n° 365 (en face du fleuve), Matam	+221 33 966 31 22 / +221 33 966 31 23	direction@isepmatam.sn	https://isepmatam.sn/	/assets/logo/universites/ISEP_Matam.png
 25	ISEP Mbacké	Institut Supérieur d'Enseignement Professionnel de Mbacké	publique	Sénégal	Mbacké	Diourbel	Quartier Mbacké Khewar (Ancien siège ASP), Mbacké	+221 33 972 82 10 / +221 76 622 16 01	mbackeisep@gmail.com	https://isepmbacke.sn/	/assets/logo/universites/ISEP_Mbacke.png
-26	ISEP Kédougou	Institut Supérieur d'Enseignement Professionnel de Kédougou	publique	Sénégal	Kédougou	Kédougou			contact@mesr.gouv.sn	https://mesrisenegal.sn	/assets/logo/universites/ISEP_Kedougou.png
 28	ISM	Institut Supérieur de Management	privee	Sénégal	Dakar	Dakar	Point E, 2 Rue des Écrivains, Dakar	+221 33 869 76 76 / +221 33 869 76 77	info@ism.edu.sn	https://www.groupeism.sn/	/assets/logo/universites/ISM.png
 30	ESTM	École Supérieure de Technologie et de Management 	privee	Sénégal	Dakar	Dakar	Avenue Cheikh Anta Diop (en face de l'Hôpital de Fann), Dakar	+221 33 825 28 89 / +221 71 062 00 55	estm@estm.edu.sn	https://estm.sn	/assets/logo/universites/ESTM.png
 33	 IFAA	Institut de Formation en Administration des Affaires	privee	Sénégal	Dakar	Dakar	Cité Sipres II (en face de l'Hypermarché Exclusive VDN), villas n° 2 et 3, Dakar	+221 77 566 01 91 / +221 78 112 47 18 / +221 33 867 36 35	contact@ifaa.sn / ifaasecretariat@gmail.com	https://ifaa.sn	/assets/logo/universites/IFAA.png
@@ -15189,7 +16066,6 @@ COPY public.universite_detail (id_detail, id_universite, presentation, condition
 23	23	L'ISEP de Bignona propose des formations professionnelles destinées à renforcer les compétences techniques des jeunes de la région de la Casamance et à favoriser leur insertion professionnelle.	L'accès à l'établissement dépend du statut de l'apprenant :Pour les nouveaux bacheliers (DiSEP) : L'orientation se fait obligatoirement en ligne via la plateforme nationale Campusen pour les bacheliers des séries scientifiques, techniques ou littéraires.Pour les titulaires d'un Brevet de Technicien (BT) : Admission sur étude de dossier de candidature et entretien individuel de motivation devant un jury.Pour les CCP (6 mois) : Recrutement sur appel à candidatures. Les candidats doivent être âgés de 18 à 40 ans, être issus de couches vulnérables ou présenter un projet professionnel validé.Droits d'inscription : Les frais administratifs annuels s'élèvent à 90 000 FCFA pour le parcours DiSEP.	L'institut lui-même n'octroie pas de bourses directes, mais applique les dispositifs nationaux suivants :Bourses d’État (MESRI) : Les étudiants de nationalité sénégalaise régulièrement orientés par Campusen peuvent introduire une demande auprès de la Direction des Bourses pour bénéficier de l’allocation universitaire mensuelle.Bons de formation (3FPT) : Dans le cadre de programmes d'insertion (ex : Projet Espoir-Jeunes), le Fonds de Financement de la Formation Professionnelle et Technique (3FPT) subventionne intégralement ou en grande partie les parcours de courte durée (CCP) pour les jeunes.
 24	24	L'ISEP de Matam forme des techniciens supérieurs dans plusieurs domaines répondant aux besoins du développement économique régional et national.	Admission après le baccalauréat sur dossier ou selon les modalités officielles.	Bourses nationales accessibles aux étudiants remplissant les conditions.
 25	25	L'ISEP de Mbacké développe des formations professionnalisantes favorisant l'employabilité, l'innovation et l'entrepreneuriat dans différents secteurs d'activité.	L'entrée à l'institut s'effectue après une sélection rigoureuse par ordre de mérite :Pour le DiSEP (Nouveaux bacheliers) : L'orientation se fait en ligne via la plateforme nationale Campusen. Pour le DiSEP (Titulaires d'un Brevet de Technicien - BT) : L'admission nécessite le dépôt d'un dossier complet à la Direction des Études de l'institut, suivi d'un entretien obligatoire avec un jury. Frais de dossier : Fixés à 5 000 FCFA pour les candidats sur dossier. Les frais d'inscription pédagogique s'élèvent ensuite à 90 000 FCFA par an (frais communs aux ISEP publics)	Bourses d’État nationales : Les étudiants sénégalais inscrits en formation régulière (sélectionnés par Campusen ou par test de l'institut) peuvent soumettre une demande auprès de la Direction des Bourses du Ministère de l'Enseignement Supérieur afin de bénéficier d'allocations universitaires mensuelles. Prise en charge de projets (ex: 3FPT) : Pour les certificats courts (CCP) ou certaines cohortes spécifiques, le Fonds de Financement de la Formation Professionnelle et Technique (3FPT via le programme Espoir Jeunes) peut subventionner intégralement le coût de la formation des jeunes de 18 à 40 ans porteurs d'un projet professionnel
-26	26	L'ISEP de Kédougou dispense des formations professionnelles adaptées aux besoins des secteurs économiques de la région, notamment les ressources naturelles, les technologies et les services.	Pour le DiSEP (Nouveaux bacheliers) : L'accès se fait obligatoirement sur orientation via la plateforme nationale Campusen. L'admission est ouverte aux titulaires d'un Baccalauréat (séries scientifiques, techniques ou littéraires selon la filière souhaitée).Pour le DiSEP (Titulaires d'un Brevet de Technicien - BT) : Sélection sur dossier de candidature (généralement ouvert aux diplômés en électricité, mécanique ou métiers ruraux) suivie d'un entretien de motivation obligatoire devant un jury. Frais d'inscription : Les droits d'inscription administratifs annuels s'élèvent à 90 000 FCFA, conformément au régime des instituts publics au Sénégal.	Bourses nationales (MESRI) : Les étudiants de nationalité sénégalaise régulièrement orientés par l'État peuvent soumettre un dossier auprès de la Direction des Bourses pour bénéficier des allocations d'études universitaires mensuelles.Financements de projets (ex: 3FPT) : Pour les formations courtes (CCP), les frais de scolarité sont le plus souvent intégralement pris en charge ou fortement subventionnés par le Fonds de Financement de la Formation Professionnelle et Technique (3FPT) via des guichets d'insertion pour les jeunes de la région.
 28	28	L'Institut Supérieur de Management (ISM) est l'un des principaux établissements privés d'enseignement supérieur du Sénégal. Il propose des formations professionnalisantes dans les domaines du management, de la finance, du marketing, de la communication, du droit, de l'informatique et de l'ingénierie. L'école met l'accent sur l'innovation, l'entrepreneuriat, les stages en entreprise et l'insertion professionnelle.	L'accès s'effectue après une sélection rigoureuse qui comprend l'évaluation académique et des tests.Dossier de candidature : Soumission des diplômes, relevés de notes légalisés de la dernière classe fréquentée et attestations professionnelles (pour les masters). Le dossier peut être géré directement par e-mail ou sur le site.Tests d'entrée obligatoires : Les candidats retenus doivent passer trois épreuves :Épreuve écrite de culture générale.Entretien individuel en anglais.Entretien collectif de motivation.Frais de scolarité indicatifs : Les frais standards s'élèvent généralement à environ 950 000 FCFA par an pour la formation initiale, payables en totalité ou étalés sur 10 mensualités de 95 000 FCFA.	L'ISM propose des solutions d'aide au financement basées sur le mérite académique :Bourses d’excellence du Groupe ISM : Ce programme est destiné aux bacheliers très méritants de l'espace UEMOA. L'obtention d'une mention au Baccalauréat est une condition obligatoire (sine qua non) pour y postuler. Dossier de demande de bourse : Il doit comporter les copies certifiées conformes des bulletins de la Seconde à la Terminale, la pièce d'identité, un extrait de naissance et un certificat de visite médicale.
 29	29	L'Institut Supérieur d'Informatique (ISI) est un établissement privé d'enseignement supérieur reconnu au Sénégal. Il propose des formations professionnalisantes en informatique, réseaux, cybersécurité, intelligence artificielle, management, finance, marketing et télécommunications. Les formations sont orientées vers les compétences pratiques, l'innovation, les stages et l'insertion professionnelle.	L’accès aux différents programmes de l'ISI s'effectue selon le niveau d'études visé :Admission en 1ère année (Licence 1 / BTS) : Être titulaire du Baccalauréat (toutes séries) ou d'un diplôme équivalent. La sélection se fait sur étude de dossier scolaire (bulletins de notes) suivie d'un entretien de motivation.Admission en Master : Être titulaire d'une Licence (Bac+3) ou d'un diplôme jugé équivalent dans un domaine compatible. L'admission se fait sur examen du dossier académique et validation du projet professionnel.Dossier de candidature de base : Une copie légalisée du diplôme (Bac ou Licence), les relevés de notes des deux dernières années, une copie de la pièce d'identité et des photos d'identité.	L'ISI est un institut privé payant, mais il propose plusieurs mécanismes d'accompagnement financier pour alléger les frais de scolarité :Bourses d’Excellence et de Solidarité ISI : Le groupe octroie chaque année, sous forme de concours ou sur critères sociaux très rigoureux, des demi-bourses ou des réductions partielles de scolarité pour les bacheliers ou licenciés ayant obtenu de très bonnes mentions.Bons de formation (3FPT) : Pour les filières techniques et les diplômes d'État (comme le BTS), les étudiants sénégalais peuvent postuler aux guichets de financement du 3FPT pour obtenir une prise en charge partielle ou totale de leurs frais de scolarité.Conventions de partenariat : L'ISI a signé des accords avec plusieurs communes, associations et groupements du Sénégal permettant à leurs membres ou résidents de bénéficier de tarifs préférentiels.
 30	30	L'École Supérieure de Technologie et de Management (ESTM) est un établissement privé d'enseignement supérieur qui forme des professionnels dans les domaines du management, des technologies, de l'informatique, de l'ingénierie et des sciences appliquées. Les formations privilégient une approche professionnalisante, les stages en entreprise et le développement des compétences techniques et managériales.	L’entrée à l’ESTM s'effectue principalement sur dossier et validation académique :Admission en Licence 1 (L1) : Être titulaire d'un Baccalauréat (toutes séries selon la filière visée).Admission en Licence 3 (L3) ou Master : Être titulaire d’un diplôme de niveau Bac+2 (DUT, BTS, L2) ou d'une Licence (Bac+3) dans une spécialité équivalente ou compatible.	L'ESTM met en place plusieurs dispositifs pour faciliter le financement de ses programmes :Programme de Bourses Master ESTM : L’école lance périodiquement des campagnes d'attribution de bourses partielles de réduction de scolarité. Elles s'adressent aux étudiants ou professionnels de niveau Bac+3 souhaitant intégrer un master d'ingénierie ou de management sur critères d'excellence académique.Prises en charge étatiques (3FPT) : Pour les filières éligibles (notamment les parcours techniques en génie électrique, informatique et énergies renouvelables), les étudiants de nationalité sénégalaise peuvent solliciter des bons de financement auprès du 3FPT pour prendre en charge tout ou partie des frais d’études.
@@ -15586,13 +16462,6 @@ COPY public.universite_filiere (id_universite, id_filiere) FROM stdin;
 25	312
 25	313
 25	314
-26	193
-26	194
-26	315
-26	316
-26	317
-26	318
-26	319
 28	5
 28	9
 28	10
@@ -16034,6 +16903,16 @@ COPY public.utilisateur (id_user, nom, email, mot_de_passe, pays, niveau_etude, 
 72	Adja Rokhaya Diallo	rokhaya_adja123@icloud.com	$2b$10$pkCThS8xd1MZEujOVFTGtO5I2uJlexzxva6TMmNCJEKm/xAlu.X4u	Sénégal	Baccalauréat	2	2026-09-27 21:04:59.553
 73	Mamadou Lamine DIATTA	mldiattaa2006@gmail.com	$2b$10$PeqkJ98HirBjxyej/wRv1eiHpL9v9oN6oJIhPicwLhbGvJE2uYToq	Sénégal	Baccalauréat	1	2026-09-28 01:03:18.87
 74	DENISE MENDY	nizamendes23@gmail.com	$2b$10$Dc/VfVkp90wZKc.jRkwRxeUVxaEPIpFAdJrnGmfn.4F53r4KRX.y.	Sénégal	Baccalauréat	2	2026-09-28 13:05:31.603
+75	bouna sane	bouna@gmail.com	$2b$10$Pe3BGT8ijJmtcyKWBpTSfuZzOS43cRoHt/09Neu4E/62BI7vwZLp.	Sénégal	Collége	\N	2026-09-30 12:58:07.827
+76	Laurent Massoya	laurentmassoya65@gmail.com	$2b$10$XtV7BH91KPctT1XDkkJcAu6LtKUmANj6HEe4T9j3RDQgbFwGKIAgi	Sénégal	Licence 2	1	2026-10-03 13:27:41.605
+77	Yacine NDIAYE	ndiayeyacine7@gmail.com	$2b$10$vrfHArXxMkzX.1JPqeEOyu517JZxAuwkIpBOUvygU.CVXxSJy8U5W	Sénégal	Première	2	2026-10-03 14:12:26.794
+78	Maïmounatou Diokhané	maimounatoudiokhane@gmail.com	$2b$10$mGZDABJcEvDDusQxivk1VOygZXtyZgkEWCpdkK4c9T9DDLe3kavnu	Sénégal	Baccalauréat	1	2026-10-04 19:48:47.952
+79	Dieuvie Cladin	miankouikila24@gmail.com	$2b$10$jGJC5JSbJsgf/OtbehmysuIeVfAHxmYmEy56zblR6lpNJk03YInHq	Sénégal	Baccalauréat	4	2026-10-10 13:36:49.488
+80	Fatoumata Binta Diallo	fatima12diallo18@gmail.com	$2b$10$HXe8P.hNTS7zrJzDcRNKy.5m./Zk91XcsJnYMCXB19qqk2qU26vt6	Sénégal	Licence 2	5	2026-10-10 15:35:26.065
+81	Emefa Marie Madeleine DEGBE	mariedegbe250@gmail.com	$2b$10$MdoULCdDSvLaqlYgsy/P2OLV0OwKLZoZNOSb46uiKP4Znx5tf6H2G	Sénégal	Baccalauréat	2	2026-10-10 19:44:20.908
+82	Mame Saye	nianediopseynabou@gmail.com	$2b$10$ipoemSZKgYijnLsBGsgjD.g39WH2xCbpUQj8I/zpC2xVx9apvZQwG	Sénégal	Licence 2	3	2026-10-11 20:56:20.199
+83	Laurent Denbin Massoya	laurentmassoya66@gmail.com	$2b$10$mGvtZxZZ1blN9am7cDmwhOhzLAw9CCzY5gzsTzKieqRgDW9wAB/de	Sénégal	Licence 2	1	2026-10-22 17:24:17.166
+84	Balla Ngom Diagne	balladiagne27@gmail.com	$2b$10$QXguhViceGq22Lwe/GonS.j6THGb/uvZKQBT5YaeT6fG6ylL7YsCy	Sénégal	Baccalauréat	2	2026-10-23 23:37:22.968
 \.
 
 
@@ -16128,6 +17007,11 @@ COPY realtime.schema_migrations (version, inserted_at) FROM stdin;
 20260914120000	2026-09-23 13:23:30
 20260916120000	2026-09-23 13:23:30
 20260922120000	2026-09-24 13:26:58
+20260925120000	2026-10-03 13:33:55
+20260928120000	2026-10-05 23:41:10
+20261002120000	2026-10-08 13:53:15
+20261008120000	2026-10-19 22:38:23
+20261009120000	2026-10-19 22:38:23
 \.
 
 
@@ -16241,6 +17125,7 @@ COPY storage.migrations (id, name, hash, executed_at) FROM stdin;
 70	list-objects-with-versions	5c17c3777616cd8d7b18b82835525fa3205af57b	2026-09-23 13:23:35.506823
 71	objects-delete-marker-index	6d14858e66c66f8d6accf8a2630aefd1527fddba	2026-09-23 13:23:35.540426
 72	drop-bucketid-objname-index	302beb09e1b469d7d4db19566f2389d280b64aa3	2026-09-23 13:23:35.548174
+73	revoke-grants-to-unused-operations	ba9244051be09f22f714fc0170a2539f8b5f0e68	2026-10-13 13:50:50.007656
 \.
 
 
@@ -16295,7 +17180,7 @@ SELECT pg_catalog.setval('auth.refresh_tokens_id_seq', 1, false);
 -- Name: attente_fonctionnalite_id_attente_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.attente_fonctionnalite_id_attente_seq', 11, true);
+SELECT pg_catalog.setval('public.attente_fonctionnalite_id_attente_seq', 12, true);
 
 
 --
@@ -16316,14 +17201,14 @@ SELECT pg_catalog.setval('public.badge_id_badge_seq', 10, true);
 -- Name: badge_utilisateur_id_badge_utilisateur_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.badge_utilisateur_id_badge_utilisateur_seq', 256, true);
+SELECT pg_catalog.setval('public.badge_utilisateur_id_badge_utilisateur_seq', 286, true);
 
 
 --
 -- Name: connexion_utilisateur_id_connexion_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.connexion_utilisateur_id_connexion_seq', 374, true);
+SELECT pg_catalog.setval('public.connexion_utilisateur_id_connexion_seq', 520, true);
 
 
 --
@@ -16348,10 +17233,31 @@ SELECT pg_catalog.setval('public.filiere_id_filiere_seq', 322, true);
 
 
 --
+-- Name: hesitation_analyse_id_analyse_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hesitation_analyse_id_analyse_seq', 1, false);
+
+
+--
+-- Name: hesitation_analyse_piste_id_analyse_piste_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hesitation_analyse_piste_id_analyse_piste_seq', 1, false);
+
+
+--
 -- Name: hesitation_critere_id_critere_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.hesitation_critere_id_critere_seq', 13, true);
+
+
+--
+-- Name: hesitation_evenement_id_evenement_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.hesitation_evenement_id_evenement_seq', 1, false);
 
 
 --
@@ -16393,7 +17299,7 @@ SELECT pg_catalog.setval('public.hesitation_test_id_hesitation_test_seq', 1, tru
 -- Name: historique_id_historique_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.historique_id_historique_seq', 913, true);
+SELECT pg_catalog.setval('public.historique_id_historique_seq', 1116, true);
 
 
 --
@@ -16408,6 +17314,13 @@ SELECT pg_catalog.setval('public.metier_critere_id_metier_critere_seq', 2080, tr
 --
 
 SELECT pg_catalog.setval('public.metier_id_metier_seq', 175, true);
+
+
+--
+-- Name: piste_utilisateur_id_piste_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.piste_utilisateur_id_piste_seq', 9, true);
 
 
 --
@@ -16442,7 +17355,7 @@ SELECT pg_catalog.setval('public.recommandation_id_recommandation_seq', 1, true)
 -- Name: reponse_id_reponse_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.reponse_id_reponse_seq', 1601, true);
+SELECT pg_catalog.setval('public.reponse_id_reponse_seq', 1801, true);
 
 
 --
@@ -16456,7 +17369,7 @@ SELECT pg_catalog.setval('public.serie_id_serie_seq', 5, true);
 -- Name: test_riasec_id_test_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.test_riasec_id_test_seq', 89, true);
+SELECT pg_catalog.setval('public.test_riasec_id_test_seq', 99, true);
 
 
 --
@@ -16477,7 +17390,7 @@ SELECT pg_catalog.setval('public.universite_id_universite_seq', 64, true);
 -- Name: utilisateur_id_user_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.utilisateur_id_user_seq', 74, true);
+SELECT pg_catalog.setval('public.utilisateur_id_user_seq', 84, true);
 
 
 --
@@ -16864,11 +17777,51 @@ ALTER TABLE ONLY public.filiere
 
 
 --
+-- Name: hesitation_analyse_piste hesitation_analyse_piste_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse_piste
+    ADD CONSTRAINT hesitation_analyse_piste_pkey PRIMARY KEY (id_analyse_piste);
+
+
+--
+-- Name: hesitation_analyse_piste hesitation_analyse_piste_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse_piste
+    ADD CONSTRAINT hesitation_analyse_piste_unique UNIQUE (id_analyse, id_piste);
+
+
+--
+-- Name: hesitation_analyse hesitation_analyse_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse
+    ADD CONSTRAINT hesitation_analyse_pkey PRIMARY KEY (id_analyse);
+
+
+--
+-- Name: hesitation_analyse hesitation_analyse_test_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse
+    ADD CONSTRAINT hesitation_analyse_test_unique UNIQUE (id_hesitation_test);
+
+
+--
 -- Name: hesitation_critere hesitation_critere_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.hesitation_critere
     ADD CONSTRAINT hesitation_critere_pkey PRIMARY KEY (id_critere);
+
+
+--
+-- Name: hesitation_evenement hesitation_evenement_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_evenement
+    ADD CONSTRAINT hesitation_evenement_pkey PRIMARY KEY (id_evenement);
 
 
 --
@@ -16949,6 +17902,14 @@ ALTER TABLE ONLY public.metier
 
 ALTER TABLE ONLY public.metier_serie
     ADD CONSTRAINT metier_serie_pkey PRIMARY KEY (id_metier, id_serie);
+
+
+--
+-- Name: piste_utilisateur piste_utilisateur_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.piste_utilisateur
+    ADD CONSTRAINT piste_utilisateur_pkey PRIMARY KEY (id_piste);
 
 
 --
@@ -17740,10 +18701,59 @@ CREATE UNIQUE INDEX idx_filiere_nom ON public.filiere USING btree (nom);
 
 
 --
+-- Name: idx_hesitation_analyse_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_analyse_date ON public.hesitation_analyse USING btree (date_analyse DESC);
+
+
+--
+-- Name: idx_hesitation_analyse_piste_analyse; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_analyse_piste_analyse ON public.hesitation_analyse_piste USING btree (id_analyse);
+
+
+--
+-- Name: idx_hesitation_analyse_piste_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_analyse_piste_position ON public.hesitation_analyse_piste USING btree ("position");
+
+
+--
+-- Name: idx_hesitation_analyse_riasec; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_analyse_riasec ON public.hesitation_analyse USING btree (id_test_riasec);
+
+
+--
 -- Name: idx_hesitation_critere_uk_hesitation_critere_code; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX idx_hesitation_critere_uk_hesitation_critere_code ON public.hesitation_critere USING btree (code);
+
+
+--
+-- Name: idx_hesitation_evenement_piste; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_evenement_piste ON public.hesitation_evenement USING btree (id_piste);
+
+
+--
+-- Name: idx_hesitation_evenement_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_evenement_type ON public.hesitation_evenement USING btree (type_evenement);
+
+
+--
+-- Name: idx_hesitation_evenement_user_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_hesitation_evenement_user_date ON public.hesitation_evenement USING btree (id_user, date_evenement DESC);
 
 
 --
@@ -17845,6 +18855,13 @@ CREATE INDEX idx_metier_serie_id_serie ON public.metier_serie USING btree (id_se
 
 
 --
+-- Name: idx_piste_utilisateur_user; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_piste_utilisateur_user ON public.piste_utilisateur USING btree (id_user, statut, date_ajout DESC);
+
+
+--
 -- Name: idx_proposition_fk_proposition_question; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -17940,6 +18957,34 @@ CREATE UNIQUE INDEX idx_utilisateur_email ON public.utilisateur USING btree (ema
 --
 
 CREATE INDEX idx_utilisateur_fk_utilisateur_serie ON public.utilisateur USING btree (id_serie);
+
+
+--
+-- Name: uq_hesitation_option_test_filiere; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uq_hesitation_option_test_filiere ON public.hesitation_option USING btree (id_hesitation_test, id_filiere) WHERE (id_filiere IS NOT NULL);
+
+
+--
+-- Name: uq_hesitation_option_test_metier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uq_hesitation_option_test_metier ON public.hesitation_option USING btree (id_hesitation_test, id_metier) WHERE (id_metier IS NOT NULL);
+
+
+--
+-- Name: uq_piste_user_filiere; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uq_piste_user_filiere ON public.piste_utilisateur USING btree (id_user, id_filiere) WHERE (id_filiere IS NOT NULL);
+
+
+--
+-- Name: uq_piste_user_metier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX uq_piste_user_metier ON public.piste_utilisateur USING btree (id_user, id_metier) WHERE (id_metier IS NOT NULL);
 
 
 --
@@ -18553,6 +19598,70 @@ ALTER TABLE ONLY public.utilisateur
 
 
 --
+-- Name: hesitation_analyse_piste hesitation_analyse_piste_analyse_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse_piste
+    ADD CONSTRAINT hesitation_analyse_piste_analyse_fk FOREIGN KEY (id_analyse) REFERENCES public.hesitation_analyse(id_analyse) ON DELETE CASCADE;
+
+
+--
+-- Name: hesitation_analyse hesitation_analyse_piste_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse
+    ADD CONSTRAINT hesitation_analyse_piste_fk FOREIGN KEY (id_piste_dominante) REFERENCES public.piste_utilisateur(id_piste) ON DELETE SET NULL;
+
+
+--
+-- Name: hesitation_analyse_piste hesitation_analyse_piste_piste_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse_piste
+    ADD CONSTRAINT hesitation_analyse_piste_piste_fk FOREIGN KEY (id_piste) REFERENCES public.piste_utilisateur(id_piste) ON DELETE CASCADE;
+
+
+--
+-- Name: hesitation_analyse hesitation_analyse_riasec_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse
+    ADD CONSTRAINT hesitation_analyse_riasec_fk FOREIGN KEY (id_test_riasec) REFERENCES public.test_riasec(id_test) ON DELETE SET NULL;
+
+
+--
+-- Name: hesitation_analyse hesitation_analyse_test_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_analyse
+    ADD CONSTRAINT hesitation_analyse_test_fk FOREIGN KEY (id_hesitation_test) REFERENCES public.hesitation_test(id_hesitation_test) ON DELETE CASCADE;
+
+
+--
+-- Name: hesitation_evenement hesitation_evenement_piste_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_evenement
+    ADD CONSTRAINT hesitation_evenement_piste_fk FOREIGN KEY (id_piste) REFERENCES public.piste_utilisateur(id_piste) ON DELETE SET NULL;
+
+
+--
+-- Name: hesitation_evenement hesitation_evenement_test_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_evenement
+    ADD CONSTRAINT hesitation_evenement_test_fk FOREIGN KEY (id_hesitation_test) REFERENCES public.hesitation_test(id_hesitation_test) ON DELETE SET NULL;
+
+
+--
+-- Name: hesitation_evenement hesitation_evenement_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.hesitation_evenement
+    ADD CONSTRAINT hesitation_evenement_user_fk FOREIGN KEY (id_user) REFERENCES public.utilisateur(id_user) ON DELETE CASCADE;
+
+
+--
 -- Name: metier_serie metier_serie_ibfk_1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -18566,6 +19675,30 @@ ALTER TABLE ONLY public.metier_serie
 
 ALTER TABLE ONLY public.metier_serie
     ADD CONSTRAINT metier_serie_ibfk_2 FOREIGN KEY (id_serie) REFERENCES public.serie(id_serie);
+
+
+--
+-- Name: piste_utilisateur piste_utilisateur_filiere_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.piste_utilisateur
+    ADD CONSTRAINT piste_utilisateur_filiere_fk FOREIGN KEY (id_filiere) REFERENCES public.filiere(id_filiere) ON DELETE CASCADE;
+
+
+--
+-- Name: piste_utilisateur piste_utilisateur_metier_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.piste_utilisateur
+    ADD CONSTRAINT piste_utilisateur_metier_fk FOREIGN KEY (id_metier) REFERENCES public.metier(id_metier) ON DELETE CASCADE;
+
+
+--
+-- Name: piste_utilisateur piste_utilisateur_user_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.piste_utilisateur
+    ADD CONSTRAINT piste_utilisateur_user_fk FOREIGN KEY (id_user) REFERENCES public.utilisateur(id_user) ON DELETE CASCADE;
 
 
 --
@@ -18768,10 +19901,28 @@ ALTER TABLE public.filiere ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.filiere_critere ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: hesitation_analyse; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_analyse ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: hesitation_analyse_piste; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_analyse_piste ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: hesitation_critere; Type: ROW SECURITY; Schema: public; Owner: -
 --
 
 ALTER TABLE public.hesitation_critere ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: hesitation_evenement; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public.hesitation_evenement ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: hesitation_option; Type: ROW SECURITY; Schema: public; Owner: -
@@ -18832,6 +19983,12 @@ ALTER TABLE public.metier_filiere ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE public.metier_serie ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: piste_utilisateur; Type: ROW SECURITY; Schema: public; Owner: -
+--
+
+ALTER TABLE public.piste_utilisateur ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: profil_riasec; Type: ROW SECURITY; Schema: public; Owner: -
@@ -19022,5 +20179,5 @@ CREATE EVENT TRIGGER pgrst_drop_watch ON sql_drop
 -- PostgreSQL database dump complete
 --
 
-\unrestrict h5UKgP9ys5gz39OhcDurLRwjEg834tBWjWkZSxaVM4QHYKqiWXlFbFRdwhAWUXj
+\unrestrict eL4PldSOjxCE25kdFOjlLjmOFNiZIFSNYcRZiSCLopj6YpA9WiTRumKbZAbJWLc
 

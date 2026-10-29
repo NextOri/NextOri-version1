@@ -1,6 +1,7 @@
 import { supabase } from "../_lib/supabase.js";
 import { handleCors } from "../_lib/cors.js";
 import { getUserFromRequest } from "../_lib/auth.js";
+import { analyserHesitation } from "../_lib/hesitationEngine.js";
 
 /**
  * ============================================================
@@ -835,6 +836,477 @@ export default async function handler(req, res) {
           options: options || [],
           analyse: analyse || null,
         },
+      });
+    }
+
+        /**
+     * ========================================================
+     * POST /api/hesitation/analyse
+     * ========================================================
+     *
+     * Lance réellement le moteur d'analyse.
+     *
+     * Body :
+     * {
+     *   "id_hesitation_test": 12,
+     *   "reponses": [
+     *      {
+     *        "id_question": 1,
+     *        "id_reponse": 2,
+     *        "code": "ATTIRANCE_SENS"
+     *      }
+     *   ]
+     * }
+     * ========================================================
+     */
+
+    if (
+      req.method === "POST" &&
+      path.endsWith("/analyse")
+    ) {
+      const {
+        id_hesitation_test,
+        reponses = [],
+      } = req.body || {};
+
+      const idHesitationTest = parseInt(
+        id_hesitation_test,
+        10
+      );
+
+      if (!Number.isInteger(idHesitationTest)) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "id_hesitation_test est requis.",
+        });
+      }
+
+      /*
+       * Vérification de la session
+       */
+      const {
+        data: session,
+        error: sessionError,
+      } = await supabase
+        .from("hesitation_test")
+        .select(`
+          id_hesitation_test,
+          id_user,
+          statut
+        `)
+        .eq(
+          "id_hesitation_test",
+          idHesitationTest
+        )
+        .eq("id_user", idUser)
+        .maybeSingle();
+
+      if (sessionError) throw sessionError;
+
+      if (!session) {
+        return res.status(404).json({
+          success: false,
+          message: "Session introuvable.",
+        });
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Enregistrer les réponses
+       * ------------------------------------------------------
+       */
+
+      if (Array.isArray(reponses) && reponses.length) {
+        /*
+         * On remplace les réponses précédentes de cette
+         * session afin de rendre l'analyse reproductible.
+         */
+
+        const {
+          error: deleteResponsesError,
+        } = await supabase
+          .from("hesitation_reponse_utilisateur")
+          .delete()
+          .eq(
+            "id_hesitation_test",
+            idHesitationTest
+          );
+
+        if (deleteResponsesError) {
+          throw deleteResponsesError;
+        }
+
+        const responseRows = reponses
+          .map((reponse) => ({
+            id_hesitation_test:
+              idHesitationTest,
+            id_question: parseInt(
+              reponse.id_question,
+              10
+            ),
+            id_reponse: parseInt(
+              reponse.id_reponse,
+              10
+            ),
+          }))
+          .filter(
+            (reponse) =>
+              Number.isInteger(
+                reponse.id_question
+              ) &&
+              Number.isInteger(
+                reponse.id_reponse
+              )
+          );
+
+        if (responseRows.length) {
+          const {
+            error: insertResponsesError,
+          } = await supabase
+            .from(
+              "hesitation_reponse_utilisateur"
+            )
+            .insert(responseRows);
+
+          if (insertResponsesError) {
+            throw insertResponsesError;
+          }
+        }
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Lancer le moteur
+       * ------------------------------------------------------
+       */
+
+      const analyse =
+        await analyserHesitation({
+          idUser,
+          idHesitationTest,
+          reponses,
+        });
+
+      /*
+       * ------------------------------------------------------
+       * Supprimer une ancienne analyse éventuelle
+       * ------------------------------------------------------
+       *
+       * Les lignes hesitation_analyse_piste sont supprimées
+       * automatiquement grâce au ON DELETE CASCADE.
+       * ------------------------------------------------------
+       */
+
+      const {
+        error: deleteAnalyseError,
+      } = await supabase
+        .from("hesitation_analyse")
+        .delete()
+        .eq(
+          "id_hesitation_test",
+          idHesitationTest
+        );
+
+      if (deleteAnalyseError) {
+        throw deleteAnalyseError;
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Créer l'analyse principale
+       * ------------------------------------------------------
+       */
+
+      const {
+        data: analyseDb,
+        error: analyseInsertError,
+      } = await supabase
+        .from("hesitation_analyse")
+        .insert([
+          {
+            id_hesitation_test:
+              idHesitationTest,
+
+            id_test_riasec:
+              analyse.id_test_riasec,
+
+            id_piste_dominante:
+              analyse.dominante?.piste
+                ?.id_piste || null,
+
+            version_moteur: "v1.2.0",
+
+            niveau_confiance:
+              analyse.dominante
+                ?.niveauConfiance || null,
+
+            synthese:
+              analyse.synthese,
+          },
+        ])
+        .select("*")
+        .single();
+
+      if (analyseInsertError) {
+        throw analyseInsertError;
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Enregistrer le résultat de chaque piste
+       * ------------------------------------------------------
+       */
+
+      const analysePisteRows =
+        analyse.resultats.map(
+          (resultat) => ({
+            id_analyse:
+              analyseDb.id_analyse,
+
+            id_piste:
+              resultat.piste.id_piste,
+
+            score_riasec:
+              resultat.scoreRiasec,
+
+            score_criteres:
+              resultat.scoreCriteres,
+
+            score_convergence:
+              resultat.scoreConvergence,
+
+            score_information:
+              resultat.scoreInformation,
+
+            score_differenciation:
+              resultat.scoreDifferenciation,
+
+            score_global:
+              resultat.scoreGlobal,
+
+            rang:
+              resultat.rang,
+
+            niveau_confiance:
+              resultat.niveauConfiance,
+
+            position:
+              resultat.position,
+
+            raisons:
+              resultat.raisons,
+
+            points_vigilance:
+              resultat.pointsVigilance,
+
+            prochaines_etapes:
+              resultat.prochainesEtapes,
+
+            features_snapshot: {
+              score_riasec:
+                resultat.scoreRiasec,
+
+              score_criteres:
+                resultat.scoreCriteres,
+
+              score_convergence:
+                resultat.scoreConvergence,
+
+              score_information:
+                resultat.scoreInformation,
+
+              score_differenciation:
+                resultat.scoreDifferenciation,
+
+              score_global:
+                resultat.scoreGlobal,
+
+              couverture_criteres:
+                resultat.couvertureCriteres,
+
+              marge:
+                resultat.marge,
+
+              nombre_reponses:
+                analyse.metadata
+                  .nombre_reponses,
+
+              riasec_disponible:
+                analyse.metadata
+                  .riasec_disponible,
+            },
+          })
+        );
+
+      if (analysePisteRows.length) {
+        const {
+          error:
+            analysePistesInsertError,
+        } = await supabase
+          .from(
+            "hesitation_analyse_piste"
+          )
+          .insert(analysePisteRows);
+
+        if (analysePistesInsertError) {
+          throw analysePistesInsertError;
+        }
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Session terminée
+       * ------------------------------------------------------
+       */
+
+      const {
+        error: sessionUpdateError,
+      } = await supabase
+        .from("hesitation_test")
+        .update({
+          statut: "termine",
+        })
+        .eq(
+          "id_hesitation_test",
+          idHesitationTest
+        )
+        .eq("id_user", idUser);
+
+      if (sessionUpdateError) {
+        throw sessionUpdateError;
+      }
+
+      /*
+       * ------------------------------------------------------
+       * Événement analytique
+       * ------------------------------------------------------
+       */
+
+      await supabase
+        .from("hesitation_evenement")
+        .insert([
+          {
+            id_user: idUser,
+
+            id_hesitation_test:
+              idHesitationTest,
+
+            id_piste:
+              analyse.dominante?.piste
+                ?.id_piste || null,
+
+            type_evenement:
+              "ANALYSE_TERMINEE",
+
+            contexte: {
+              version_moteur: "v1.2.0",
+
+              nombre_pistes:
+                analyse.resultats.length,
+
+              piste_dominante:
+                analyse.dominante?.piste
+                  ?.id_piste || null,
+
+              confiance:
+                analyse.dominante
+                  ?.niveauConfiance || null,
+            },
+          },
+        ]);
+
+      return res.status(200).json({
+        success: true,
+
+        data: {
+          analyse: analyseDb,
+
+          synthese:
+            analyse.synthese,
+
+          dominante:
+            analyse.dominante
+              ? {
+                  id_piste:
+                    analyse.dominante
+                      .piste.id_piste,
+
+                  rang:
+                    analyse.dominante.rang,
+
+                  score_global:
+                    analyse.dominante
+                      .scoreGlobal,
+
+                  niveau_confiance:
+                    analyse.dominante
+                      .niveauConfiance,
+
+                  position:
+                    analyse.dominante.position,
+                }
+              : null,
+
+          resultats:
+            analyse.resultats.map(
+              (resultat) => ({
+                id_piste:
+                  resultat.piste.id_piste,
+
+                type_piste:
+                  resultat.piste.type_piste,
+
+                nom:
+                  resultat.piste
+                    .type_piste ===
+                  "metier"
+                    ? resultat.piste
+                        .metier?.nom
+                    : resultat.piste
+                        .filiere?.nom,
+
+                rang:
+                  resultat.rang,
+
+                score_riasec:
+                  resultat.scoreRiasec,
+
+                score_criteres:
+                  resultat.scoreCriteres,
+
+                score_convergence:
+                  resultat.scoreConvergence,
+
+                score_information:
+                  resultat.scoreInformation,
+
+                score_differenciation:
+                  resultat.scoreDifferenciation,
+
+                score_global:
+                  resultat.scoreGlobal,
+
+                niveau_confiance:
+                  resultat.niveauConfiance,
+
+                position:
+                  resultat.position,
+
+                raisons:
+                  resultat.raisons,
+
+                points_vigilance:
+                  resultat.pointsVigilance,
+
+                prochaines_etapes:
+                  resultat.prochainesEtapes,
+              })
+            ),
+        },
+
+        message:
+          "Analyse J'HÉSITE terminée avec succès.",
       });
     }
 

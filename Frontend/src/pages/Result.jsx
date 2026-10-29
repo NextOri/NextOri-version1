@@ -6,6 +6,7 @@ import "../styles/Result.css";
 import { enregistrerAction } from "../services/historiqueService";
 import profilsRiasec from "../data/profilsRiasec";
 import { recupererProfilsRiasec } from "../services/profilRiasecService";
+import PisteButton from "../components/PisteButton";
 
 import {
     FaTrophy,
@@ -1121,6 +1122,10 @@ function Result(){
                                                     pour accéder à ce métier.
                                                 </span>
 
+                                                  <PisteButton
+                                           typePiste="metier"
+                                         id={metier.id_metier}
+                                            />
                                                 <button
                                                     className="result-v1-job-button"
                                                     onClick={() =>
@@ -1311,7 +1316,10 @@ function Result(){
                                                             Cette piste mérite
                                                             également votre attention.
                                                         </span>
-
+                                   <PisteButton
+                                 typePiste="metier"
+                                 id={metier.id_metier}
+                                        />
                                                         <button
                                                             className="result-v1-job-button"
                                                             onClick={() =>

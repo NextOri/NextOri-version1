@@ -1,0 +1,98 @@
+/* =========================================================
+   NEXTORI — BOUTON MES PISTES
+========================================================= */
+
+.piste-button-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.piste-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 44px;
+    padding: 11px 18px;
+
+    border-radius: 12px;
+    border: 1px solid transparent;
+
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.piste-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.piste-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   ÉTAT : PAS ENCORE AJOUTÉ
+========================================================= */
+
+.piste-button-inactive {
+    background: #FFFFFF;
+    color: #0D1B2A;
+    border-color: #D8DEE7;
+}
+
+.piste-button-inactive:hover:not(:disabled) {
+    border-color: #F4B400;
+    box-shadow: 0 6px 18px rgba(13, 27, 42, 0.10);
+}
+
+
+/* =========================================================
+   ÉTAT : DANS MES PISTES
+========================================================= */
+
+.piste-button-active {
+    background: #0D1B2A;
+    color: #FFFFFF;
+    border-color: #0D1B2A;
+    box-shadow: 0 6px 18px rgba(13, 27, 42, 0.16);
+}
+
+.piste-button-active svg {
+    color: #F4B400;
+}
+
+
+/* =========================================================
+   CHARGEMENT
+========================================================= */
+
+.piste-button-loading {
+    background: #F2F4F7;
+    color: #0D1B2A;
+    border-color: #E1E5EA;
+}
+
+
+/* =========================================================
+   ERREUR
+========================================================= */
+
+.piste-button-error {
+    color: #0D1B2A;
+    font-size: 0.78rem;
+}

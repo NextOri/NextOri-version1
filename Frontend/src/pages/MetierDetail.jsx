@@ -1,8 +1,9 @@
-﻿import { API_ROUTES_URL } from "../config/api";
+import { API_ROUTES_URL } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/MetierDetail.css";
 import FooterNavigation from "../components/FooterNavigation";
+import PisteButton from "../components/PisteButton";
 
 import {
     FaChartLine,
@@ -136,12 +137,16 @@ function MetierDetail() {
                     <FaArrowLeft />
                     <span>Retour aux métiers</span>
                 </button>
+
+                <PisteButton
+                    typePiste="metier"
+                    id={metier.id_metier}
+                />
             </div>
 
             {/* En-tête */}
 
             <div className="metier-detail-header">
-
 
                 <h1>{metier.nom}</h1>
 

@@ -16,8 +16,10 @@ import metiersHandler from "./_routes/metiers.js";
 import metiersDetailsHandler from "./_routes/metiers_details.js";
 import notifierHandler from "./_routes/notifier-fonctionnalite.js";
 import orientationHandler from "./_routes/orientation.js";
+import pistesHandler from "./_routes/pistes.js";
 import profilHandler from "./_routes/profil.js";
 import profilsRiasecHandler from "./_routes/profils-riasec.js";
+import comparaisonPistesHandler from "./_routes/comparaison-pistes.js";
 import profileHandler from "./_routes/profile.js";
 import propositionsHandler from "./_routes/propositions.js";
 import questionsHandler from "./_routes/questions.js";
@@ -50,8 +52,10 @@ const routes = {
   "metiers_details": metiersDetailsHandler,
   "notifier-fonctionnalite": notifierHandler,
   "orientation": orientationHandler,
+  "pistes": pistesHandler,
   "profil": profilHandler,
   "profils-riasec": profilsRiasecHandler,
+  "comparaison-pistes": comparaisonPistesHandler,
   "profile": profileHandler,
   "propositions": propositionsHandler,
   "questions": questionsHandler,

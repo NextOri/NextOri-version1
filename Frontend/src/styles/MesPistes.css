@@ -1,0 +1,1078 @@
+/* =========================================================
+   NEXTORI — MES PISTES
+   Identité inspirée de Result / Profil / Parcours
+========================================================= */
+
+.mes-pistes-page {
+    min-height: 100vh;
+    padding-bottom: 100px;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(30, 58, 138, 0.055),
+            transparent 30%
+        ),
+        #F2F4F7;
+    color: #0D1B2A;
+    font-family: Inter, Arial, sans-serif;
+}
+
+.mes-pistes-page *,
+.mes-pistes-page *::before,
+.mes-pistes-page *::after {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.mes-pistes-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 86% 20%,
+            rgba(244, 180, 0, 0.15),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            #0D1B2A 0%,
+            #1E3A8A 100%
+        );
+    color: #FFFFFF;
+}
+
+.mes-pistes-hero::before {
+    content: "";
+    position: absolute;
+    width: 390px;
+    height: 390px;
+    top: -230px;
+    right: -120px;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 50%;
+}
+
+.mes-pistes-hero::after {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    bottom: -170px;
+    left: -100px;
+    border: 1px solid rgba(244,180,0,0.18);
+    border-radius: 50%;
+}
+
+.mes-pistes-hero-content {
+    position: relative;
+    z-index: 2;
+    width: min(1080px, calc(100% - 36px));
+    margin: 0 auto;
+    padding: 38px 0 42px;
+}
+
+.mes-pistes-eyebrow {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: #F4B400;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+}
+
+.mes-pistes-title-line {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.mes-pistes-title-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    border-radius: 17px;
+    background: #F4B400;
+    color: #0D1B2A;
+    font-size: 1.35rem;
+    box-shadow: 0 10px 25px rgba(244,180,0,0.18);
+}
+
+.mes-pistes-hero h1 {
+    margin: 0;
+    color: #FFFFFF;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+.mes-pistes-hero p {
+    margin: 8px 0 0;
+    color: rgba(255,255,255,0.84);
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
+
+.mes-pistes-hero-bottom {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 430px;
+    margin-top: 28px;
+}
+
+.mes-pistes-hero-bottom > div:first-child {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    white-space: nowrap;
+}
+
+.mes-pistes-hero-bottom strong {
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+.mes-pistes-hero-bottom span {
+    color: rgba(255,255,255,0.68);
+    font-size: 0.78rem;
+}
+
+.mes-pistes-progress {
+    flex: 1;
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+}
+
+.mes-pistes-progress span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: #F4B400;
+    transition: width 0.3s ease;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.mes-pistes-main {
+    position: relative;
+    z-index: 5;
+    width: min(1080px, calc(100% - 36px));
+    margin: -22px auto 0;
+}
+
+
+/* =========================================================
+   ERREUR
+========================================================= */
+
+.mes-pistes-error {
+    margin-bottom: 16px;
+    padding: 13px 16px;
+    border: 1px solid rgba(13,27,42,0.08);
+    border-left: 4px solid #F4B400;
+    border-radius: 12px;
+    background: #FFFFFF;
+    color: #0D1B2A;
+    font-size: 0.86rem;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.mes-pistes-intro {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 25px 28px;
+    border: 1px solid rgba(13,27,42,0.06);
+    border-radius: 20px;
+    background: #FFFFFF;
+    box-shadow: 0 15px 45px rgba(13,27,42,0.07);
+}
+
+.mes-pistes-intro-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: rgba(244,180,0,0.16);
+    color: #0D1B2A;
+    font-size: 1.25rem;
+}
+
+.mes-pistes-intro span,
+.mes-pistes-section-header span,
+.mes-pistes-next-step span {
+    display: block;
+    margin-bottom: 7px;
+    color: #1E3A8A;
+    font-size: 0.67rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+}
+
+.mes-pistes-intro h2 {
+    max-width: 700px;
+    margin: 0;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    line-height: 1.25;
+}
+
+.mes-pistes-intro p {
+    max-width: 780px;
+    margin: 10px 0 0;
+    color: #0D1B2A;
+    opacity: 0.67;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ZONE AJOUT
+========================================================= */
+
+.mes-pistes-add-zone {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 22px 0;
+    padding: 17px 20px;
+    border: 1px solid rgba(13,27,42,0.07);
+    border-radius: 16px;
+    background: #FFFFFF;
+    box-shadow: 0 8px 28px rgba(13,27,42,0.045);
+}
+
+.mes-pistes-add-zone > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.mes-pistes-add-zone span {
+    color: #1E3A8A;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.mes-pistes-add-zone strong {
+    color: #0D1B2A;
+    font-size: 0.88rem;
+}
+
+.mes-pistes-add-button,
+.mes-pistes-empty button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 11px 17px;
+    border: none;
+    border-radius: 11px;
+    background: #F4B400;
+    color: #0D1B2A;
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.mes-pistes-add-button:hover:not(:disabled),
+.mes-pistes-empty button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(244,180,0,0.24);
+}
+
+.mes-pistes-add-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.mes-pistes-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 58px 25px;
+    border: 1px solid rgba(13,27,42,0.06);
+    border-radius: 22px;
+    background: #FFFFFF;
+    box-shadow: 0 15px 45px rgba(13,27,42,0.06);
+    text-align: center;
+}
+
+.mes-pistes-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    background: #0D1B2A;
+    color: #F4B400;
+    font-size: 1.45rem;
+}
+
+.mes-pistes-empty > span {
+    color: #1E3A8A;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+}
+
+.mes-pistes-empty h2 {
+    max-width: 560px;
+    margin: 9px 0 0;
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    line-height: 1.2;
+}
+
+.mes-pistes-empty p {
+    max-width: 610px;
+    margin: 12px auto 24px;
+    color: #0D1B2A;
+    opacity: 0.65;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.mes-pistes-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.mes-pistes-section {
+    padding: 25px;
+    border: 1px solid rgba(13,27,42,0.06);
+    border-radius: 22px;
+    background: #FFFFFF;
+    box-shadow: 0 12px 38px rgba(13,27,42,0.055);
+}
+
+.mes-pistes-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.mes-pistes-section-header h2 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.35rem;
+}
+
+.mes-pistes-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 9px;
+    border-radius: 50%;
+    background: #F2F4F7;
+    color: #1E3A8A;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.mes-pistes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.mes-pistes-card {
+    display: flex;
+    gap: 15px;
+    padding: 19px;
+    border: 1px solid #E5E9EF;
+    border-radius: 17px;
+    background: #FFFFFF;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.mes-pistes-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(30,58,138,0.18);
+    box-shadow: 0 12px 28px rgba(13,27,42,0.07);
+}
+
+.mes-pistes-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    background: #0D1B2A;
+    color: #F4B400;
+}
+
+.mes-pistes-card-icon.filiere {
+    background: #1E3A8A;
+    color: #FFFFFF;
+}
+
+.mes-pistes-card-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.mes-pistes-card-type {
+    display: block;
+    margin-bottom: 4px;
+    color: #1E3A8A;
+    font-size: 0.67rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.mes-pistes-card h3 {
+    margin: 0;
+    color: #0D1B2A;
+    font-size: 1.03rem;
+    line-height: 1.3;
+}
+
+.mes-pistes-card-profile {
+    display: inline-flex;
+    gap: 5px;
+    margin-top: 7px;
+    color: #0D1B2A;
+    opacity: .62;
+    font-size: .74rem;
+}
+
+.mes-pistes-card-profile strong {
+    color: #1E3A8A;
+}
+
+.mes-pistes-card p {
+    margin: 9px 0 0;
+    color: #0D1B2A;
+    opacity: .62;
+    font-size: .79rem;
+    line-height: 1.55;
+}
+
+.mes-pistes-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.mes-pistes-explore,
+.mes-pistes-remove {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 7px 11px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: .74rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mes-pistes-explore {
+    border: 1px solid #0D1B2A;
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+.mes-pistes-remove {
+    border: 1px solid #E1E5EA;
+    background: #FFFFFF;
+    color: #0D1B2A;
+}
+
+.mes-pistes-remove:hover {
+    border-color: #F4B400;
+}
+
+
+/* =========================================================
+   PROCHAINE ÉTAPE
+========================================================= */
+
+.mes-pistes-next-step {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 17px;
+    align-items: start;
+    margin-top: 24px;
+    padding: 23px 25px;
+    border-radius: 19px;
+    background:
+        linear-gradient(
+            135deg,
+            #0D1B2A,
+            #1E3A8A
+        );
+    color: #FFFFFF;
+}
+
+.mes-pistes-next-step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+    background: rgba(244,180,0,.16);
+    color: #F4B400;
+}
+
+.mes-pistes-next-step span {
+    color: #F4B400;
+}
+
+.mes-pistes-next-step h2 {
+    margin: 0;
+    color: #FFFFFF;
+    font-size: 1.25rem;
+}
+
+.mes-pistes-next-step p {
+    max-width: 760px;
+    margin: 8px 0 0;
+    color: rgba(255,255,255,.78);
+    font-size: .84rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   MODALE
+========================================================= */
+
+.mes-pistes-modal-overlay {
+    position: fixed;
+    z-index: 3000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(13,27,42,.68);
+    backdrop-filter: blur(5px);
+}
+
+.mes-pistes-modal {
+    width: min(650px, 100%);
+    display: flex;
+    flex-direction: column;
+    max-height: min(700px, calc(100vh - 40px));
+    overflow: hidden;
+    border-radius: 22px;
+    background: #FFFFFF;
+    box-shadow: 0 30px 80px rgba(13,27,42,.28);
+}
+
+.mes-pistes-modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 24px 25px 18px;
+    border-bottom: 1px solid #EDF0F4;
+    flex-shrink: 0;
+}
+
+.mes-pistes-modal-header span {
+    color: #1E3A8A;
+    font-size: .67rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+}
+
+.mes-pistes-modal-header h2 {
+    margin: 6px 0 0;
+    color: #0D1B2A;
+    font-size: 1.35rem;
+}
+
+.mes-pistes-modal-header p {
+    margin: 5px 0 0;
+    color: #0D1B2A;
+    opacity: .55;
+    font-size: .78rem;
+}
+
+.mes-pistes-modal-header > button {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 10px;
+    background: #F2F4F7;
+    color: #0D1B2A;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+.mes-pistes-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 15px 20px 10px;
+    flex-shrink: 0;
+}
+
+.mes-pistes-tabs button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    border: 1px solid #E2E6EC;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #0D1B2A;
+    font-family: inherit;
+    font-size: .8rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mes-pistes-tabs button.active {
+    border-color: #0D1B2A;
+    background: #0D1B2A;
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.mes-pistes-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 20px 10px;
+    padding: 0 13px;
+    border: 1px solid #E1E5EA;
+    border-radius: 11px;
+    background: #F8F9FB;
+    flex-shrink: 0;
+}
+
+.mes-pistes-search svg {
+    color: #1E3A8A;
+}
+
+.mes-pistes-search input {
+    width: 100%;
+    min-height: 44px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #0D1B2A;
+    font-family: inherit;
+    font-size: .82rem;
+}
+
+
+/* =========================================================
+   LISTE SÉLECTION
+========================================================= */
+
+.mes-pistes-selection-list {
+    flex: 1 1 auto;
+    min-height: 140px;
+    max-height: 380px;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    padding: 5px 20px 12px;
+}
+
+.mes-pistes-option {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+    padding: 11px;
+    margin-bottom: 7px;
+    border: 1px solid #E6EAF0;
+    border-radius: 12px;
+    background: #FFFFFF;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .18s ease, background .18s ease;
+}
+
+.mes-pistes-option:hover:not(:disabled) {
+    border-color: rgba(30,58,138,.25);
+    background: #F8FAFD;
+}
+
+.mes-pistes-option.selected {
+    border-color: #F4B400;
+    background: rgba(244,180,0,.08);
+}
+
+.mes-pistes-option.already {
+    opacity: .5;
+    cursor: default;
+}
+
+.mes-pistes-option.blocked {
+    opacity: .42;
+    cursor: not-allowed;
+}
+
+.mes-pistes-option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #F2F4F7;
+    color: #1E3A8A;
+}
+
+.mes-pistes-option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+}
+
+.mes-pistes-option-content strong {
+    overflow: hidden;
+    color: #0D1B2A;
+    font-size: .82rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mes-pistes-option-content small {
+    color: #0D1B2A;
+    opacity: .55;
+    font-size: .7rem;
+}
+
+.mes-pistes-option-check {
+    min-width: 72px;
+    color: #1E3A8A;
+    font-size: .7rem;
+    font-weight: 800;
+    text-align: right;
+}
+
+.mes-pistes-no-result {
+    padding: 35px 15px;
+    color: #0D1B2A;
+    opacity: .55;
+    font-size: .82rem;
+    text-align: center;
+}
+
+
+/* =========================================================
+   FOOTER MODALE
+========================================================= */
+
+.mes-pistes-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 14px 20px;
+    border-top: 1px solid #EDF0F4;
+    background: #FAFBFC;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.mes-pistes-modal-cancel,
+.mes-pistes-modal-confirm {
+    min-height: 40px;
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: .78rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.mes-pistes-modal-cancel {
+    border: 1px solid #DDE2E8;
+    background: #FFFFFF;
+    color: #0D1B2A;
+}
+
+.mes-pistes-modal-confirm {
+    border: 1px solid #F4B400;
+    background: #F4B400;
+    color: #0D1B2A;
+}
+
+.mes-pistes-modal-confirm:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.mes-pistes-loading,
+.mes-pistes-modal-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 220px;
+    color: #0D1B2A;
+    font-size: .82rem;
+}
+
+.mes-pistes-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #E4E8EE;
+    border-top-color: #F4B400;
+    border-radius: 50%;
+    animation: mesPistesSpin .75s linear infinite;
+}
+
+@keyframes mesPistesSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .mes-pistes-hero-content,
+    .mes-pistes-main {
+        width: min(100% - 24px, 1080px);
+    }
+
+    .mes-pistes-title-line {
+        align-items: flex-start;
+    }
+
+    .mes-pistes-title-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    .mes-pistes-intro {
+        grid-template-columns: 1fr;
+        padding: 21px;
+    }
+
+    .mes-pistes-add-zone {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .mes-pistes-add-button {
+        width: 100%;
+    }
+
+    .mes-pistes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mes-pistes-section {
+        padding: 19px;
+    }
+
+    .mes-pistes-card {
+        padding: 16px;
+    }
+
+    .mes-pistes-next-step {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    /* Modale responsive */
+    .mes-pistes-modal-overlay {
+        padding: 10px;
+    }
+
+    .mes-pistes-modal {
+        max-height: calc(100vh - 16px);
+        border-radius: 16px;
+    }
+
+    .mes-pistes-modal-header {
+        padding: 16px 16px 12px;
+    }
+
+    .mes-pistes-modal-header h2 {
+        font-size: 1.15rem;
+    }
+
+    .mes-pistes-tabs {
+        padding: 10px 14px 8px;
+    }
+
+    .mes-pistes-search {
+        margin: 0 14px 8px;
+    }
+
+    .mes-pistes-selection-list {
+        padding: 4px 14px 10px;
+        max-height: 42vh;
+    }
+
+    .mes-pistes-modal-footer {
+        padding: 12px 14px;
+    }
+
+    .mes-pistes-modal-cancel,
+    .mes-pistes-modal-confirm {
+        min-height: 40px;
+        font-size: 0.82rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .mes-pistes-hero-content {
+        padding: 30px 0 35px;
+    }
+
+    .mes-pistes-hero h1 {
+        font-size: 2rem;
+    }
+
+    .mes-pistes-hero-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .mes-pistes-progress {
+        width: 100%;
+    }
+
+    .mes-pistes-modal-footer {
+        gap: 8px;
+    }
+
+    .mes-pistes-modal-cancel,
+    .mes-pistes-modal-confirm {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .mes-pistes-card {
+        gap: 11px;
+    }
+
+    .mes-pistes-card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+    }
+
+    .mes-pistes-card-actions {
+        flex-direction: column;
+    }
+
+    .mes-pistes-explore,
+    .mes-pistes-remove {
+        justify-content: center;
+        width: 100%;
+    }
+
+}
+/* J'HÉSITE — sélection et lancement de comparaison */
+.mes-pistes-compare-select,
+.mes-pistes-compare-clear,
+.mes-pistes-compare-go {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    border: 1px solid #1E3A8A; border-radius: 10px; padding: 10px 13px;
+    font: inherit; font-weight: 700; cursor: pointer;
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.mes-pistes-compare-select { color: #1E3A8A; background: #fff; }
+.mes-pistes-compare-select:hover, .mes-pistes-compare-select.selected { color: #fff; background: #1E3A8A; }
+.mes-pistes-compare-bar {
+    position: sticky; bottom: 12px; z-index: 20; display: flex; align-items: center;
+    justify-content: space-between; gap: 20px; margin: 24px 0; padding: 18px;
+    border: 1px solid rgba(30, 58, 138, .2); border-radius: 16px;
+    background: rgba(255,255,255,.97); box-shadow: 0 12px 36px rgba(13, 27, 42, .14);
+}
+.mes-pistes-compare-bar strong { color: #0D1B2A; }
+.mes-pistes-compare-bar p { margin: 5px 0 9px; color: #5b6472; }
+.mes-pistes-compare-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.mes-pistes-compare-chips span { padding: 5px 9px; border-radius: 999px; background: #F2F4F7; color: #0D1B2A; font-size: .84rem; }
+.mes-pistes-compare-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mes-pistes-compare-clear { color: #1E3A8A; background: #fff; }
+.mes-pistes-compare-go { color: #0D1B2A; background: #F4B400; border-color: #F4B400; }
+.mes-pistes-compare-go:disabled { cursor: not-allowed; opacity: .5; }
+@media (max-width: 700px) {
+    .mes-pistes-compare-bar { align-items: stretch; flex-direction: column; bottom: 6px; padding: 14px; }
+    .mes-pistes-compare-actions { width: 100%; }
+    .mes-pistes-compare-actions button { flex: 1; }
+}

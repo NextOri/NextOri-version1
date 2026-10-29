@@ -1,4 +1,4 @@
-const profilsHesitation = {
+export const profilsHesitation = {
 
     // =========================================================
     // ATTIRANCES

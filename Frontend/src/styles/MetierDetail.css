@@ -21,6 +21,11 @@
 .metier-detail-navigation {
     width: min(1100px, 92%);
     margin: 0 auto 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .metier-detail-back-button {
